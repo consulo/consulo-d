@@ -1,6 +1,13 @@
 package io.github.intellij.dlanguage.codeinsight;
 
-import com.intellij.codeInsight.completion.*;
+import java.util.List;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+import com.intellij.codeInsight.completion.CompletionContributor;
+import com.intellij.codeInsight.completion.CompletionParameters;
+import com.intellij.codeInsight.completion.CompletionResultSet;
+import com.intellij.codeInsight.completion.CompletionType;
 import com.intellij.codeInsight.lookup.LookupElement;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.openapi.editor.Editor;
@@ -8,15 +15,12 @@ import com.intellij.patterns.PlatformPatterns;
 import com.intellij.psi.PsiFile;
 import com.intellij.util.Function;
 import com.intellij.util.ProcessingContext;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.icons.DlangIcons;
+import consulo.codeInsight.completion.CompletionProvider;
+import consulo.d.DLanguage;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionClient;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
 import io.github.intellij.dlanguage.codeinsight.dcd.completions.Completion;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
+import io.github.intellij.dlanguage.icons.DlangIcons;
 
 public class DCompletionContributor extends CompletionContributor {
 
@@ -25,7 +29,7 @@ public class DCompletionContributor extends CompletionContributor {
     public DCompletionContributor() {
         extend(CompletionType.BASIC,
                 PlatformPatterns.psiElement().withLanguage(DLanguage.INSTANCE),
-                new CompletionProvider<CompletionParameters>() {
+                new CompletionProvider() {
                     public void addCompletions(@NotNull final CompletionParameters parameters,
                                                final ProcessingContext context,
                                                @NotNull final CompletionResultSet result) {

@@ -1,5 +1,11 @@
 package io.github.intellij.dlanguage.unittest;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.jdom.Element;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.Executor;
 import com.intellij.execution.configurations.LocatableConfigurationBase;
@@ -17,15 +23,9 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.util.PathUtil;
 import com.intellij.util.xmlb.XmlSerializer;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.DlangBundle;
+import consulo.d.DLanguage;
+import consulo.d.DlangBundle;
 import io.github.intellij.dlanguage.DlangFileType;
-import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class DUnitTestRunConfiguration extends LocatableConfigurationBase {
 

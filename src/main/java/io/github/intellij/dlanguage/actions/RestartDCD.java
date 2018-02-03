@@ -13,7 +13,6 @@ import com.intellij.openapi.ui.popup.JBPopup;
 import com.intellij.openapi.ui.popup.JBPopupFactory;
 import com.intellij.ui.components.JBList;
 import io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer;
-import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import org.jetbrains.annotations.NotNull;
 

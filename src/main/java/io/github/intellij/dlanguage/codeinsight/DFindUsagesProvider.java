@@ -1,22 +1,24 @@
 package io.github.intellij.dlanguage.codeinsight;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
 import com.intellij.lang.cacheBuilder.WordsScanner;
 import com.intellij.lang.findUsages.FindUsagesProvider;
-import com.intellij.openapi.diagnostic.Logger;
 import com.intellij.psi.ElementDescriptionUtil;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
 import com.intellij.usageView.UsageViewLongNameLocation;
 import com.intellij.usageView.UsageViewNodeTextLocation;
-import io.github.intellij.dlanguage.DLanguageLexerAdapter;
+import consulo.d.lexer.DLanguageLexerAdapter;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageIfCondition;
 import io.github.intellij.dlanguage.psi.DLanguageInterfaceDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateParameter;
 import io.github.intellij.dlanguage.psi.DLanguageVariableDeclaration;
 import io.github.intellij.dlanguage.psi.DTokenSets;
+import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.named.DlangCatch;
 import io.github.intellij.dlanguage.psi.named.DlangEnumDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
@@ -24,17 +26,9 @@ import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.named.DlangInterfaceOrClass;
 import io.github.intellij.dlanguage.psi.named.DlangParameter;
 import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
-import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.named.DlangUnionDeclaration;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DFindUsagesProvider implements FindUsagesProvider {
-    @SuppressWarnings("UnusedDeclaration")
-    private final static Logger LOG = Logger.getInstance(DFindUsagesProvider.class);
-    // Second parameter is nodes that are PsiNamedElements in practice.
-
-
     @Nullable
     @Override
     public WordsScanner getWordsScanner() {

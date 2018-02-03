@@ -1,25 +1,5 @@
 package io.github.intellij.dlanguage.module;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.RunnerAndConfigurationSettings;
-import com.intellij.execution.configurations.*;
-import com.intellij.execution.impl.RunManagerImpl;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessAdapter;
-import com.intellij.execution.process.ProcessEvent;
-import com.intellij.execution.process.ProcessOutputTypes;
-import com.intellij.openapi.extensions.Extensions;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.Pair;
-import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType;
-import io.github.intellij.dlanguage.settings.ToolKey;
-import org.jetbrains.annotations.NonNls;
-import org.jetbrains.annotations.NotNull;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -31,6 +11,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import org.jetbrains.annotations.NonNls;
+import org.jetbrains.annotations.NotNull;
+import com.intellij.execution.ExecutionException;
+import com.intellij.execution.RunnerAndConfigurationSettings;
+import com.intellij.execution.configurations.ConfigurationFactory;
+import com.intellij.execution.configurations.ConfigurationType;
+import com.intellij.execution.configurations.GeneralCommandLine;
+import com.intellij.execution.configurations.ModuleBasedConfiguration;
+import com.intellij.execution.configurations.ParametersList;
+import com.intellij.execution.impl.RunManagerImpl;
+import com.intellij.execution.process.OSProcessHandler;
+import com.intellij.execution.process.ProcessAdapter;
+import com.intellij.execution.process.ProcessEvent;
+import com.intellij.execution.process.ProcessOutputTypes;
+import com.intellij.openapi.extensions.Extensions;
+import com.intellij.openapi.options.ConfigurationException;
+import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ModifiableRootModel;
+import com.intellij.openapi.util.Key;
+import com.intellij.openapi.util.Pair;
+import consulo.d.DlangBundle;
+import io.github.intellij.dlanguage.run.DlangRunDubConfigurationType;
+import io.github.intellij.dlanguage.settings.ToolKey;
 
 public class DlangDubModuleBuilder extends DlangModuleBuilder {
 

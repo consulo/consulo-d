@@ -18,7 +18,6 @@ import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
 import org.apache.commons.lang.StringUtils;
 import org.jetbrains.annotations.NotNull;

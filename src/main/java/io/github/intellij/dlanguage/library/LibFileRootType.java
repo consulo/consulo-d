@@ -1,11 +1,12 @@
 package io.github.intellij.dlanguage.library;
 
-import com.intellij.openapi.roots.PersistentOrderRootType;
 import org.jetbrains.annotations.NotNull;
+import com.intellij.openapi.roots.OrderRootType;
 
-public class LibFileRootType extends PersistentOrderRootType {
+public class LibFileRootType extends OrderRootType
+{
     protected LibFileRootType() {
-        super("LIBRARY_FILE", "libFile", "lib-file", null);
+        super("dLibraries");
     }
 
     @NotNull

@@ -162,8 +162,7 @@ public class ExecUtil {
 
     @NotNull
     public static String guessWorkDir(@NotNull final Module module) {
-        final VirtualFile moduleFile = module.getModuleFile();
-        final VirtualFile moduleDir = moduleFile == null ? null : moduleFile.getParent();
+        final VirtualFile moduleDir = module.getModuleDir();
         return moduleDir == null ? module.getProject().getBasePath() : moduleDir.getPath();
     }
 

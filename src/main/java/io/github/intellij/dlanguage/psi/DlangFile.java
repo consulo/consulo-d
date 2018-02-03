@@ -1,5 +1,7 @@
 package io.github.intellij.dlanguage.psi;
 
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.extapi.psi.PsiFileBase;
 import com.intellij.openapi.fileTypes.FileType;
 import com.intellij.openapi.util.Key;
@@ -8,16 +10,13 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.ResolveState;
 import com.intellij.psi.scope.PsiScopeProcessor;
 import com.intellij.psi.stubs.StubElement;
-import io.github.intellij.dlanguage.DLanguage;
+import consulo.d.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImplUtil;
 import io.github.intellij.dlanguage.stubs.DlangFileStub;
-import javax.swing.Icon;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DlangFile extends PsiFileBase {
 
@@ -34,11 +33,6 @@ public class DlangFile extends PsiFileBase {
     @Override
     public String toString() {
         return "D Language File";
-    }
-
-    @Override
-    public Icon getIcon(final int flags) {
-        return super.getIcon(flags);
     }
 
     /**

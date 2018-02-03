@@ -40,7 +40,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.openapi.vfs.VirtualFileManager;
 import com.intellij.ui.components.JBList;
 import io.github.intellij.dlanguage.icons.DlangIcons;
-import io.github.intellij.dlanguage.module.DlangModuleType;
 import io.github.intellij.dlanguage.project.DubConfigurationParser;
 import io.github.intellij.dlanguage.project.DubPackage;
 import io.github.intellij.dlanguage.settings.ToolKey;

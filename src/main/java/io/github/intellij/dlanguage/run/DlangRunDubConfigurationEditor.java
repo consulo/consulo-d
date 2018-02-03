@@ -10,7 +10,6 @@ import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
 import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.module.DlangModuleType;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;

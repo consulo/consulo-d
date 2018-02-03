@@ -1,12 +1,11 @@
 package io.github.intellij.dlanguage.features.formatter.settings;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.application.options.CodeStyleAbstractConfigurable;
 import com.intellij.application.options.CodeStyleAbstractPanel;
 import com.intellij.application.options.TabbedLanguageCodeStylePanel;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import io.github.intellij.dlanguage.DLanguage;
-import io.github.intellij.dlanguage.DLanguage;
-import org.jetbrains.annotations.NotNull;
+import consulo.d.DLanguage;
 
 
 public class DCodeStyleConfigurable extends CodeStyleAbstractConfigurable {

@@ -1,11 +1,13 @@
 package io.github.intellij.dlanguage;
 
-import com.intellij.openapi.fileTypes.LanguageFileType;
-import io.github.intellij.dlanguage.icons.DlangIcons;
+import javax.swing.Icon;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
+import com.intellij.openapi.fileTypes.LanguageFileType;
+import consulo.d.DLanguage;
+import consulo.d.DlangBundle;
+import io.github.intellij.dlanguage.icons.DlangIcons;
 
 public class DlangFileType extends LanguageFileType {
 
@@ -18,7 +20,7 @@ public class DlangFileType extends LanguageFileType {
 
     @NotNull
     @Override
-    public String getName() {
+    public String getId() {
         return "D file";
     }
 

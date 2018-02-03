@@ -1,12 +1,12 @@
 package io.github.intellij.dlanguage.features.formatter.settings;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.application.options.IndentOptionsEditor;
 import com.intellij.application.options.SmartIndentOptionsEditor;
 import com.intellij.lang.Language;
 import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
 import com.intellij.psi.codeStyle.LanguageCodeStyleSettingsProvider;
-import io.github.intellij.dlanguage.DLanguage;
-import org.jetbrains.annotations.NotNull;
+import consulo.d.DLanguage;
 
 public class DLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 

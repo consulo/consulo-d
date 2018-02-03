@@ -1,50 +1,14 @@
-<!DOCTYPE idea-plugin PUBLIC "Plugin/DTD" "http://plugins.intellij.net/plugin.dtd">
 <idea-plugin>
-    <id>net.masterthought.dlanguage</id>
+    <id>consulo.d</id>
     <name>D Language</name>
-    <version>@version@</version>
-    <vendor url="https://github.com/intellij-dlanguage/intellij-dlanguage">IntelliJ D Language</vendor>
+    <version>SNAPSHOT</version>
+    <vendor>IntelliJ D Language &amp; consulo.io </vendor>
 
     <description><![CDATA[
      <p>Support for the <a href="http://dlang.org/">D Language</a>.</p>
-     <p>Also adds support for using the <a href="https://code.dlang.org/">dub</a> build tool.</p>
-     <p>Project available on <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/">Github</a>.</p>
     ]]></description>
 
-    <change-notes><![CDATA[
-        <b>v1.16</b><br/>
-        <ul>
-            <li>Compatibility IntelliJ 2018.*</li>
-        </ul>
-        <b>v1.15 - v1.15.4</b><br/>
-        <ul>
-            <li>reworked code folding</li>
-            <li>Structure View (1.15.2)</li>
-            <li>various bug fixes</li>
-        </ul>
-        <b>v1.14</b><br/>
-        <ul>
-            <li>GDB support</li>
-        </ul>
-        <b>v1.13.2</b><br/>
-        <ul>
-            <li>Compatibility IntelliJ 2017.3</li>
-            <li>Bug fixes on Windows</li>
-        </ul>
-    ]]>
-    </change-notes>
-
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
-    <idea-version since-build="173" until-build="181.*"/>
-
-    <!-- please see http://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
-         on how to target different products -->
-    <!-- uncomment to enable plugin in all products
-    <depends>com.intellij.modules.lang</depends>
-    -->
-
     <extensions defaultExtensionNs="com.intellij">
-        <!-- Add your extensions here -->
         <codeInsight.parameterInfo language="D" implementationClass="io.github.intellij.dlanguage.codeinsight.ParameterInfo"/>
         <codeInsight.parameterInfo
             implementationClass="io.github.intellij.dlanguage.codeinsight.ConstructorParameterInfo"
@@ -52,42 +16,34 @@
         <codeInsight.parameterInfo
             implementationClass="io.github.intellij.dlanguage.codeinsight.TemplateParameterInfo"
             language="D"/>
-        <errorHandler implementation="io.github.intellij.dlanguage.errorreporting.DErrorReporter"/>
         <stubElementTypeHolder class="io.github.intellij.dlanguage.psi.DlangTypes"/>
         <fileTypeFactory implementation="io.github.intellij.dlanguage.DlangFileTypeFactory"/>
-        <lang.parserDefinition language="D" implementationClass="io.github.intellij.dlanguage.DLangParserDefinition"/>
+        <lang.parserDefinition language="D" implementationClass="consulo.d.DLangParserDefinition"/>
 
         <lang.syntaxHighlighterFactory language="D" implementationClass="io.github.intellij.dlanguage.highlighting.DHighlighterFactory"/>
         <highlightUsagesHandlerFactory implementation="io.github.intellij.dlanguage.highlighting.exitpoint.DHighlightExitPointsHandlerFactory"/>
 
         <colorSettingsPage implementation="io.github.intellij.dlanguage.colors.DColorSettingsPage"/>
 
-        <!-- Annotator -->
-
         <annotator language="D" implementationClass="io.github.intellij.dlanguage.annotator.DHighlightingAnnotator"/>
         <externalAnnotator language="D"
                            implementationClass="io.github.intellij.dlanguage.highlighting.annotation.external.DExternalAnnotator"/>
         <lang.documentationProvider language="D"
                                     implementationClass="io.github.intellij.dlanguage.features.DDocumentationProvider"/>
-        <!-- Refactoring -->
 
         <lang.refactoringSupport language="D"
                                  implementationClass="io.github.intellij.dlanguage.refactoring.DRefactoringSupportProvider"/>
 
 
-        <!-- D Language support -->
         <sdkType implementation="io.github.intellij.dlanguage.DlangSdkType"/>
-        <!--<projectSdkSetupValidator implementation="" />-->
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationProducer"/>
 
-        <!-- project open and import -->
         <projectImportProvider implementation="io.github.intellij.dlanguage.project.DubProjectImportProvider"/>
         <projectImportBuilder implementation="io.github.intellij.dlanguage.project.DubProjectImportBuilder"/>
         <projectOpenProcessor id="DubProjectOpenProcessor" implementation="io.github.intellij.dlanguage.project.DubProjectOpenProcessor"/>
 
         <!-- module -->
         <internalFileTemplate name="D Language Module"/>
-        <moduleType id="DLANGUAGE_MODULE" implementationClass="io.github.intellij.dlanguage.module.DlangModuleType"/>
 
 
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunDubConfigurationType"/>
@@ -99,15 +55,6 @@
         <configurationType implementation="io.github.intellij.dlanguage.run.DlangRunAppConfigurationType"/>
         <programRunner implementation="io.github.intellij.dlanguage.run.RunAppRunner"/>
 
-
-        <moduleBuilder id="DLangModuleBuilder"
-                       builderClass="io.github.intellij.dlanguage.module.DlangModuleBuilder"/>
-        <moduleBuilder id="DLangDubModuleBuilder"
-                       builderClass="io.github.intellij.dlanguage.module.DlangDubModuleBuilder"/>
-        <moduleConfigurationEditorProvider
-            implementation="io.github.intellij.dlanguage.module.DlangModuleEditorsProvider"/>
-
-        <!-- library -->
         <library.type implementation="io.github.intellij.dlanguage.library.DlangLibraryType"/>
         <orderRootType implementation="io.github.intellij.dlanguage.library.LibFileRootType" id="LIBRARY_FILE"
                        order="FIRST"/>
@@ -124,60 +71,32 @@
         <stubIndex implementation="io.github.intellij.dlanguage.stubs.index.DMembersIndex"/>
         <gotoSymbolContributor implementation="io.github.intellij.dlanguage.features.DChooseByNameContributor"/>
         <gotoClassContributor implementation="io.github.intellij.dlanguage.features.DClassContributor"/>
-        <!-- Project settings -->
-
-        <!-- Tab under compiler in IntelliJ -> Preferences -->
-        <!--<projectConfigurable instance="io.github.intellij.dlanguage.DLanguageCompilerConfigurable"-->
-        <!--parentId="project.propCompiler" id="DMD compiler"-->
-        <!--displayName="DMD Compiler"/>-->
-        <!-- Persistent data + build server communication for compiler settings -->
         <projectService serviceImplementation="io.github.intellij.dlanguage.settings.DLanguageBuildSettings"/>
 
-        <!-- plugin settings are now in: Settings -> Languages &amp; Frameworks -> D Tools -->
         <projectConfigurable groupId="language" displayName="D Tools"
                              instance="io.github.intellij.dlanguage.settings.DLanguageToolsConfigurable"/>
 
-        <!-- File -> Project Structure dialogue. -->
-        <!--<moduleConfigurationEditorProvider implementation="io.github.intellij.dlanguage.settings.DLanguageModuleConfigurationEditor" order="first"/>-->
-        <!-- Tab in IntelliJ -> Preferences -->
-
-        <!-- References/navigation -->
         <psi.referenceContributor implementation="io.github.intellij.dlanguage.psi.references.DReferenceContributor"/>
         <lang.findUsagesProvider language="D"
                                  implementationClass="io.github.intellij.dlanguage.codeinsight.DFindUsagesProvider"/>
 
-        <!-- Editing utils -->
         <lang.braceMatcher language="D" implementationClass="io.github.intellij.dlanguage.features.DBraceMatcher"/>
         <lang.commenter language="D" implementationClass="io.github.intellij.dlanguage.features.DCommenter"/>
 
         <completion.contributor language="D"
                                 implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributor"/>
 
-        <!-- folding -->
         <lang.foldingBuilder language="D" implementationClass="io.github.intellij.dlanguage.folding.DFoldingBuilder"/>
         <codeFoldingOptionsProvider instance="io.github.intellij.dlanguage.folding.DCodeFoldingOptionsProvider"/>
         <applicationService serviceInterface="io.github.intellij.dlanguage.folding.DCodeFoldingSettings"
                             serviceImplementation="io.github.intellij.dlanguage.folding.impl.DCodeFoldingSettingsImpl"/>
-
-        <!--  <completion.contributor language="D"
-                                  implementationClass="io.github.intellij.dlanguage.codeinsight.DCompletionContributorImports"/>-->
-
-
-        <!--formatter-->
-        <!--&lt;!&ndash;<lang.formatter language="D" implementationClass="io.github.intellij.dlanguage.features.formatter.DFormattingModelBuilder"/>&ndash;&gt;re-enable when formatting with syntax errors improves-->
         <codeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DCodeStyleSettingsProvider"/>
         <langCodeStyleSettingsProvider implementation="io.github.intellij.dlanguage.features.formatter.settings.DLanguageCodeStyleSettingsProvider"/>
 
-        <!-- dunit support -->
         <configurationType implementation="io.github.intellij.dlanguage.unittest.DUnitTestRunConfigurationType"/>
         <runConfigurationProducer implementation="io.github.intellij.dlanguage.unittest.DUnitTestRunConfigurationProducer"/>
         <programRunner implementation="io.github.intellij.dlanguage.unittest.DUnitTestProgramRunner"/>
-        <!--<testFramework implementation="io.github.intellij.dlanguage.unittest.DUnitTestFramework"/>-->
-        <!--<testFinder implementation="io.github.intellij.dlanguage.unittest.DUnitTestFinder"/>-->
-        <!--<consoleFilterProvider implementation="io.github.intellij.dlanguage.unittest.DStackTraceFilter"/>-->
-        <!--<analyzeStacktraceFilter implementation="io.github.intellij.dlanguage.unittest.DStackTraceFilter"/>-->
 
-        <!--inspections-->
         <localInspection language="D" shortName="PossiblyUndefinedSymbol" bundle="messages.PropertiesBundle"
                          enabledByDefault="true" level="WARNING"
                          implementationClass="io.github.intellij.dlanguage.inspections.PossiblyUndefinedSymbol"/>
@@ -259,17 +178,4 @@
             <add-to-group group-id="ToolsMenu" anchor="last"/>
         </action>
     </actions>
-
-    <module-components>
-        <component>
-            <implementation-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</implementation-class>
-            <interface-class>io.github.intellij.dlanguage.codeinsight.dcd.DCDCompletionServer</interface-class>
-        </component>
-    </module-components>
-
-    <project-components>
-        <!-- Add your project components here -->
-    </project-components>
-
-
 </idea-plugin>

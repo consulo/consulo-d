@@ -1,5 +1,19 @@
 package io.github.intellij.dlanguage.unittest;
 
+import java.io.File;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.configurations.ParametersList;
@@ -30,7 +44,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
-import io.github.intellij.dlanguage.DlangBundle;
+import consulo.d.DlangBundle;
 import io.github.intellij.dlanguage.psi.DLanguageAtAttribute;
 import io.github.intellij.dlanguage.psi.DLanguageClassDeclaration;
 import io.github.intellij.dlanguage.psi.DLanguageTemplateMixinExpression;
@@ -38,19 +52,6 @@ import io.github.intellij.dlanguage.psi.named.DlangFunctionDeclaration;
 import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.settings.ToolKey;
 import io.github.intellij.dlanguage.utils.DToolsNotificationListener;
-import java.io.File;
-import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DUnitTestRunProcessHandler extends ProcessHandler {
 
@@ -83,7 +84,6 @@ public class DUnitTestRunProcessHandler extends ProcessHandler {
             testRunStarted();
 
             // NOTE: This creates the tree in the UI by sending testSuiteStarted() and testStarted() messages
-            final DUnitTestFramework unitTestFramework = new DUnitTestFramework();
 
             try {
                 final PsiFile psiFile = PsiManager.getInstance(project).findFile(configuration.getDFile());

@@ -1,5 +1,12 @@
 package io.github.intellij.dlanguage.unittest;
 
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.execution.ExecutionBundle;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.ide.util.TreeFileChooser;
@@ -14,14 +21,9 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
-import io.github.intellij.dlanguage.DlangWritingAccessProvider;
-import io.github.intellij.dlanguage.DlangBundle;
+import consulo.d.DlangBundle;
 import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.DlangWritingAccessProvider;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.util.Map;
 
 public class DUnitTestRunConfigurationEditor extends SettingsEditor<DUnitTestRunConfiguration> {
     private JPanel myMainPanel;

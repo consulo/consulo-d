@@ -1,14 +1,14 @@
 package io.github.intellij.dlanguage.run;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.execution.configurations.ConfigurationFactory;
 import com.intellij.execution.configurations.ConfigurationType;
 import com.intellij.execution.configurations.RunConfiguration;
 import com.intellij.openapi.project.Project;
-import io.github.intellij.dlanguage.DlangBundle;
+import consulo.d.DlangBundle;
 import io.github.intellij.dlanguage.icons.DlangIcons;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 public class DlangRunDmdConfigurationType implements ConfigurationType {
     private final DLanguageFactory myConfigurationFactory;
