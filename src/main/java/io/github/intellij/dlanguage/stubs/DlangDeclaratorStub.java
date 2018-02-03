@@ -1,11 +1,11 @@
 package io.github.intellij.dlanguage.stubs;
 
+import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
+import consulo.d.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.psi.named.DlangDeclarator;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by francis nixon on 1/11/2017.

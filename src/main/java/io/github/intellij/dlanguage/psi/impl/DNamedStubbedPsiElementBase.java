@@ -1,5 +1,9 @@
 package io.github.intellij.dlanguage.psi.impl;
 
+import javax.swing.Icon;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.ASTNode;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.openapi.util.TextRange;
@@ -7,18 +11,14 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiReference;
 import com.intellij.psi.stubs.IStubElementType;
+import consulo.d.resolve.processors.parameters.DAttributes;
+import consulo.d.resolve.processors.parameters.DAttributesFinder;
 import io.github.intellij.dlanguage.icons.DlangIcons;
 import io.github.intellij.dlanguage.psi.DlangFile;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.psi.references.DReference;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder.Visibility;
 import io.github.intellij.dlanguage.stubs.DNamedStubBase;
-import javax.swing.Icon;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> extends
     DStubbedPsiElementBase<T> implements DNamedElement {
@@ -98,20 +98,20 @@ public abstract class DNamedStubbedPsiElementBase<T extends DNamedStubBase<?>> e
     }//not sure if this should only be implemented for identifier todo
 
     @Override
-    public Visibility visibility() {
+    public DAttributesFinder.Visibility visibility() {
         return getAttributes().getVisibility();
     }
 
     public boolean isPublic() {
-        return getAttributes().getVisibility() == Visibility.PUBLIC;
+        return getAttributes().getVisibility() == DAttributesFinder.Visibility.PUBLIC;
     }
 
     public boolean isProtected() {
-        return getAttributes().getVisibility() == Visibility.PROTECTED;
+        return getAttributes().getVisibility() == DAttributesFinder.Visibility.PROTECTED;
     }
 
     public boolean isPrivate() {
-        return getAttributes().getVisibility() == Visibility.PRIVATE;
+        return getAttributes().getVisibility() == DAttributesFinder.Visibility.PRIVATE;
     }
 
     public boolean isProperty() {

@@ -1,5 +1,23 @@
 package io.github.intellij.dlanguage.run;
 
+import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Desktop;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+import javax.swing.JTextPane;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.application.options.ModulesComboBox;
 import com.intellij.execution.ExecutionException;
 import com.intellij.execution.configurations.ConfigurationFactory;
@@ -13,22 +31,13 @@ import com.intellij.openapi.options.ConfigurationException;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
+import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.ui.RawCommandLineEditor;
 import com.intellij.ui.components.JBScrollPane;
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.intellij.uiDesigner.core.GridLayoutManager;
-import io.github.intellij.dlanguage.DlangBundle;
+import consulo.d.DlangBundle;
 import io.github.intellij.dlanguage.run.exception.NoSourcesException;
-import org.apache.commons.lang.StringUtils;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdConfiguration> {
 
@@ -191,7 +200,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
 
     /* I hope there is no misprints in next methods :) */
     private void resetCompilerTabForm(final DlangRunDmdConfiguration config) {
-        comboModules.fillModules(config.getProject(), DlangModuleType.getInstance());
+        comboModules.fillModules(config.getProject());
         comboModules.setSelectedModule(config.getConfigurationModule().getModule());
         cbRelease.setSelected(config.isRelease());
         cbDebug.setSelected(config.isDebug());
@@ -321,7 +330,7 @@ public class DlangRunDmdConfigurationEditor extends SettingsEditor<DlangRunDmdCo
         }
         try {
             final java.util.List<String> args = DlangDmdConfigToArgsConverter.getDmdParameters(config, module);
-            textArgsPane.setText(StringUtils.join(args, "\n"));
+            textArgsPane.setText(StringUtil.join(args, "\n"));
         } catch (NoSourcesException | ExecutionException e) {
             LOG.error("There was a problem filling the textArgsPane in DMD config page", e);
             textArgsPane.setText("*Exception*:\n" + e.getMessage());

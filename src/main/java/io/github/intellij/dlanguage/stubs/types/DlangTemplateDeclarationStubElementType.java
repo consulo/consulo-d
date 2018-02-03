@@ -1,14 +1,15 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import java.io.IOException;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
+import consulo.d.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.psi.impl.named.DlangTemplateDeclarationImpl;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
+import io.github.intellij.dlanguage.psi.named.DlangTemplateDeclaration;
 import io.github.intellij.dlanguage.stubs.DlangTemplateDeclarationStub;
-import java.io.IOException;
-import org.jetbrains.annotations.NotNull;
 
 public class DlangTemplateDeclarationStubElementType extends DNamedStubElementType<DlangTemplateDeclarationStub, DlangTemplateDeclaration> {
     public DlangTemplateDeclarationStubElementType(final String debugName) {
@@ -37,6 +38,6 @@ public class DlangTemplateDeclarationStubElementType extends DNamedStubElementTy
     @Override
     public DlangTemplateDeclarationStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DlangTemplateDeclarationStub(parentStub, this, dataStream.readName(),
-            DAttributes.Companion.read(dataStream));
+            DAttributes.read(dataStream));
     }
 }

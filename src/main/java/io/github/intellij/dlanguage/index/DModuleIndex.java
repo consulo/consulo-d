@@ -1,27 +1,32 @@
 package io.github.intellij.dlanguage.index;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.indexing.*;
+import com.intellij.util.indexing.DataIndexer;
+import com.intellij.util.indexing.FileBasedIndex;
+import com.intellij.util.indexing.FileContent;
+import com.intellij.util.indexing.ID;
+import com.intellij.util.indexing.ScalarIndexExtension;
 import com.intellij.util.io.EnumeratorStringDescriptor;
 import com.intellij.util.io.KeyDescriptor;
 import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.psi.DlangFile;
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class DModuleIndex extends ScalarIndexExtension<String> {
     public static final FileBasedIndex.InputFilter D_MODULE_FILTER = new FileBasedIndex.InputFilter() {
         @Override
-        public boolean acceptInput(@NotNull final VirtualFile file) {
+        public boolean acceptInput(@Nullable Project project, @NotNull final VirtualFile file) {
             //noinspection ObjectEquality
             return file.getFileType() == DlangFileType.INSTANCE;
         }

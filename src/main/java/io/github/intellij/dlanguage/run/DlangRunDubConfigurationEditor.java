@@ -1,5 +1,15 @@
 package io.github.intellij.dlanguage.run;
 
+import java.util.Map;
+
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.JTextField;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.application.options.ModulesComboBox;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -9,11 +19,7 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
-import io.github.intellij.dlanguage.DlangBundle;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.util.Map;
+import consulo.d.DlangBundle;
 
 
 public class DlangRunDubConfigurationEditor extends SettingsEditor<DlangRunDubConfiguration> {
@@ -134,7 +140,7 @@ public class DlangRunDubConfigurationEditor extends SettingsEditor<DlangRunDubCo
     }
 
     private void resetGeneralTabForm(final DlangRunDubConfiguration config) {
-        comboModules.fillModules(config.getProject(), DlangModuleType.getInstance());
+        comboModules.fillModules(config.getProject());
         comboModules.setSelectedModule(config.getConfigurationModule().getModule());
 
         comboGeneralDubOptions.setSelectedIndex(config.getGeneralDubOptions());

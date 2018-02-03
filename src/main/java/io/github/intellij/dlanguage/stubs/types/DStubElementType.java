@@ -1,15 +1,15 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import java.io.IOException;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.IndexSink;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubOutputStream;
-import io.github.intellij.dlanguage.DLanguage;
+import consulo.d.DLanguage;
 import io.github.intellij.dlanguage.psi.interfaces.DCompositeElement;
-import org.jetbrains.annotations.NotNull;
-
-import java.io.IOException;
 
 
 public abstract class DStubElementType<S extends StubElement<T>, T extends DCompositeElement> extends IStubElementType<S, T> {

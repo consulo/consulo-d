@@ -1,19 +1,17 @@
 package io.github.intellij.dlanguage.features;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import org.jetbrains.annotations.Nullable;
 import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.lang.documentation.DocumentationProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.ResolveResult;
-import io.github.intellij.dlanguage.psi.references.DReference;
-import io.github.intellij.dlanguage.psi.references.DReference;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import consulo.d.resolve.processors.parameters.DAttributesFinder;
 
 /**
  * Created by francis on 7/18/2017.

@@ -1,21 +1,25 @@
 package io.github.intellij.dlanguage.parser;
 
+import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
+import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
+import static io.github.intellij.dlanguage.psi.DlangTypes.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import com.google.common.collect.Sets;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
 import com.intellij.psi.tree.IElementType;
 import io.github.intellij.dlanguage.parser.Token.IdType;
-import kotlin.jvm.internal.Ref;
 import io.github.intellij.dlanguage.psi.DlangTokenType;
-import io.github.intellij.dlanguage.psi.DlangTokenType;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.*;
-
-import static com.intellij.lang.parser.GeneratedParserUtilBase.enter_section_;
-import static com.intellij.lang.parser.GeneratedParserUtilBase.exit_section_;
-import static io.github.intellij.dlanguage.psi.DlangTypes.*;
 
 /**
  * This parser is very closely based on libdparse, so that we can get bug fixes and new features from libdparse.

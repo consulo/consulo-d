@@ -1,15 +1,16 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import java.io.IOException;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
+import consulo.d.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.psi.impl.named.DlangIdentifierImpl;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 import io.github.intellij.dlanguage.stubs.DlangIdentifierStub;
-import java.io.IOException;
-import org.jetbrains.annotations.NotNull;
 
 public class IdentifierStubElementType extends DNamedStubElementType<DlangIdentifierStub, DlangIdentifier> {
     public IdentifierStubElementType(final String debugName) {
@@ -42,7 +43,7 @@ public class IdentifierStubElementType extends DNamedStubElementType<DlangIdenti
     @Override
     public DlangIdentifierStub deserialize(@NotNull final StubInputStream dataStream, final StubElement parentStub) throws IOException {
         return new DlangIdentifierStub(parentStub, this, dataStream.readName(),
-            DAttributes.Companion.read(dataStream));
+            DAttributes.read(dataStream));
     }
 }
 

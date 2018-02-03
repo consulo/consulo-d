@@ -1,13 +1,14 @@
 package io.github.intellij.dlanguage.stubs;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.stubs.IStubElementType;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.util.io.StringRef;
+import consulo.d.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
-import java.util.HashSet;
-import java.util.Set;
-import org.jetbrains.annotations.NotNull;
 
 public class DlangSingleImportStub extends DNamedStubBase<DlangSingleImport> {
 

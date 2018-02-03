@@ -1,12 +1,12 @@
 package io.github.intellij.dlanguage.psi.interfaces;
 
-import com.intellij.navigation.NavigationItem;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributesFinder;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.intellij.navigation.NavigationItem;
+import com.intellij.psi.PsiNameIdentifierOwner;
+import consulo.d.resolve.processors.parameters.DAttributes;
+import consulo.d.resolve.processors.parameters.DAttributesFinder;
+import io.github.intellij.dlanguage.psi.named.DlangIdentifier;
 
 /**
  * Interface that combines everything we need for convenient navigation.

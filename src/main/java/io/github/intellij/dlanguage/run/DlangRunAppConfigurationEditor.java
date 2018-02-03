@@ -1,5 +1,12 @@
 package io.github.intellij.dlanguage.run;
 
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.application.options.ModulesComboBox;
 import com.intellij.execution.configuration.EnvironmentVariablesComponent;
 import com.intellij.openapi.fileChooser.FileChooserDescriptor;
@@ -9,12 +16,7 @@ import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.ui.TextComponentAccessor;
 import com.intellij.openapi.ui.TextFieldWithBrowseButton;
 import com.intellij.ui.RawCommandLineEditor;
-import io.github.intellij.dlanguage.DlangBundle;
-import io.github.intellij.dlanguage.DlangBundle;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import java.util.Map;
+import consulo.d.DlangBundle;
 
 public class DlangRunAppConfigurationEditor extends SettingsEditor<DlangRunAppConfiguration> {
     private JPanel myMainPanel;
@@ -31,7 +33,7 @@ public class DlangRunAppConfigurationEditor extends SettingsEditor<DlangRunAppCo
      */
     @Override
     protected void resetEditorFrom(final DlangRunAppConfiguration config) {
-        comboModule.fillModules(config.getProject(), DlangModuleType.getInstance());
+        comboModule.fillModules(config.getProject());
         comboModule.setSelectedModule(config.getConfigurationModule().getModule());
         pathWorkingDir.setText(config.getWorkDir());
         textParameters.setText(config.getAdditionalParams());

@@ -1,15 +1,16 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import java.io.IOException;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
+import consulo.d.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.psi.impl.named.DLanguageVersionSpecificationImpl;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
+import io.github.intellij.dlanguage.psi.named.DLanguageVersionSpecification;
 import io.github.intellij.dlanguage.stubs.VersionSpecificationStub;
-import java.io.IOException;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by francis on 1/5/2018.
@@ -38,7 +39,7 @@ public class VersionSpecificationElementType extends
     public VersionSpecificationStub deserialize(@NotNull final StubInputStream dataStream,
         final StubElement parentStub) throws IOException {
         final StringRef name = dataStream.readName();
-        final DAttributes attributes = DAttributes.Companion.read(dataStream);
+        final DAttributes attributes = DAttributes.read(dataStream);
         return new VersionSpecificationStub(parentStub, this, name.getString(), attributes);
 
     }

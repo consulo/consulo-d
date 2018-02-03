@@ -1,18 +1,19 @@
 package io.github.intellij.dlanguage.stubs.types;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.jetbrains.annotations.NotNull;
 import com.intellij.lang.ASTNode;
 import com.intellij.psi.stubs.StubElement;
 import com.intellij.psi.stubs.StubInputStream;
 import com.intellij.psi.stubs.StubOutputStream;
 import com.intellij.util.io.StringRef;
-import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
+import consulo.d.resolve.processors.parameters.DAttributes;
 import io.github.intellij.dlanguage.psi.impl.named.DlangSingleImportImpl;
-import io.github.intellij.dlanguage.resolve.processors.parameters.DAttributes;
+import io.github.intellij.dlanguage.psi.named.DlangSingleImport;
 import io.github.intellij.dlanguage.stubs.DlangSingleImportStub;
-import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by francis on 3/15/2017.
@@ -69,7 +70,7 @@ public class SingleImportStubElementType extends DNamedStubElementType<DlangSing
         final StringRef importName = dataStream.readName();
         final boolean hasName = dataStream.readBoolean();
         final StringRef importedModule = dataStream.readName();
-        final DAttributes attributes = DAttributes.Companion.read(dataStream);
+        final DAttributes attributes = DAttributes.read(dataStream);
         return new DlangSingleImportStub(parentStub, this, name, numBinds, binds, importName,
             hasName, importedModule, attributes);
     }
