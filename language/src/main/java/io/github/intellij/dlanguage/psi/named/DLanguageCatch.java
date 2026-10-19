@@ -1,0 +1,28 @@
+
+package io.github.intellij.dlanguage.psi.named;
+
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.StubBasedPsiElement;
+import io.github.intellij.dlanguage.psi.DLanguageType;
+import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
+import io.github.intellij.dlanguage.psi.interfaces.DTypedElement;
+import io.github.intellij.dlanguage.psi.interfaces.Statement;
+import io.github.intellij.dlanguage.stubs.DLanguageCatchStub;
+import org.jspecify.annotations.Nullable;
+
+
+public interface DLanguageCatch extends PsiElement, DNamedElement, DTypedElement,
+    StubBasedPsiElement<DLanguageCatchStub> {
+
+    @Nullable PsiElement getKW_CATCH();
+
+    @Nullable PsiElement getOP_PAR_LEFT();
+
+    @Nullable PsiElement getOP_PAR_RIGHT();
+
+    @Nullable DLanguageType getType();
+
+    @Nullable PsiElement getIdentifier();
+
+    @Nullable Statement getStatement();
+}

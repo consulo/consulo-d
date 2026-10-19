@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cache xmlns="http://maven.apache.org/BUILD-CACHE-CONFIG/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://maven.apache.org/BUILD-CACHE-CONFIG/1.0.0 https://maven.apache.org/xsd/build-cache-config-1.0.0.xsd">
+    <configuration>
+        <enabled>true</enabled>
+        <hashAlgorithm>SHA-256</hashAlgorithm>
+        <validateXml>true</validateXml>
+        <local>
+            <maxBuildsCached>3</maxBuildsCached>
+        </local>
+    </configuration>
+    <input>
+        <global>
+            <!-- the trailing extension-less patterns catch META-INF/services entries, which are named after
+                 the service interface and so would otherwise never invalidate the cache -->
+            <glob>{*.java,*.flex,*.idea,*.bnf,*.yaml,*.properties,*.svg,*.png,*.xml,*.txt,*.d,*.sdl,*.json,com.*,consulo.*,org.*,io.*}</glob>
+            <includes>
+                <include>src/</include>
+            </includes>
+            <excludes>
+                <exclude>pom.xml</exclude>
+            </excludes>
+        </global>
+    </input>
+    <executionControl>
+        <reconcile>
+            <plugins>
+                <!-- a build cached with tests skipped must not stand in for a build that runs them -->
+                <plugin artifactId="maven-surefire-plugin" goal="test">
+                    <reconciles>
+                        <reconcile propertyName="skip" skipValue="true"/>
+                        <reconcile propertyName="skipExec" skipValue="true"/>
+                        <reconcile propertyName="skipTests" skipValue="true"/>
+                    </reconciles>
+                </plugin>
+            </plugins>
+        </reconcile>
+    </executionControl>
+</cache>

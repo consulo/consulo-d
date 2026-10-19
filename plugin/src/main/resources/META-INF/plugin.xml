@@ -1,0 +1,17 @@
+<consulo-plugin url="https://github.com/consulo/consulo-d">
+    <id>consulo.d</id>
+    <name>D Language</name>
+    <category>Custom Languages</category>
+    <version>SNAPSHOT</version>
+    <vendor>IntelliJ D Language &amp; consulo.io</vendor>
+
+    <description><![CDATA[
+        <p>Support for the <a href="https://dlang.org/">D Language</a>.</p>
+    ]]></description>
+
+    <tags>
+        <tag>custom.language</tag>
+    </tags>
+
+    <depends>consulo.nativeDev</depends>
+</consulo-plugin>

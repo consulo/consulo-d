@@ -1,0 +1,146 @@
+dlang.filetype:
+    text: D language file
+parser.unable.to.parse.statement:
+    text: Unable to parse statement
+enum.no.members:
+    text: Enum must have at least one member
+literal.binary.no.digits:
+    text: Binary numbers must contain at least one binary digit
+literal.hexadecimal.no.digits:
+    text: Hexadecimal numbers must contain at least one hexadecimal digit
+literal.integer.too.large:
+    text: Value too large
+literal.integer.not.unsigned.overflow:
+    text: Value too large for a signed integer, it overflows
+compilers.dlang.generic:
+    text: D Compiler
+module.extension.name:
+    text: D
+module.extension.version.identifiers:
+    text: 'Version identifiers (-version=X), separated by ";"'
+module.extension.debug.identifiers:
+    text: 'Debug identifiers (-debug=X), separated by ";"'
+dub.system.name:
+    text: DUB
+dub.task.build.description:
+    text: Builds the package
+dub.task.run.description:
+    text: Builds and runs the package
+dub.task.test.description:
+    text: Builds and runs the unit tests of the package
+dub.task.clean.description:
+    text: Removes the build output of the package
+dub.task.upgrade.description:
+    text: Upgrades the dependencies of the package
+dub.task.fetch.description:
+    text: Fetches the dependencies of the package
+dub.status.reading:
+    text: Reading the DUB package description
+dub.error.no.manifest:
+    text: No dub.json or dub.sdl in {0}
+dub.error.cannot.run:
+    text: 'Cannot run "{0}": {1}'
+dub.error.cancelled:
+    text: '"{0}" was cancelled'
+dub.error.command.failed:
+    text: '"{0}" failed with exit code {1}'
+dub.error.bad.output:
+    text: 'Cannot read the output of "{0}": {1}'
+dub.error.unknown.task:
+    text: 'Unknown DUB task: {0}'
+dub.settings.executable.label:
+    text: 'DUB executable:'
+dub.settings.executable.placeholder:
+    text: dub (from PATH)
+run.dub.text:
+    text: Build with DUB
+run.dub.descr:
+    text: Build project with DUB package manager
+dub.run.no.module:
+    text: Run configuration has no module selected.
+dub.run.no.target.executable:
+    text: Module {0} has no DUB target executable; import its DUB package again
+dub.run.executable.not.specified:
+    text: DUB executable is not specified
+dub.run.executable.not.configured:
+    text: DUB is not configured correctly
+dub.run.notification.title:
+    text: DUB settings
+dub.run.module.label:
+    text: 'Module:'
+dub.run.command.label:
+    text: 'Command:'
+dub.run.command.build:
+    text: build
+dub.run.command.run:
+    text: run
+dub.run.command.test:
+    text: test
+dub.run.build.label:
+    text: 'Build type (--build):'
+dub.run.config.label:
+    text: 'Configuration (--config):'
+dub.run.arch.label:
+    text: 'Architecture (--arch):'
+dub.run.debug.label:
+    text: 'Debug identifier (--debug):'
+dub.run.compiler.label:
+    text: 'Compiler (--compiler):'
+dub.run.build.mode.label:
+    text: 'Build mode (--build-mode):'
+dub.run.build.mode.separate:
+    text: separate
+dub.run.build.mode.all.at.once:
+    text: allAtOnce
+dub.run.build.mode.single.file:
+    text: singleFile
+dub.run.main.file.label:
+    text: 'Main file (--main-file):'
+dub.run.parameters.label:
+    text: 'DUB arguments:'
+dub.run.option.rdmd:
+    text: --rdmd
+dub.run.option.force:
+    text: --force
+dub.run.option.nodeps:
+    text: --nodeps
+dub.run.option.force.remove:
+    text: --force-remove
+dub.run.option.combined:
+    text: --combined
+dub.run.option.parallel:
+    text: --parallel
+dub.run.option.temp.build:
+    text: --temp-build
+dub.run.option.coverage:
+    text: --coverage
+dub.run.option.quiet:
+    text: --quiet
+dub.run.option.verbose:
+    text: --verbose
+sdlang.filetype:
+    text: Simple Definition Language
+sdlang.color.line.comment:
+    text: Comments//Line Comment
+sdlang.color.block.comment:
+    text: Comments//Block Comment
+sdlang.color.keyword:
+    text: Keyword
+sdlang.color.number:
+    text: Number
+sdlang.color.datetime:
+    text: Datetime
+sdlang.color.string:
+    text: String//String Literal
+sdlang.color.illegal:
+    text: String//Illegal character
+sdlang.color.braces:
+    text: Braces and Operators//Braces
+sdlang.color.brackets:
+    text: Braces and Operators//Brackets
+sdlang.color.semicolon:
+    text: Braces and Operators//Semicolon
+sdlang.color.colon:
+    text: Braces and Operators//Colon
+sdlang.color.tag.identifier:
+    text: Identifier
