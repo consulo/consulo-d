@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * Consulo has no {@code ModuleBuilder}: the new module wizard ({@code consulo.d.newProject}) fills a builder with what
+ * Consulo has no {@code ModuleBuilder}: the new module wizard ({@code consulo.d.dub.newProject}) fills a builder with what
  * IntelliJ's {@code ModuleBuilder} held (name, content root, SDK) and calls {@link #setupRootModel}.
  */
 public class DlangModuleBuilder {

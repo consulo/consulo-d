@@ -17,15 +17,13 @@ import java.util.List;
 
 /**
  * Port of upstream {@code DubNewProjectWizardStep.kt} and the UI of {@code DubDlangNewProjectWizard.DubStep}: the D
- * compiler, the recipe format and the {@code dub init} type. Building the module ({@code linkDubProject} upstream) is
- * done by {@code consulo.d.dub.newProject.DubNewModuleBuilderProcessor}.
+ * compiler and the recipe format; the {@code dub init} type comes from the wizard entry. Building the module ({@code linkDubProject}
+ * upstream) is done by {@code consulo.d.dub.newProject.DubNewModuleBuilderProcessor}.
  */
 public class DubNewProjectWizardStep extends DNewModuleSetupStep<DubNewModuleContext> {
     private static final String DUB_DSL_STATE = "NewProjectWizard.dubDslState";
-    private static final String DUB_PROJECT_TYPE_STATE = "NewProjectWizard.dubProjectTypeState";
 
     private @Nullable RadioGroup<DubDsl> myDubDslGroup;
-    private @Nullable RadioGroup<DubProjectType> myDubProjectTypeGroup;
 
     public DubNewProjectWizardStep(DubNewModuleContext context) {
         super(context, new DlangDubModuleBuilder());
@@ -40,7 +38,6 @@ public class DubNewProjectWizardStep extends DNewModuleSetupStep<DubNewModuleCon
     @Override
     protected void extendSettings(FormBuilder builder, Disposable uiDisposable) {
         setupDubFileLang(builder);
-        setupDubProjectType(builder);
     }
 
     @RequiredUIAccess
@@ -54,19 +51,6 @@ public class DubNewProjectWizardStep extends DNewModuleSetupStep<DubNewModuleCon
         myDubDslGroup = group;
     }
 
-    @RequiredUIAccess
-    private void setupDubProjectType(FormBuilder builder) {
-        RadioGroup<DubProjectType> group = RadioGroup.create();
-        builder.addLabeled(DLocalize.newProjectDubProjectTypeLabel(),
-            group.fillHorizontal(List.of(DubProjectType.values()), type -> switch (type) {
-                case MINIMAL -> DLocalize.newProjectDubProjectTypeMinimal();
-                case VIBE -> DLocalize.newProjectDubProjectTypeVibe();
-                case DEIMOS -> DLocalize.newProjectDubProjectTypeDeimos();
-            }));
-        group.setValue(readState(DUB_PROJECT_TYPE_STATE, DubProjectType.class, DubProjectType.MINIMAL));
-        myDubProjectTypeGroup = group;
-    }
-
     @Override
     public void onStepLeave(DubNewModuleContext context) {
         super.onStepLeave(context);
@@ -76,13 +60,6 @@ public class DubNewProjectWizardStep extends DNewModuleSetupStep<DubNewModuleCon
         if (dubDsl != null) {
             context.setDubDsl(dubDsl);
             ApplicationPropertiesComponent.getInstance().setValue(DUB_DSL_STATE, dubDsl.name());
-        }
-
-        RadioGroup<DubProjectType> dubProjectTypeGroup = myDubProjectTypeGroup;
-        DubProjectType dubProjectType = dubProjectTypeGroup != null ? dubProjectTypeGroup.getValue() : null;
-        if (dubProjectType != null) {
-            context.setDubProjectType(dubProjectType);
-            ApplicationPropertiesComponent.getInstance().setValue(DUB_PROJECT_TYPE_STATE, dubProjectType.name());
         }
     }
 

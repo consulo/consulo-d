@@ -60,7 +60,6 @@ module consulo.d.language {
     exports io.github.intellij.dlanguage.processors;
     exports io.github.intellij.dlanguage.project;
     exports io.github.intellij.dlanguage.projectview;
-    exports io.github.intellij.dlanguage.project.wizard;
     exports io.github.intellij.dlanguage.tools;
     exports io.github.intellij.dlanguage.settings;
     exports io.github.intellij.dlanguage.psi;

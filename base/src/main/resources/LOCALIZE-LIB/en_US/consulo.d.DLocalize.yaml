@@ -792,8 +792,6 @@ module.title:
     text: D Application
 module.description:
     text: Application written in D language
-module.dub.title:
-    text: D Application with DUB
 module.dub.description:
     text: D Application with DUB build system support
 module.group.name:
@@ -810,24 +808,22 @@ library.lib.file.root.type.node.text:
     text: External Attributes
 new.project.d.compiler.label:
     text: 'D Compiler:'
-new.project.add.sample.code:
-    text: Add sample code
 new.project.dub.sdk.label:
     text: 'D SDK:'
 new.project.dub.dsl.label:
-    text: 'Dub DSL:'
+    text: 'Recipe file:'
 new.project.dub.dsl.sdlang:
-    text: SDLang
+    text: dub.sdl
 new.project.dub.dsl.json:
-    text: JSON
-new.project.dub.project.type.label:
-    text: 'Project Type:'
-new.project.dub.project.type.minimal:
-    text: minimal
-new.project.dub.project.type.vibe:
-    text: vibe.d
-new.project.dub.project.type.deimos:
-    text: deimos
+    text: dub.json
+new.project.dub.application:
+    text: D Application
+new.project.dub.library:
+    text: D Library
+new.project.dub.vibe:
+    text: vibe.d Web Application
+new.project.dub.deimos:
+    text: Deimos C Binding
 new.project.dub.progress:
     text: Initializing the DUB package
 dub.init.notification.title:

@@ -4,7 +4,7 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.application.Application;
 import consulo.content.OrderRootType;
 
-@ExtensionImpl(order = "first")
+@ExtensionImpl
 public class LibFileRootType extends OrderRootType {
     public static final String ID = "LIBRARY_FILE";
 

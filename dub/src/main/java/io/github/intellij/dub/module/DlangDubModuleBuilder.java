@@ -29,7 +29,6 @@ import io.github.intellij.dub.service.DubBinaryPathProvider;
 import org.jspecify.annotations.Nullable;
 
 import java.io.File;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +45,7 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
     private Map<String, String> dubOptions = new HashMap<>();
 
     public DlangDubModuleBuilder() {
-        super(BUILDER_ID, DLocalize.moduleDubTitle(), DLocalize.moduleDubDescription());
+        super(BUILDER_ID, DLocalize.moduleTitle(), DLocalize.moduleDubDescription());
     }
 
     /*
@@ -96,6 +95,9 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
             RunnerAndConfigurationSettings settings = runManager.createRunConfiguration(RUN_DUB_CONFIG_NAME, factory);
             ((ModuleBasedConfiguration<?>) settings.getConfiguration()).setModule(module);
             runManager.addConfiguration(settings, false);
+            if (runManager.getSelectedConfiguration() == null) {
+                runManager.setSelectedConfiguration(settings);
+            }
             LOG.debug(String.format("Run Configuration added for '%s'", RUN_DUB_CONFIG_NAME));
         }
     }
@@ -201,7 +203,10 @@ public class DlangDubModuleBuilder extends DlangModuleBuilder {
             if (ProcessOutputTypes.STDERR == outputType) {
                 errors.set(true);
             }
-            buffer.append(LocalTime.now()).append(" [").append(outputType).append("] ").append(event.getText());
+            if (ProcessOutputTypes.SYSTEM == outputType) {
+                return;
+            }
+            buffer.append(event.getText());
         }
     }
 }

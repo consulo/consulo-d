@@ -7,7 +7,6 @@ import consulo.localize.LocalizeValue;
 import consulo.module.creation.ui.UnifiedProjectOrModuleNameStep;
 import consulo.module.ui.BundleBox;
 import consulo.module.ui.BundleBoxBuilder;
-import consulo.ui.CheckBox;
 import consulo.ui.ComboBox;
 import consulo.ui.annotation.RequiredUIAccess;
 import consulo.ui.util.FormBuilder;
@@ -15,14 +14,12 @@ import io.github.intellij.dlanguage.module.DlangModuleBuilder;
 import org.jspecify.annotations.Nullable;
 
 /**
- * Name and location, then the D compiler; the plain D module also offers sample code (upstream's
- * {@code IntellijDlangNewProjectWizard.DlangStep}).
+ * Name and location, then the D compiler (upstream's {@code IntellijDlangNewProjectWizard.DlangStep}).
  */
 public class DNewModuleSetupStep<C extends DNewModuleContext> extends UnifiedProjectOrModuleNameStep<C> {
     private final DlangModuleBuilder myBuilder;
 
     private @Nullable BundleBox myBundleBox;
-    private @Nullable CheckBox mySampleCodeBox;
 
     public DNewModuleSetupStep(C context, DlangModuleBuilder builder) {
         super(context);
@@ -50,14 +47,10 @@ public class DNewModuleSetupStep<C extends DNewModuleContext> extends UnifiedPro
     }
 
     /**
-     * The settings after the D compiler: sample code for a plain D module.
+     * The settings after the D compiler.
      */
     @RequiredUIAccess
     protected void extendSettings(FormBuilder builder, Disposable uiDisposable) {
-        CheckBox sampleCodeBox = CheckBox.create(DLocalize.newProjectAddSampleCode());
-        sampleCodeBox.setValue(true);
-        builder.addBottom(sampleCodeBox);
-        mySampleCodeBox = sampleCodeBox;
     }
 
     @Override
@@ -67,8 +60,5 @@ public class DNewModuleSetupStep<C extends DNewModuleContext> extends UnifiedPro
         BundleBox bundleBox = myBundleBox;
         String selectedBundleName = bundleBox != null ? bundleBox.getSelectedBundleName() : null;
         context.setSdk(selectedBundleName != null ? SdkTable.getInstance().findSdk(selectedBundleName) : null);
-
-        CheckBox sampleCodeBox = mySampleCodeBox;
-        context.setAddSampleCode(sampleCodeBox != null && sampleCodeBox.getValueOrError());
     }
 }

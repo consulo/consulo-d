@@ -59,9 +59,19 @@ public class DubNewModuleBuilderProcessor implements NewModuleBuilderProcessor<D
 
     private static final Pattern SDL_NAME = Pattern.compile("^\\s*name\\s+\"([^\"]+)\"", Pattern.MULTILINE);
 
+    private static final String APP_SOURCE = "app.d";
+
+    private final DubPackageTemplate myTemplate;
+
+    public DubNewModuleBuilderProcessor(DubPackageTemplate template) {
+        myTemplate = template;
+    }
+
     @Override
     public DubNewModuleContext createContext(boolean isNewProject) {
-        return new DubNewModuleContext(isNewProject);
+        DubNewModuleContext context = new DubNewModuleContext(isNewProject);
+        context.setDubProjectType(myTemplate.getProjectType());
+        return context;
     }
 
     @Override
@@ -92,22 +102,27 @@ public class DubNewModuleBuilderProcessor implements NewModuleBuilderProcessor<D
 
         Path directory = Path.of(contentRoot.getPath());
         String moduleName = modifiableRootModel.getModule().getName();
+        DubPackageTemplate template = myTemplate;
         StartupManager.getInstance(modifiableRootModel.getProject()).runAfterOpened((project, uiAccess) ->
             Task.Backgroundable.queue(project, DLocalize.newProjectDubProgress(), indicator -> {
                 builder.runDubInit(project);
+
+                String packageName = readPackageName(directory);
+                if (template == DubPackageTemplate.LIBRARY && packageName != null) {
+                    makeLibrary(directory, packageName);
+                }
 
                 VirtualFile root = LocalFileSystem.getInstance().refreshAndFindFileByNioFile(directory);
                 if (root != null) {
                     root.refresh(false, true);
                 }
-                String packageName = readPackageName(directory);
 
                 uiAccess.give(() -> {
                     if (project.isDisposed()) {
                         return;
                     }
                     Module module = renameModule(project, moduleName, packageName);
-                    if (module != null) {
+                    if (module != null && !template.isLibrary()) {
                         builder.setupRunConfiguration(project, module);
                     }
                     if (packageName != null) {
@@ -138,6 +153,55 @@ public class DubNewModuleBuilderProcessor implements NewModuleBuilderProcessor<D
         catch (IOException | JsonParseException e) {
             LOG.warn("Cannot read the name of the DUB package in " + directory, e);
             return null;
+        }
+    }
+
+    /**
+     * Turns the {@code minimal} package {@code dub init} wrote into a library: the recipe gets {@code targetType "library"}
+     * and {@code source/app.d} is replaced by a module named after the package.
+     */
+    private static void makeLibrary(Path directory, String packageName) {
+        Path manifest = DubUtil.findManifest(directory);
+        if (manifest == null) {
+            return;
+        }
+        try {
+            String text = Files.readString(manifest).replace("A minimal D application.", "A minimal D library.");
+            if (DubConstants.DUB_JSON.equals(String.valueOf(manifest.getFileName()))) {
+                int end = text.lastIndexOf('}');
+                if (end < 0) {
+                    return;
+                }
+                text = text.substring(0, end).stripTrailing() + ",\n\t\"targetType\": \"library\"\n}\n";
+            }
+            else {
+                text = text.stripTrailing() + "\ntargetType \"library\"\n";
+            }
+            Files.writeString(manifest, text);
+
+            Path sourceDirectory = directory.resolve("source");
+            Files.deleteIfExists(sourceDirectory.resolve(APP_SOURCE));
+            String moduleName = packageName.replace('-', '_');
+            Path librarySource = sourceDirectory.resolve(moduleName + ".d");
+            if (!Files.exists(librarySource)) {
+                Files.createDirectories(sourceDirectory);
+                Files.writeString(librarySource, """
+                    module %s;
+
+                    int add(int a, int b)
+                    {
+                    	return a + b;
+                    }
+
+                    unittest
+                    {
+                    	assert(add(1, 2) == 3);
+                    }
+                    """.formatted(moduleName));
+            }
+        }
+        catch (IOException e) {
+            LOG.warn("Cannot turn the DUB package in " + directory + " into a library", e);
         }
     }
 
@@ -194,6 +258,8 @@ public class DubNewModuleBuilderProcessor implements NewModuleBuilderProcessor<D
     }
 
     private static void importData(Project project, DataNode<ProjectData> externalProject) {
+        // the import reads the local settings inside the write action, where a storable service cannot be created
+        ExternalSystemApiUtil.getLocalSettings(project, DubConstants.SYSTEM_ID);
         ExternalSystemApiUtil.executeProjectChangeAction(true, new DisposeAwareProjectChange(project) {
             @RequiredUIAccess
             @Override
