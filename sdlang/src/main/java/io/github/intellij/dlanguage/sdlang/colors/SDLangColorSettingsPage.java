@@ -74,7 +74,7 @@ public class SDLangColorSettingsPage implements ColorSettingsPage {
     }
 
     private String demoText() {
-        try (InputStream stream = Objects.requireNonNull(getClass().getResourceAsStream("/settings/color_page.sdl"))) {
+        try (InputStream stream = Objects.requireNonNull(getClass().getResourceAsStream("color_page.sdl"))) {
             return new String(stream.readAllBytes(), StandardCharsets.UTF_8);
         }
         catch (IOException e) {

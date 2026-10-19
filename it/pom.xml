@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>consulo</groupId>
+        <artifactId>arch.bind.java</artifactId>
+        <version>3-SNAPSHOT</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>consulo.plugin</groupId>
+    <artifactId>consulo.d.it</artifactId>
+    <version>3-SNAPSHOT</version>
+
+    <!--
+      Integration tests of the D plugin on the headless platform (consulo-it): a real project, file system and
+      highlighting passes. Test sources only and no module-info.java: the headless harness discovers
+      @ExtensionImpl/@ServiceImpl bindings through a classpath ServiceLoader, which skips providers in named modules.
+      Nothing here ships.
+    -->
+
+    <repositories>
+        <repository>
+            <id>consulo</id>
+            <url>https://maven.consulo.dev/repository/snapshots/</url>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>interval:60</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <dependencies>
+        <!-- the headless application, projects and modules -->
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-it</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- consulo-it has it with the test scope only, and the headless editor's disposer needs it -->
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-hacking-java-base</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- the D plugin compiles against these with the provided scope, the test classpath has to carry them -->
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-external-system-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-module-ui-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-project-ui-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-execution-debug-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-execution-test-sm-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- the module compiler output paths the D run configurations build to -->
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-compiler-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-language-code-style-ui-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- the plugin under test and the plugins it builds on -->
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>consulo.d.base</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>consulo.d.language</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>consulo.d.sdlang</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>consulo.d.dub</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>consulo.d.execution</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.json.api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.nativeDev.debugger.api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+</project>

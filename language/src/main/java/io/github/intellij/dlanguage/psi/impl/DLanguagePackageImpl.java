@@ -191,8 +191,7 @@ public class DLanguagePackageImpl extends PsiElementBase implements DLanguagePac
         }
     }
 
-    // upstream overrode getElementIcon(flags) with IconManager.createLayeredIcon(this, AllIcons.Nodes.Package, flags):
-    // Consulo's PsiElementBase has no getElementIcon, PSI icons come from IconDescriptorUpdater extensions
+    // upstream's getElementIcon (the package icon) is given by io.github.intellij.dlanguage.DlangIconProvider
 
     @Override
     public @Nullable ItemPresentation getPresentation() {

@@ -6,6 +6,7 @@ import consulo.d.language.moduleAware.DCompileOptionsOwner;
 import consulo.module.content.layer.ModuleRootLayer;
 import consulo.module.content.layer.orderEntry.CustomOrderEntryModel;
 import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -48,6 +49,13 @@ public class DubDependencyOrderEntryModel implements CustomOrderEntryModel, DCom
 
     public @Nullable String getDirectoryUrl() {
         return myDirectoryUrl;
+    }
+
+    /**
+     * @return the package's directory, {@code null} when it is not set or no longer exists
+     */
+    public @Nullable VirtualFile findDirectory() {
+        return myDirectoryUrl == null ? null : VirtualFileManager.getInstance().findFileByUrl(myDirectoryUrl);
     }
 
     public List<String> getSourceRootUrls() {

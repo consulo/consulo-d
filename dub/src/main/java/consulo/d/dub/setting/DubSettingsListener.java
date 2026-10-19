@@ -16,6 +16,10 @@ public interface DubSettingsListener extends ExternalSystemSettingsListener<DubP
     }
 
     @Override
+    default void onProjectsLoaded(Collection<DubProjectSettings> settings) {
+    }
+
+    @Override
     default void onProjectsLinked(Collection<DubProjectSettings> settings) {
     }
 

@@ -6,10 +6,12 @@ import consulo.d.dub.setting.DubProjectSettings;
 import consulo.d.dub.setting.DubSettings;
 import consulo.externalSystem.model.ProjectSystemId;
 import consulo.externalSystem.service.setting.AbstractExternalProjectSettingsConfigurable;
+import consulo.externalSystem.service.setting.ExternalSystemSettingsConfigurable;
 import consulo.externalSystem.service.setting.ExternalSystemSettingsConfigurableFactory;
 import consulo.externalSystem.service.setting.ExternalSystemSettingsPlace;
 import consulo.project.ProjectManager;
 import consulo.ui.annotation.RequiredUIAccess;
+import io.github.intellij.dub.project.settings.DubConfigurablePanel;
 
 @ExtensionImpl
 public class DubSettingsConfigurableFactory implements ExternalSystemSettingsConfigurableFactory<DubProjectSettings, DubSettings> {
@@ -35,5 +37,14 @@ public class DubSettingsConfigurableFactory implements ExternalSystemSettingsCon
         ExternalSystemSettingsPlace place
     ) {
         return new DubProjectSettingsConfigurable(settings, place);
+    }
+
+    @Override
+    @RequiredUIAccess
+    public ExternalSystemSettingsConfigurable<DubSettings> createSystemSettingsConfigurable(
+        DubSettings settings,
+        ExternalSystemSettingsPlace place
+    ) {
+        return new DubConfigurablePanel(settings);
     }
 }

@@ -12,8 +12,9 @@ This repository is a port of [intellij-dlanguage](https://github.com/intellij-dl
 | `language` | `consulo.d.language`   | upstream `utils`, `dlang/psi-api`, `dlang/psi-impl`, `dlang/idea` and root `src`  |
 | `sdlang`   | `consulo.d.sdlang`     | upstream `sdlang`                                                                 |
 | `dub`      | `consulo.d.dub`        | upstream `dub`, `dub/idea`; DUB import through the external system                |
-| `execution`| `consulo.d.execution`  | D support for the `consulo.nativeDev` debugger (breakpoints, debugger language)   |
+| `execution`| `consulo.d.execution`  | D run configurations (DMD, run app), d-unit tests, `consulo.nativeDev` debugger support |
 | `plugin`   | `consulo.d`            | packaging only: `plugin.xml`                                                      |
+| `it`       | `consulo.d.it`         | tests only, on the headless platform (`consulo-it`); no `module-info`, never ships |
 
 Upstream's `utils`, `psi-api`, `psi-impl` and root sources share packages (`io.github.intellij.dlanguage`, `.psi`,
 `.stubs`, `.utils`, `.lexer`, `.annotator`, `.settings`), and a package cannot be split between JPMS modules, so they
@@ -21,6 +22,10 @@ are one module.
 
 Not ported: DCD (completion must work from our own PSI and stubs), `errorreporting`, CLion-only code, and the CIDR
 `debugger` (debugging comes from the `consulo.nativeDev` plugin).
+
+Waiting on the platform: the `dub.json` JSON schema (`DubJsonSchemaProviderFactory`, `jsonSchema/dub.json-schema.json`
+stay in `legacy/`), because Consulo's JSON plugin has no JSON Schema support yet. JOM is no substitute: it reports every
+key it does not know, and DUB recipes are full of platform-suffixed keys (`dflags-linux-x86_64`).
 
 ## Packages and names
 
@@ -107,6 +112,24 @@ Consulo has no XML registration besides `plugin.xml` itself. What upstream regis
 the XML `language=` attribute), `@ServiceAPI` / `@ServiceImpl` for services, `@ActionImpl` for actions,
 `@TopicAPI` / `@TopicImpl` for message-bus topics. Stub element types are registered by a `StubElementTypeHolder`
 (`@ExtensionImpl`, see consulo-google-go's `GoTypesStubElementHolder`). IntelliJ's `@Service` does nothing here.
+Default live templates (`<defaultLiveTemplates file=...>`) become a `LiveTemplateContributor` in the shape
+consulo-devkit's `LiveTemplateConverter` generates (`consulo.d.language.DLiveTemplateContributor`), with the
+descriptions as `DLocalize` keys; the template context is a `BaseTemplateContextType` extension.
+
+A `localInspection` entry becomes `@ExtensionImpl` on the `LocalInspectionTool`, which returns what the entry said:
+`getDisplayName()` (`key`), `getDefaultLevel()` (`level`), `isEnabledByDefault()` (`enabledByDefault`, default
+`true`), and the group: `groupKey` → `getGroupPath()` = `{D language}`, `groupPathKey` + `groupName` →
+`{D language, <groupName>}` (Consulo would otherwise prepend the language name). `getDescription()` carries the text of
+upstream's `inspectionDescriptions/<Name>.html` as a `DLocalize` key (simple HTML is fine). Inspection classes upstream
+leaves unregistered are ported without `@ExtensionImpl`. A `LocalQuickFix` has no family name in Consulo; its
+`getText()` / `getName()` is a `LocalizeValue`.
+
+* A Consulo topic is its listener interface. Upstream topics that share one listener (`Topics.DSCANNER_TOOL_CHANGE`,
+  `DFMT_TOOL_CHANGE`, … all `ToolChangeListener`) become one `@TopicAPI` sub-interface each (`consulo.d.language.messagebus`),
+  which declares the method again: the topic binding only sees the methods declared in the topic interface.
+* Run configurations need no `ProgramRunner`: Run is Consulo's `BasicProgramRunner`, Debug is nativeDev's
+  `NativeDebugRunner` for a configuration implementing `NativeProgramRunConfiguration` (`createDebugTarget`), whose
+  editor builds on `NativeProgramParametersLayout`.
 
 ## Strings and icons
 
@@ -115,7 +138,15 @@ the XML `language=` attribute), `@ServiceAPI` / `@ServiceImpl` for services, `@A
   `legacy/utils/src/main/resources/i18n.properties`, the key lowercased (`action.NewDfile.text` →
   `action.newdfile.text` → `DLocalize.actionNewdfileText()`). User-visible text is `LocalizeValue`, never `String`.
   Only `en_US` is kept; translations come from verbaria.
-* `DLanguage.Icons.X` keeps its names; the images come from `DIconGroup` and `PlatformIconGroup`.
+* `DLanguage.Icons.X` keeps its names; the images come from `DIconGroup` and `PlatformIconGroup`. Prefer a platform
+  icon (`nodesStruct`, `nodesFunction`, `nodesPropertyread`/`write`); the D-only ones are 16x16 SVGs in the platform's
+  node style and palette, with a `dark/` variant. A D source file uses the language icon.
+* Resources go next to the class that reads them (`io/github/intellij/dlanguage/colors/color_page.d`, read with
+  `getClass().getResourceAsStream("color_page.d")`), not in a shared directory such as upstream's `settings/`: every
+  resource directory that is a valid package name is a package of its module, and all D modules share one plugin class
+  loader, so two modules with `settings/` stop the whole plugin from loading.
+* IntelliJ utilities missing from Consulo (e.g. `StringUtil.isLatinAlphanumeric`) are copied into the `…Kt` facade
+  that uses them, with a note.
 
 ## Generated code
 
@@ -135,6 +166,9 @@ the XML `language=` attribute), `@ServiceAPI` / `@ServiceImpl` for services, `@A
 
 ## Tests
 
+Upstream's tests that need a real project, file system or the highlighting passes (`myFixture`) go to `it`, on
+`consulo-it` (`@ExtendWith(HeadlessProjectExtension.class)`, `CodeInsightTestFixture`, `@UseInspection`).
+
 Upstream's tests are JUnit 3 on IntelliJ's test framework; ports are JUnit 5 on `consulo-test-junit-impl` (declared
 first in the module's dependencies). Test data moves unchanged from `legacy/src/test/resources/gold` to
 `<module>/src/test/resources/gold`, keeping upstream's layout (`<name>.d` next to `expected/<name>.txt`), and test
@@ -148,3 +182,21 @@ methods keep upstream's names (`testkeyword_abstract`) so a test maps to its dat
   real files is tested through its pure parts (`DubBuildSourceFileFilterTest` checks the regex, not the hyperlink).
 * `GeneratedParserUtilBase.DummyBlock` has no public constructor in Consulo; tests that need a detached node use
   `new CompositeElement(type)` (`SDLangPsiImplTest`).
+* Quick-fix tests: `consulo-it` has no intention API, so `it`'s `DQuickFixTestBase` reproduces the parts of IntelliJ's
+  `LightQuickFixTestCase` upstream used (`doTest` checks a marked-up file, `doSingleTest` applies the fix named in the
+  first line of `before<name>` at the caret and compares with `after<name>`), with the change made on the UI thread
+  under a write action taken off it (`TransferredWriteActionService`) inside a command.
+* The light test application's `UIInternal` does not implement `ImageKey.of`, so nothing that loads an icon group
+  (`DIconGroup`, `PlatformIconGroup`, so `DLanguage.Icons` and every presentation) runs there; such tests go to `it`.
+* consulo-it binds nothing that lives in `ide-impl`: no `PsiSearchHelper` (so no `ReferencesSearch`, find usages,
+  rename), no `ProjectUndoManager` (so no template expansion or other undoable command), no `ScratchFileService` (so no
+  `EditorEx.reinitSettings`). Tests that need them are ported and `@Disabled` with the reason. Opening an editor needs
+  `consulo-hacking-java-base` on the test classpath, and the headless editor builds its line cache from document
+  changes only: open it on an empty document and set the text before moving the caret.
+* The light test application registers every extension of the module, the `DDoc` parser definition included, so D
+  parser trees show doc comments parsed as DDoc; upstream's `ParsingTestCase` registers only the definition under test
+  and shows a `DOC_DATA` leaf. The expectations with doc comments (`documentation_attached_declaration`, `expression`,
+  `unittests`) carry the DDoc trees.
+* `consulo-it` cannot run the formatter (`CodeStyleInternalHelper` is not bound, and `HeadlessCommandProcessor` recurses
+  on the current command name), so `DFormatterTest` is ported but disabled. Its headless editor cannot move the caret:
+  tests pass offsets to the platform code instead (`DDocumentationProviderTest`).

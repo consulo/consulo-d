@@ -1,7 +1,0 @@
-module main;
-
-vod main() {
-    import std.stdio : writeln;
-
-    writeln("Hello world!");
-}

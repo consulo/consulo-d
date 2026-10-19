@@ -1,0 +1,271 @@
+{
+	"rootPackage": "hello",
+	"configuration": "application",
+	"buildType": "debug",
+	"compiler": "dmd",
+	"architecture": [
+		"x86_64"
+	],
+	"platform": [
+		"linux",
+		"posix"
+	],
+	"packages": [
+		{
+			"path": "/home/dev/projects/hello/",
+			"name": "hello",
+			"version": "~master",
+			"description": "",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [
+				"lib"
+			],
+			"active": true,
+			"configuration": "application",
+			"targetType": "executable",
+			"targetPath": "",
+			"targetName": "hello",
+			"targetFileName": "hello",
+			"workingDirectory": "",
+			"mainSourceFile": "source/app.d",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"frameworks": [],
+			"injectSourceFiles": [],
+			"copyFiles": [],
+			"extraDependencyFiles": [],
+			"versions": [
+				"MyFeature"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"cImportPaths": [],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"preRunCommands": [],
+			"postRunCommands": [],
+			"environments": {},
+			"buildEnvironments": {},
+			"runEnvironments": {},
+			"preGenerateEnvironments": {},
+			"postGenerateEnvironments": {},
+			"preBuildEnvironments": {},
+			"postBuildEnvironments": {},
+			"preRunEnvironments": {},
+			"postRunEnvironments": {},
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/app.d"
+				}
+			]
+		},
+		{
+			"path": "/home/dev/projects/lib/",
+			"name": "lib",
+			"version": "~master",
+			"description": "",
+			"homepage": "",
+			"authors": [],
+			"copyright": "",
+			"license": "",
+			"dependencies": [],
+			"active": true,
+			"configuration": "library",
+			"targetType": "library",
+			"targetPath": "",
+			"targetName": "lib",
+			"targetFileName": "liblib.a",
+			"workingDirectory": "",
+			"mainSourceFile": "",
+			"dflags": [],
+			"lflags": [],
+			"libs": [],
+			"frameworks": [],
+			"injectSourceFiles": [],
+			"copyFiles": [],
+			"extraDependencyFiles": [],
+			"versions": [
+				"LibFeature"
+			],
+			"debugVersions": [],
+			"importPaths": [
+				"source/"
+			],
+			"cImportPaths": [],
+			"stringImportPaths": [],
+			"preGenerateCommands": [],
+			"postGenerateCommands": [],
+			"preBuildCommands": [],
+			"postBuildCommands": [],
+			"preRunCommands": [],
+			"postRunCommands": [],
+			"environments": {},
+			"buildEnvironments": {},
+			"runEnvironments": {},
+			"preGenerateEnvironments": {},
+			"postGenerateEnvironments": {},
+			"preBuildEnvironments": {},
+			"postBuildEnvironments": {},
+			"preRunEnvironments": {},
+			"postRunEnvironments": {},
+			"buildRequirements": [],
+			"options": [],
+			"files": [
+				{
+					"role": "source",
+					"path": "source/lib/api.d"
+				}
+			]
+		}
+	],
+	"targets": [
+		{
+			"rootPackage": "hello",
+			"packages": [
+				"hello"
+			],
+			"rootConfiguration": "application",
+			"buildSettings": {
+				"targetType": 2,
+				"targetPath": "/home/dev/projects/hello/",
+				"targetName": "hello",
+				"workingDirectory": "",
+				"mainSourceFile": "/home/dev/projects/hello/source/app.d",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"frameworks": [],
+				"linkerFiles": [
+					"/home/dev/projects/lib/liblib.a"
+				],
+				"sourceFiles": [
+					"/home/dev/projects/hello/source/app.d"
+				],
+				"injectSourceFiles": [],
+				"copyFiles": [],
+				"extraDependencyFiles": [],
+				"versions": [
+					"MyFeature",
+					"Have_hello",
+					"Have_lib",
+					"LibFeature"
+				],
+				"debugVersions": [],
+				"versionFilters": [],
+				"debugVersionFilters": [],
+				"importPaths": [
+					"/home/dev/projects/hello/source/",
+					"/home/dev/projects/lib/source/"
+				],
+				"cImportPaths": [],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"preRunCommands": [],
+				"postRunCommands": [],
+				"environments": {},
+				"buildEnvironments": {},
+				"runEnvironments": {},
+				"preGenerateEnvironments": {},
+				"postGenerateEnvironments": {},
+				"preBuildEnvironments": {},
+				"postBuildEnvironments": {},
+				"preRunEnvironments": {},
+				"postRunEnvironments": {},
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"cacheArtifactPath": "/home/vistall/.dub/cache/hello/~master/build/application-debug-MG4l6ffgCHBPgFbInP5eog/hello",
+			"dependencies": [
+				"lib"
+			],
+			"linkDependencies": [
+				"lib"
+			]
+		},
+		{
+			"rootPackage": "lib",
+			"packages": [
+				"lib"
+			],
+			"rootConfiguration": "library",
+			"buildSettings": {
+				"targetType": 6,
+				"targetPath": "/home/dev/projects/lib/",
+				"targetName": "lib",
+				"workingDirectory": "",
+				"mainSourceFile": "",
+				"dflags": [],
+				"lflags": [],
+				"libs": [],
+				"frameworks": [],
+				"linkerFiles": [],
+				"sourceFiles": [
+					"/home/dev/projects/lib/source/lib/api.d"
+				],
+				"injectSourceFiles": [],
+				"copyFiles": [],
+				"extraDependencyFiles": [],
+				"versions": [
+					"LibFeature",
+					"MyFeature",
+					"Have_lib"
+				],
+				"debugVersions": [],
+				"versionFilters": [],
+				"debugVersionFilters": [],
+				"importPaths": [
+					"/home/dev/projects/lib/source/"
+				],
+				"cImportPaths": [],
+				"stringImportPaths": [],
+				"importFiles": [],
+				"stringImportFiles": [],
+				"preGenerateCommands": [],
+				"postGenerateCommands": [],
+				"preBuildCommands": [],
+				"postBuildCommands": [],
+				"preRunCommands": [],
+				"postRunCommands": [],
+				"environments": {},
+				"buildEnvironments": {},
+				"runEnvironments": {},
+				"preGenerateEnvironments": {},
+				"postGenerateEnvironments": {},
+				"preBuildEnvironments": {},
+				"postBuildEnvironments": {},
+				"preRunEnvironments": {},
+				"postRunEnvironments": {},
+				"requirements": [],
+				"options": [
+					"debugMode",
+					"debugInfo",
+					"warningsAsErrors"
+				]
+			},
+			"cacheArtifactPath": "/home/vistall/.dub/cache/lib/~master/build/library-debug-mYm288mj6S8tUDqot4wdmw/liblib.a",
+			"dependencies": [],
+			"linkDependencies": []
+		}
+	]
+}

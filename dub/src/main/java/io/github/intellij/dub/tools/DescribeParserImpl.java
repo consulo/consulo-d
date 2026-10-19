@@ -8,6 +8,7 @@ import com.google.gson.JsonSyntaxException;
 import io.github.intellij.dub.project.DubPackage;
 import io.github.intellij.dub.project.DubPackageFile;
 import io.github.intellij.dub.project.DubProject;
+import io.github.intellij.dlanguage.project.BuildSettings;
 import io.github.intellij.dub.project.DubTarget;
 import org.jspecify.annotations.Nullable;
 
@@ -104,10 +105,42 @@ public class DescribeParserImpl implements DescribeParser {
                 asString(it, "rootPackage"),
                 asStringArray(it, "packages"),
                 asString(it, "rootConfiguration"),
-                null // todo: BuildSettings() //it.asString("buildSettings")
+                it.has("buildSettings") ? parseBuildSettings(it.getAsJsonObject("buildSettings")) : null
             ));
         }
         return targets;
+    }
+
+    private static BuildSettings parseBuildSettings(JsonObject json) {
+        JsonElement targetType = json.get("targetType");
+        return new BuildSettings(
+            targetType != null && targetType.isJsonPrimitive() && targetType.getAsJsonPrimitive().isNumber() ? targetType.getAsInt() : 0,
+            asString(json, "targetPath"),
+            asString(json, "targetName"),
+            asString(json, "workingDirectory"),
+            asString(json, "mainSourceFile"),
+            asStringArray(json, "dflags"),
+            asStringArray(json, "lflags"),
+            asStringArray(json, "libs"),
+            asStringArray(json, "linkerFiles"),
+            asStringArray(json, "sourceFiles"),
+            asStringArray(json, "copyFiles"),
+            asStringArray(json, "extraDependencyFiles"),
+            asStringArray(json, "versions"),
+            asStringArray(json, "debugVersions"),
+            asStringArray(json, "versionFilters"),
+            asStringArray(json, "debugVersionFilters"),
+            asStringArray(json, "importPaths"),
+            asStringArray(json, "stringImportPaths"),
+            asStringArray(json, "importFiles"),
+            asStringArray(json, "stringImportFiles"),
+            asStringArray(json, "preGenerateCommands"),
+            asStringArray(json, "postGenerateCommands"),
+            asStringArray(json, "preBuildCommands"),
+            asStringArray(json, "postBuildCommands"),
+            asStringArray(json, "preRunCommands"),
+            asStringArray(json, "postRunCommands")
+        );
     }
 
     private DubPackage jsonToDubPackage(JsonObject json) {

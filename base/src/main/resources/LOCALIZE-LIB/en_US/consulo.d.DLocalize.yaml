@@ -144,3 +144,769 @@ sdlang.color.colon:
     text: Braces and Operators//Colon
 sdlang.color.tag.identifier:
     text: Identifier
+inspection.group.d.language:
+    text: D language
+inspection.group.dub.packages:
+    text: Dub packages
+inspection.package.version.validation.name:
+    text: Invalid dependency version
+inspection.package.version.validation.description:
+    text: Detects dependencies having invalid version format in dub.json files
+inspection.package.version.validation.not.string:
+    text: Version must be a string
+inspection.package.version.validation.invalid:
+    text: Invalid version requirement {0}
+inspection.package.version.validation.first.operator:
+    text: First comparison operator expected to be either > or >=, not {0}
+inspection.package.version.validation.range.order:
+    text: First comparison operator should not be greater to the second
+d.color.shebang:
+    text: Shebang
+d.color.line.comment:
+    text: Comments//Line Comment
+d.color.block.comment:
+    text: Comments//Block Comment
+d.color.line.documentation:
+    text: DDoc//Line Documentation
+d.color.block.documentation:
+    text: DDoc//Block Documentation
+d.color.at.attribute:
+    text: Attribute
+d.color.keyword:
+    text: Keyword
+d.color.pragma:
+    text: Pragma
+d.color.special.keyword:
+    text: Special Keyword
+d.color.special.token:
+    text: Special Token
+d.color.number:
+    text: Number
+d.color.char:
+    text: String//Char
+d.color.string.literal:
+    text: String//String Literal
+d.color.ies.fragment.delimiter:
+    text: String//Interpolation Delimiter
+d.color.valid.string.escape:
+    text: String//Escape Sequence
+d.color.invalid.string.escape:
+    text: String//Invalid Escape Sequence
+d.color.string.named.character.entity:
+    text: String//Named entity
+d.color.illegal:
+    text: String//Illegal character
+d.color.parentheses:
+    text: Braces and Operators//Parenthesis
+d.color.braces:
+    text: Braces and Operators//Braces
+d.color.brackets:
+    text: Braces and Operators//Brackets
+d.color.operator:
+    text: Braces and Operators//Operator
+d.color.dot:
+    text: Braces and Operators//Dot
+d.color.semicolon:
+    text: Braces and Operators//Semicolon
+d.color.comma:
+    text: Braces and Operators//Comma
+d.color.class.definition:
+    text: Types//Class
+d.color.interface.definition:
+    text: Types//Interface
+d.color.struct.definition:
+    text: Types//Struct
+d.color.union.definition:
+    text: Types//Union
+d.color.enum.definition:
+    text: Types//Enum
+d.color.module.definition:
+    text: Module Definition
+d.color.function.definition:
+    text: Function Definition
+d.color.function.call:
+    text: Function Call
+d.color.parameter:
+    text: Parameter
+d.color.type.parameter:
+    text: Type Parameter
+annotator.delimited.string.whitespace.delimiter:
+    text: Delimiter cannot be whitespace
+annotator.delimited.string.invalid.delimiter:
+    text: Invalid string delimiter
+annotator.delimited.string.text.after.closing.delimiter:
+    text: Illegal text found after closing delimiter, expected " character instead
+annotator.unclosed.comment:
+    text: Unclosed comment
+folding.collapsible.one.line.methods:
+    text: D one-line methods
+dub.compiler.no.package:
+    text: Module {0} has no DUB package; import its DUB package again
+d.inspections.group.deprecated.syntax:
+    text: Deprecated syntax
+d.inspections.symbol.possiblyundefinedsymbol.displayname:
+    text: Possibly undefined symbol
+d.inspections.symbol.possiblyundefinedsymbol.message:
+    text: Possibly undefined symbol
+d.inspections.symbol.possiblyundefinedsymbol.message.unresolved.import:
+    text: Unresolved import
+d.inspections.symbol.possiblyundefinedsymbol.message.sdk.not.setup:
+    text: Possibly undefined symbol - SDK not setup
+d.inspections.symbol.implicitlyconcatenatedstrings.displayname:
+    text: Implicitly concatenated strings
+d.inspections.symbol.implicitlyconcatenatedstrings.message:
+    text: Implicitly concatenated strings
+d.inspections.symbol.oldaliassyntax.displayname:
+    text: Old alias syntax
+d.inspections.symbol.oldaliassyntax.message:
+    text: Old Alias Syntax in use.
+d.inspections.symbol.emptystatement.displayname:
+    text: Empty statement
+d.inspections.symbol.emptystatement.message:
+    text: Empty Statement
+d.inspections.symbol.deletestatementsaredeprecated.displayname:
+    text: Delete statements are deprecated
+d.inspections.symbol.deletestatementsaredeprecated.message:
+    text: Delete statements are deprecated
+d.inspections.symbol.deprecated128bitintegertype.displayname:
+    text: The cent and ucent keywords are reserved for future use
+d.inspections.symbol.deprecated128bitintegertype.description:
+    text: D currently reserves the cent and ucent keywords for future use as 128-bit integral types. Using them will result in a compile-time error
+d.inspections.symbol.deprecatedphobosimport.displayname:
+    text: Outdated Phobos import detected
+d.inspections.symbol.deprecatedphobosimport.message.checkedint:
+    text: std.experimental.checkedint became std.checkedint in D 2.099
+d.inspections.symbol.deprecatedphobosimport.message.logger:
+    text: std.experimental.logger moved to std.logger in D 2.100
+d.inspections.symbol.deprecatedphobosimport.message.xml:
+    text: std.xml is due to be removed from phobos in 2.101 as it's considered out-dated and not up to Phobos' standards
+d.inspections.symbol.functionshouldbeconst.displayname:
+    text: Function should be const
+d.inspections.symbol.functionshouldbeconst.message:
+    text: opCmp or opEquals, or toHash not declared "const"
+d.inspections.symbol.autofunctionwithoutreturn.displayname:
+    text: Auto function without return type
+d.inspections.symbol.autofunctionwithoutreturn.message:
+    text: Don't create auto functions without return types
+d.inspections.symbol.builtinpropertyname.displayname:
+    text: Builtin property name
+d.inspections.symbol.builtinpropertyname.message:
+    text: Avoid naming members ''{0}''. This can confuse code that depends on the ''.{0}'' property of a type.
+d.inspections.symbol.catchinggeneralexceptions.displayname:
+    text: Catching Error or Throwable is A Bad Idea
+d.inspections.symbol.catchinggeneralexceptions.message:
+    text: Catching Error or Throwable is usually a bad idea.
+d.inspections.symbol.deleteisdeprecated.displayname:
+    text: DeleteIsDeprecated
+d.inspections.symbol.deleteisdeprecated.message:
+    text: Avoid using the 'delete' keyword. It is deprecated
+d.inspections.symbol.enumarrayliteralsinclassdeclaration.displayname:
+    text: EnumArrayLiteralsInClassDeclaration
+d.inspections.symbol.enumarrayliteralsinclassdeclaration.message:
+    text: This enum may lead to unnecessary allocation at run-time. Use "static immutable instead"
+d.inspections.symbol.fishoperators.displayname:
+    text: Deprecated Floating point operators
+d.inspections.symbol.fishoperators.message:
+    text: Avoid using the deprecated floating-point operators.
+d.inspections.symbol.formatnumbersforreadability.displayname:
+    text: Numbers Readability
+d.inspections.symbol.formatnumbersforreadability.message:
+    text: Number not formatted correctly
+d.inspections.symbol.phobosstyleguidelines.displayname:
+    text: Name does not comply with Phobos Style Guidelines
+d.inspections.symbol.phobosstyleguidelines.message:
+    text: "{0} name ''{1}'' does not match style guidelines."
+d.inspections.symbol.redundantparentheses.displayname:
+    text: RedundantParentheses
+d.inspections.symbol.redundantparentheses.message:
+    text: Redundant parantheses
+d.inspections.description.autofunctionwithoutreturn:
+    text: Auto function without return statement, prefer an explicit void
+d.inspections.description.builtinpropertyname:
+    text: |-
+        The following code is an example of what not to do (taken from a DScanner comment):
+        <pre><code>
+        class SomeClass &#123;
+            void init();
+            int init;
+            string mangleof = "LOL";
+            auto init = 10;
+            enum sizeof = 10;
+        &#125;
+        </code></pre>
+d.inspections.description.deleteisdeprecated:
+    text: Avoid using the 'delete' keyword. It is deprecated
+d.inspections.description.deletestatementsaredeprecated:
+    text: Delete statements are deprecated and should not be used
+d.inspections.description.deprecated128bitintegertype:
+    text: |-
+        D currently reserves the <b>cent</b> and <b>ucent</b> keywords for future use as 128-bit integral types. Using them will result in a compile-time error.
+        <p>
+            Use the library types in <b>std.int128</b> or <b>core.int128</b> instead
+        </p>
+        <p>
+            See <a href="https://dlang.org/deprecate.html#128-bit%20integer%20types">128-bit integer types</a> for more information.
+        </p>
+        <pre><code>
+        cent a = 18446744073709551616L;
+        ucent b = 36893488147419103232UL;
+        </code></pre>
+d.inspections.description.deprecatedphobosimport:
+    text: Use of deprecated phobos package detected
+d.inspections.description.emptystatement:
+    text: Empty statement, e.g an extraneous semicolon.
+d.inspections.description.enumarrayliteralsinclassdeclaration:
+    text: This enum may lead to unnecessary allocation at run-time. Use "static immutable" instead.
+d.inspections.description.fishoperators:
+    text: Avoid using the deprecated floating-point operators.
+d.inspections.description.functionshouldbeconst:
+    text: '"opCmp" or "opEquals", or "toHash" should be declared "const"'
+d.inspections.description.implicitlyconcatenatedstrings:
+    text: <p>This inspection warns of strings that are implicitly concatenated without the use of a "~"</p>
+d.inspections.description.numbersreadability:
+    text: |-
+        Numbers should be formatted for readability. e.g. write:
+        1_000_000 not 1000000
+d.inspections.description.oldaliassyntax:
+    text: Old alias syntax in use. Use "alias a = int;" instead of "alias int b;"
+d.inspections.description.possiblyundefinedsymbol:
+    text: |-
+        <p>This can sometimes be caused by simply not having <strong>dmd</strong> setup as the project SDK.</p>
+
+        <p>This can also be a problem if dependencies are not being added to the project</p>
+d.quickfix.explicitlyconcatenatestrings.text:
+    text: Explicitly concatenate strings
+d.quickfix.formatnumber.text:
+    text: Format Number correctly
+d.quickfix.makefunctionconst.text:
+    text: Make Function Const
+d.quickfix.makefunctionvoid.text:
+    text: Make Function Void
+d.quickfix.makestaticimmutable.text:
+    text: Make Static Immutable
+d.quickfix.removeemptystatement.text:
+    text: Remove Semicolon
+d.quickfix.switchtonewaliassyntax.text:
+    text: Switch to new alias syntax
+d.quickfix.usealternativeint128.text:
+    text: Use {0}
+d.quickfix.setupsdkquickfix.text:
+    text: Setup SDK
+dscanner.error:
+    text: DScanner Error
+find.usages.type.function:
+    text: Function
+find.usages.type.class:
+    text: Class
+find.usages.type.interface:
+    text: Interface
+find.usages.type.enum:
+    text: Enum
+find.usages.type.template.parameter:
+    text: Template Parameter
+find.usages.type.template:
+    text: Template
+find.usages.type.parameter:
+    text: Parameter
+find.usages.type.union:
+    text: Union
+find.usages.type.variable:
+    text: Variable
+find.usages.type.catch:
+    text: Catch
+live.template.group.d:
+    text: D
+live.template.context.d:
+    text: D Language
+live.template.description.if:
+    text: if
+live.template.description.module:
+    text: New module (module)
+live.template.description.imp:
+    text: import (imp)
+live.template.description.al:
+    text: alias (al)
+live.template.description.st:
+    text: static (st)
+live.template.description.new:
+    text: new (new)
+live.template.description.spn:
+    text: '@safe pure nothrow const @nogc (spn)'
+live.template.description.cont:
+    text: continue (cont)
+live.template.description.pub:
+    text: public (pub)
+live.template.description.priv:
+    text: private (priv)
+live.template.description.prot:
+    text: protected (prot)
+live.template.description.pack:
+    text: package (pack)
+live.template.description.ret:
+    text: return (ret)
+live.template.description.avar:
+    text: auto variable (avar)
+live.template.description.cvar:
+    text: const variable (cvar)
+live.template.description.ivar:
+    text: immutable variable (ivar)
+live.template.description.supe:
+    text: super (supe)
+live.template.description.scope:
+    text: scope (scope)
+live.template.description.with:
+    text: with (with)
+live.template.description.tup:
+    text: tuple (tup)
+live.template.description.wr:
+    text: writeln (wr)
+live.template.description.wrf:
+    text: writefln (wrf)
+live.template.description.enf:
+    text: enforce (enf)
+live.template.description.format:
+    text: format (format)
+live.template.description.ife:
+    text: if .. else (ife)
+live.template.description.else:
+    text: else (else)
+live.template.description.elif:
+    text: else if (elif)
+live.template.description.sw:
+    text: switch (sw)
+live.template.description.fsw:
+    text: final switch (fsw)
+live.template.description.case:
+    text: case (case)
+live.template.description.do:
+    text: do while (do)
+live.template.description.wh:
+    text: while (wh)
+live.template.description.for:
+    text: for (for)
+live.template.description.forever:
+    text: forever (forever)
+live.template.description.fore:
+    text: foreach (fore)
+live.template.description.forei:
+    text: foreach with an index (forei)
+live.template.description.forif:
+    text: foreach if (forif)
+live.template.description.in:
+    text: in contract (in)
+live.template.description.out:
+    text: 'out contract, long (out)'
+live.template.description.outs:
+    text: 'out contract, short (outs)'
+live.template.description.invar:
+    text: invariant (invar)
+live.template.description.as:
+    text: assert (as)
+live.template.description.utest:
+    text: unittest (utest)
+live.template.description.doctest:
+    text: documented unittest (doctest)
+live.template.description.fun:
+    text: function definition (fun)
+live.template.description.this:
+    text: constructor (this)
+live.template.description.get:
+    text: getter property (get)
+live.template.description.set:
+    text: setter property (set)
+live.template.description.main:
+    text: Main
+live.template.description.tostr:
+    text: toString (toStr)
+live.template.description.try:
+    text: try/catch (try)
+live.template.description.tryf:
+    text: try/catch/finally (tryf)
+live.template.description.catch:
+    text: catch (catch)
+live.template.description.thr:
+    text: throw (thr)
+live.template.description.struct:
+    text: struct (struct)
+live.template.description.union:
+    text: union (union)
+live.template.description.class:
+    text: class (class)
+live.template.description.inter:
+    text: interface (inter)
+live.template.description.enum:
+    text: enum (enum)
+live.template.description.exc:
+    text: exception definition (exc)
+live.template.description.mix:
+    text: mixin (mix)
+live.template.description.template:
+    text: template (template)
+live.template.description.version:
+    text: version (version)
+live.template.description.debug:
+    text: debug
+live.template.description.pragma:
+    text: pragma (pragma)
+live.template.description.opdis:
+    text: opDispatch (opDis)
+live.template.description.opcmp:
+    text: opCmp (opCmp)
+live.template.description.opapply:
+    text: opApply (opApply)
+live.template.description.todo:
+    text: TODO (todo)
+live.template.description.gpl:
+    text: GPL (gpl)
+live.template.description.bsl:
+    text: Boost (bsl)
+live.template.description.tilde.this:
+    text: destructor (this)
+live.template.description.f:
+    text: field
+run.dmd.text:
+    text: Run DMD Compiler
+run.dmd.descr:
+    text: Compile D App
+run.app.text:
+    text: Run D App
+run.app.descr:
+    text: Run compiled App
+run.config.module.label:
+    text: 'Module:'
+run.no.module.selected:
+    text: Run configuration has no module selected.
+run.dmd.no.valid.sdk:
+    text: No valid D Language SDK found!
+run.dmd.no.sources:
+    text: 'No D Language source files found in directory: {0}'
+run.dmd.compiler.not.specified:
+    text: D Compiler executable is not specified
+run.dmd.compiler.not.configured:
+    text: D Compiler is not configured correctly
+run.dmd.notification.title:
+    text: DMD settings
+run.dmd.notification.compiler.empty:
+    text: 'D compiler executable path is empty<br/><a href="configure">Configure</a>'
+run.dmd.notification.compiler.not.correct:
+    text: 'D compiler executable path is not specified correctly<br/><a href="configure">Configure</a>'
+run.app.no.valid.sdk:
+    text: No valid DMD SDK found!
+run.app.notification.title:
+    text: D App settings
+run.app.notification.executable.empty:
+    text: 'D application executable path is empty<br/><a href="configure">Configure</a> output folder'
+run.app.notification.executable.not.correct:
+    text: 'D application executable path is not specified correctly<br/><a href="configure">Configure</a> output folder'
+run.app.executable.label:
+    text: 'Script path:'
+dmd.run.config.selectimportfolder.title:
+    text: Select Import Folder
+dmd.run.config.selectimportfolder.description:
+    text: Select import folder
+dmd.run.config.tab.compilation:
+    text: Compilation
+dmd.run.config.tab.output:
+    text: Output
+dmd.run.config.tab.debug:
+    text: Debug
+dmd.run.config.tab.arguments:
+    text: Arguments
+dmd.run.config.tab.program:
+    text: Program
+dmd.run.config.release:
+    text: Release
+dmd.run.config.debug:
+    text: Debug
+dmd.run.config.unit.test:
+    text: Unit Test
+dmd.run.config.link:
+    text: Link
+dmd.run.config.coverage.analysis:
+    text: Do Coverage Analisys
+dmd.run.config.allow.deprecated:
+    text: Allow deprecated
+dmd.run.config.ignore.pragmas:
+    text: Ignore unknown pragmas
+dmd.run.config.function.inlining:
+    text: Function inlining
+dmd.run.config.library:
+    text: Library
+dmd.run.config.no.array.bounds.check:
+    text: No array bounds check
+dmd.run.config.no.floating.point.references:
+    text: No floating point references
+dmd.run.config.optimize:
+    text: Optimize
+dmd.run.config.enforce.property.syntax:
+    text: Enforce property syntax
+dmd.run.config.quiet:
+    text: Quiet
+dmd.run.config.verbose:
+    text: Verbose
+dmd.run.config.list.thread.local.storage:
+    text: List thread local storage
+dmd.run.config.warnings:
+    text: Warnings
+dmd.run.config.info.warnings:
+    text: Informational warnings
+dmd.run.config.default.library.label:
+    text: 'Default library name:'
+dmd.run.config.imports.label:
+    text: 'Imports:'
+dmd.run.config.string.imports.label:
+    text: 'String imports:'
+dmd.run.config.linker.arguments.label:
+    text: 'Linker arguments:'
+dmd.run.config.generate.documentation:
+    text: Generate documentation
+dmd.run.config.documentation.folder.label:
+    text: Documentation Folder
+dmd.run.config.documentation.filename.label:
+    text: Documentation filename
+dmd.run.config.module.dependencies.label:
+    text: Module dependencies output
+dmd.run.config.generate.header:
+    text: Generate 'header' file
+dmd.run.config.header.directory.label:
+    text: Header file directory
+dmd.run.config.header.filename.label:
+    text: Header file name
+dmd.run.config.no.object.files:
+    text: No object files
+dmd.run.config.no.strip.paths:
+    text: Do not strip paths from source file
+dmd.run.config.generate.json:
+    text: Generate JSON
+dmd.run.config.json.filename.label:
+    text: JSON filefilename
+dmd.run.config.generate.map:
+    text: Generate linker .map file
+dmd.run.config.add.symbolic.debug.info:
+    text: Add symbolic debug info
+dmd.run.config.generate.standard.stack.frame:
+    text: Generate standard stack frame
+dmd.run.config.symbolic.library.label:
+    text: 'Symbolic debug library name:'
+dmd.run.config.profile:
+    text: Profile runtime
+dmd.run.config.actual.arguments.label:
+    text: 'Actual DMD Compiler arguments:'
+dmd.run.config.documentation.label:
+    text: 'Documentation:'
+dmd.run.config.documentation.link:
+    text: Documentation at dlang.org
+dunit.run.configuration.type.name:
+    text: dUnit Unit Tests
+dunit.run.configuration.type.description:
+    text: dUnit unit tests run configuration
+dunit.run.configuration.file.label:
+    text: 'D File:'
+dunit.run.configuration.working.directory.label:
+    text: 'Working directory:'
+dunit.run.configuration.environment.variables.label:
+    text: Environment variables
+path.to.dlanguage.file.not.set:
+    text: Path to D file is not specified
+dlanguage.file.not.found:
+    text: 'D file is not found: {0}'
+not.a.dlanguage.file:
+    text: 'Specified file is not a D file: {0}'
+choose.dlanguage.main.file:
+    text: Choose D File
+d.ui.unittest.notification.title.d.unit.missing:
+    text: No d-unit dependency found
+d.ui.unittest.notification.content.d.unit.missing:
+    text: Please add d-unit to your dub.json/dub.sdl and run Tools > Process D Libraries
+d.ui.unittest.notification.title.dub.path.missing:
+    text: Dub path must be specified
+d.ui.unittest.notification.content.dub.path.missing:
+    text: 'Dub executable path is empty <br/><a href="configureDLanguageTools">Configure</a>'
+notification.group.execute.tests:
+    text: Execute Tests
+notification.group.dunit.test.runner:
+    text: Dunit Test Runner
+notification.group.dmd.run.configuration:
+    text: DMD run configuration
+notification.group.d.app.run.configuration:
+    text: D App run configuration
+d.tools.display.name:
+    text: D Tools
+d.tools.tab.dscanner:
+    text: DScanner
+d.tools.tab.dfmt:
+    text: DFormat
+d.tools.path.label:
+    text: 'Path:'
+d.tools.info.label:
+    text: 'Info:'
+d.tools.flags.label:
+    text: 'Flags:'
+d.tools.auto.find:
+    text: Auto Find
+d.tools.select.executable:
+    text: Select {0} executable
+d.tools.path.does.not.exist:
+    text: Path does not exist
+d.tools.path.is.not.executable:
+    text: Path is not executable
+d.tools.path.not.executable:
+    text: Path ''{0}'' is not executable
+d.tools.newer.version.available:
+    text: A newer version of {0} is available
+d.tools.could.not.find:
+    text: Could not find ''{0}''.
+d.tools.dialog.title:
+    text: DLanguage
+d.ui.module.sdk.not.defined:
+    text: Module SDK is not defined
+d.ui.compilerconfig.missing.sourcepaths:
+    text: Your DMD compiler is missing paths to phobos and druntime. Please add them in to the SDK Sourcepath
+d.ui.dmd.object.path.not.set:
+    text: Project Sdk not setup correctly. Unable to find object.d in the sourcepath or classpath.
+d.ui.dmd.phobos.path.not.set:
+    text: 'Sdk not setup correctly. In particular the following phobos modules could not be found:'
+ddoc.section.parameters:
+    text: 'Parameters:'
+code.style.space.before.import.colon:
+    text: Space before import colon
+action.dlanguage.dformat.text:
+    text: Reformat Code with DFormat
+action.dlanguage.dformat.description:
+    text: Format current file with DFormat formatter
+dfmt.notification.group:
+    text: Dfmt Action
+dfmt.notification.title:
+    text: Reformat code with DFormat
+dfmt.notification.failed:
+    text: 'Formatting {0} with DFormat failed.'
+dfmt.notification.formatted:
+    text: '{0} formatted with DFormat.'
+dfmt.notification.path.empty:
+    text: DFormat executable path is empty
+dfmt.notification.path.invalid:
+    text: DFormat executable path is not valid
+dfmt.progress.title:
+    text: 'DFormat formatting: {0}'
+module.title:
+    text: D Application
+module.description:
+    text: Application written in D language
+module.dub.title:
+    text: D Application with DUB
+module.dub.description:
+    text: D Application with DUB build system support
+module.group.name:
+    text: D Language
+sources.root.detector.sources.name:
+    text: Library Sources
+sources.root.detector.lib.name:
+    text: Library Binaries
+library.type.create.action.name:
+    text: D Library
+library.lib.file.root.type.presentation:
+    text: Lib File
+library.lib.file.root.type.node.text:
+    text: External Attributes
+new.project.d.compiler.label:
+    text: 'D Compiler:'
+new.project.add.sample.code:
+    text: Add sample code
+new.project.dub.sdk.label:
+    text: 'D SDK:'
+new.project.dub.dsl.label:
+    text: 'Dub DSL:'
+new.project.dub.dsl.sdlang:
+    text: SDLang
+new.project.dub.dsl.json:
+    text: JSON
+new.project.dub.project.type.label:
+    text: 'Project Type:'
+new.project.dub.project.type.minimal:
+    text: minimal
+new.project.dub.project.type.vibe:
+    text: vibe.d
+new.project.dub.project.type.deimos:
+    text: deimos
+new.project.dub.progress:
+    text: Initializing the DUB package
+dub.init.notification.title:
+    text: Dub init output
+action.new.d.class.text:
+    text: D Class
+action.new.d.class.description:
+    text: Create new D Class
+action.new.d.file.title:
+    text: New D File
+action.new.d.class.kind.module:
+    text: Module
+action.new.d.class.kind.class:
+    text: Class
+action.new.d.class.kind.interface:
+    text: Interface
+action.new.d.class.kind.struct:
+    text: Struct
+action.new.d.class.kind.union:
+    text: Union
+action.new.d.class.kind.enum:
+    text: Enum
+action.new.d.class.validator.empty.name:
+    text: Name can’t be empty
+action.new.d.class.validator.empty.parts:
+    text: Name can’t have empty parts
+action.new.d.class.validator.invalid.name:
+    text: Not a valid D class name.
+action.dub.build.text:
+    text: _Run Dub
+action.dub.build.description:
+    text: Run Dub using selected options
+action.dub.settings.text:
+    text: _Configure D Tools
+action.dub.tools.menu.group.text:
+    text: Dub (D Language)
+dub.actions.repo.usage.text:
+    text: Scan Local Dub Repository
+dub.actions.repo.usage.description:
+    text: Scan the user's local dub repository for old files
+dub.actions.repo.usage.task.title:
+    text: Scanning local dub repository
+dub.actions.repo.usage.notification.title:
+    text: '"Your local dub repository if over the {0} size threshold"'
+dub.actions.repo.usage.notification.content:
+    text: Your local dub repository is using {0} of disk space.<p>The dub plugin has detected that potentially {1} packages and {2} cache directories could be removed.</p>
+dub.actions.repo.usage.remove.directories:
+    text: Remove {0} directories
+dub.actions.repo.usage.update.notification.title:
+    text: Dub repo maintenance
+dub.actions.repo.usage.update.notification.content:
+    text: The local dub repository is using {0} of disk space.
+dub.actions.repo.usage.removed.notification.content:
+    text: Removed {0} directories from the local dub repo.
+dub.tool.window.name:
+    text: Dub
+dub.tool.window.run.configurations:
+    text: Run Configurations
+dub.tool.window.dependencies:
+    text: Dependencies
+dub.tool.window.refresh:
+    text: Refresh
+dub.tool.window.add:
+    text: Add
+dub.tool.window.toggle.offline:
+    text: Toggle Offline Mode
+dub.tool.window.toggle.offline.description:
+    text: Toggle offline mode for Dub builds
+settings.dub.executable.location.label:
+    text: 'Dub executable:'
+settings.dub.executable.chooser.title:
+    text: Select Dub Executable
+settings.dub.executable.detecting:
+    text: Detecting...
+settings.dub.executable.not.found:
+    text: Dub can't be found. Please ensure it is correctly installed
+settings.dub.executable.invalid:
+    text: Invalid Dub path, please ensure it is correctly installed
+settings.dub.executable.version:
+    text: Dub version {0}
+settings.dub.executable.detected:
+    text: 'Detected: {0}'

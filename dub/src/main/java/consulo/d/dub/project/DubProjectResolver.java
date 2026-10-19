@@ -18,8 +18,10 @@ import consulo.externalSystem.rt.model.ExternalSystemSourceType;
 import consulo.externalSystem.service.project.ExternalSystemProjectResolver;
 import consulo.externalSystem.service.project.ProjectData;
 import consulo.localize.LocalizeValue;
+import io.github.intellij.dlanguage.project.BuildSettings;
 import io.github.intellij.dub.project.DubPackage;
 import io.github.intellij.dub.project.DubProject;
+import io.github.intellij.dub.project.DubTarget;
 import io.github.intellij.dub.tools.DescribeParserException;
 import io.github.intellij.dub.tools.DescribeParserImpl;
 import org.jspecify.annotations.Nullable;
@@ -99,7 +101,7 @@ public class DubProjectResolver implements ExternalSystemProjectResolver<DubExec
 
         moduleNode.createChild(DubModuleData.KEY, new DubModuleData(
             versionIdentifiers(dubProject),
-            dubProject.rootPackage().debugVersions(),
+            debugIdentifiers(dubProject),
             targetExecutable(packageDirectory, dubProject.rootPackage())
         ));
 
@@ -129,17 +131,18 @@ public class DubProjectResolver implements ExternalSystemProjectResolver<DubExec
     }
 
     /**
-     * What the module compiles with: the identifiers the platform, architecture and compiler predefine, then the root
-     * package's own {@code versions}.
+     * What the module compiles with: the identifiers the platform, architecture and compiler predefine, then the
+     * {@code versions} of the root package's target.
      */
     public static List<String> versionIdentifiers(DubProject dubProject) {
-        List<String> versionIdentifiers = new ArrayList<>(DubPredefinedVersions.of(dubProject));
-        for (String version : dubProject.rootPackage().versions()) {
-            if (!versionIdentifiers.contains(version)) {
-                versionIdentifiers.add(version);
-            }
-        }
-        return versionIdentifiers;
+        return withPredefined(DubPredefinedVersions.of(dubProject), versions(dubProject, dubProject.rootPackage()));
+    }
+
+    /**
+     * The {@code debug} identifiers the root package compiles with.
+     */
+    public static List<String> debugIdentifiers(DubProject dubProject) {
+        return debugVersions(dubProject, dubProject.rootPackage());
     }
 
     /**
@@ -170,18 +173,13 @@ public class DubProjectResolver implements ExternalSystemProjectResolver<DubExec
 
     /**
      * Every package is compiled by the same compiler for the same platform, so each one's identifiers are the
-     * predefined ones followed by its own {@code versions}.
+     * predefined ones followed by the {@code versions} of the target that compiles it.
      */
     public static List<DubDependency> dependencies(Path packageDirectory, DubProject dubProject) {
         List<String> predefined = DubPredefinedVersions.of(dubProject);
         List<DubDependency> dependencies = new ArrayList<>();
         for (DubPackage dependency : dubProject.packages()) {
-            List<String> versionIdentifiers = new ArrayList<>(predefined);
-            for (String version : dependency.versions()) {
-                if (!versionIdentifiers.contains(version)) {
-                    versionIdentifiers.add(version);
-                }
-            }
+            List<String> versionIdentifiers = withPredefined(predefined, versions(dubProject, dependency));
             Path dependencyPath = packagePath(dependency, packageDirectory);
             List<String> importPaths = new ArrayList<>();
             for (String importPath : dependency.sourcesDirs()) {
@@ -193,10 +191,55 @@ public class DubProjectResolver implements ExternalSystemProjectResolver<DubExec
                 dependencyPath.toString(),
                 importPaths,
                 versionIdentifiers,
-                dependency.debugVersions()
+                debugVersions(dubProject, dependency)
             ));
         }
         return dependencies;
+    }
+
+    /**
+     * The {@code versions} a package is compiled with in this build: those of the target that compiles it - DUB adds
+     * the versions of the dependencies and of the root package, and a {@code Have_<package>} for each package of the
+     * target - or, when no target covers it, the package's own.
+     */
+    private static List<String> versions(DubProject dubProject, DubPackage dubPackage) {
+        BuildSettings buildSettings = buildSettings(dubProject, dubPackage.name());
+        return buildSettings != null ? buildSettings.versions() : dubPackage.versions();
+    }
+
+    private static List<String> debugVersions(DubProject dubProject, DubPackage dubPackage) {
+        BuildSettings buildSettings = buildSettings(dubProject, dubPackage.name());
+        return buildSettings != null ? buildSettings.debugVersions() : dubPackage.debugVersions();
+    }
+
+    /**
+     * The build settings of the target built from the package, else of the first target the package is compiled into
+     * (a {@code sourceLibrary} has no target of its own).
+     */
+    private static @Nullable BuildSettings buildSettings(DubProject dubProject, String packageName) {
+        DubTarget containing = null;
+        for (DubTarget target : dubProject.targets()) {
+            if (target.buildSettings() == null) {
+                continue;
+            }
+            if (target.rootPackage().equals(packageName)) {
+                return target.buildSettings();
+            }
+            if (containing == null && target.packages().contains(packageName)) {
+                containing = target;
+            }
+        }
+        return containing != null ? containing.buildSettings() : null;
+    }
+
+    private static List<String> withPredefined(List<String> predefined, List<String> versions) {
+        List<String> versionIdentifiers = new ArrayList<>(predefined);
+        for (String version : versions) {
+            if (!versionIdentifiers.contains(version)) {
+                versionIdentifiers.add(version);
+            }
+        }
+        return versionIdentifiers;
     }
 
     private static Path packagePath(DubPackage dubPackage, Path fallback) {
