@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.psi.ext;
 
+import consulo.d.language.resolve.DResolveCaching;
 import consulo.document.util.TextRange;
 import consulo.language.ast.ASTNode;
 import consulo.language.impl.psi.ASTWrapperPsiElement;
@@ -14,8 +15,15 @@ public abstract class DLanguageImportBindImplMixin extends ASTWrapperPsiElement 
         super(node);
     }
 
+    /**
+     * Consulo: one reference object per element until the file changes, see {@link DResolveCaching}.
+     */
     @Override
     public @Nullable PsiReference getReference() {
+        return DResolveCaching.reference(this, this::createReference);
+    }
+
+    private @Nullable PsiReference createReference() {
         PsiElement referenceElement = getIdentifier();
         if (referenceElement == null) {
             return null;

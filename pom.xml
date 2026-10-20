@@ -33,6 +33,7 @@
         <module>sdlang</module>
         <module>dub</module>
         <module>execution</module>
+        <module>asm</module>
         <module>plugin</module>
         <module>it</module>
     </modules>

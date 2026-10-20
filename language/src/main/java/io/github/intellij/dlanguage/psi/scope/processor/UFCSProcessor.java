@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.psi.scope.processor;
 
+import consulo.util.dataholder.Key;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.resolve.PsiScopeProcessor;
 import consulo.language.psi.resolve.ResolveState;
@@ -41,5 +42,11 @@ public class UFCSProcessor implements PsiScopeProcessor {
         if (event == PsiScopeProcessor.Event.SET_DECLARATION_HOLDER) {
             myIsCurrentModuleEval = associated instanceof DlangPsiFile;
         }
+    }
+
+    @Override
+    public <T> @Nullable T getHint(Key<T> hintKey) {
+        // Consulo: the delegate's name hint, see consulo.d.language.resolve.DNameHint
+        return myDelegate.getHint(hintKey);
     }
 }

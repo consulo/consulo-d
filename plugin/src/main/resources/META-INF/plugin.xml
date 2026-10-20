@@ -15,4 +15,5 @@
 
     <depends>consulo.nativeDev</depends>
     <depends>consulo.json</depends>
+    <depends>consulo.asm</depends>
 </consulo-plugin>

@@ -118,6 +118,30 @@ public class DlangVisitor extends PsiElementVisitor {
         visitPsiElement(o);
     }
 
+    public void visitGccAsmClobberList(final DLanguageGccAsmClobberList o) {
+        visitPsiElement(o);
+    }
+
+    public void visitGccAsmGotoLabels(final DLanguageGccAsmGotoLabels o) {
+        visitPsiElement(o);
+    }
+
+    public void visitGccAsmInstruction(final DLanguageGccAsmInstruction o) {
+        visitPsiElement(o);
+    }
+
+    public void visitGccAsmOperand(final DLanguageGccAsmOperand o) {
+        visitPsiElement(o);
+    }
+
+    public void visitGccAsmOperandList(final DLanguageGccAsmOperandList o) {
+        visitPsiElement(o);
+    }
+
+    public void visitGccAsmTemplate(final DLanguageGccAsmTemplate o) {
+        visitPsiElement(o);
+    }
+
     public void visitAsmXorExp(final DLanguageAsmXorExp o) {
         visitPsiElement(o);
     }

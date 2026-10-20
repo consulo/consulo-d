@@ -1,5 +1,7 @@
 package io.github.intellij.dlanguage.psi.references;
 
+import consulo.d.language.resolve.DResolveCaching;
+import consulo.language.psi.resolve.ResolveCache;
 import consulo.document.util.TextRange;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiReferenceBase;
@@ -21,8 +23,18 @@ public class ImportBindReference extends PsiReferenceBase<DLanguageImportBind> {
         super(element, textRange);
     }
 
+    private static final ResolveCache.AbstractResolver<ImportBindReference, PsiElement> RESOLVER =
+        (reference, incompleteCode) -> reference.resolveInner();
+
+    /**
+     * Consulo: cached, see {@link DResolveCaching}.
+     */
     @Override
     public @Nullable PsiElement resolve() {
+        return DResolveCaching.resolve(this, RESOLVER);
+    }
+
+    private @Nullable PsiElement resolveInner() {
         GenericProcessor processor = new GenericProcessor(Objects.requireNonNull(getElement().getIdentifier()).getText(), myElement);
         PsiScopesUtil.INSTANCE.treeWalkUp(
             processor,

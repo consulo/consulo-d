@@ -432,6 +432,10 @@ public class DLanguageParserTest extends DLanguageParserTestBase {
         doDlangParserTest(context);
     }
     @Test
+    public void teststatements_asm_gcc(Context context) throws Exception {
+        doDlangParserTest(context);
+    }
+    @Test
     public void teststatements_foreach_associative_array(Context context) throws Exception {
         doDlangParserTest(context);
     }

@@ -30,6 +30,7 @@ import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil;
 import io.github.intellij.dlanguage.psi.scope.processor.DVisibilityProcessor;
 import io.github.intellij.dlanguage.resolve.ScopeProcessorImpl;
 import io.github.intellij.dlanguage.stubs.DLanguageImportDeclarationStub;
+import io.github.intellij.dlanguage.stubs.types.SingleImportStubElementType;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -70,7 +71,8 @@ public class DLanguageImportDeclarationImpl extends DStubBasedPsiElementBase<DLa
 
     @Override
     public List<DLanguageSingleImport> getSingleImports() {
-        return PsiTreeUtil.getChildrenOfTypeAsList(this, DLanguageSingleImport.class);
+        // Consulo: from the stub when there is one
+        return List.of(getStubOrPsiChildren((SingleImportStubElementType) DStubElementTypes.SINGLE_IMPORT, new DLanguageSingleImport[0]));
     }
 
     @Override

@@ -1,5 +1,7 @@
 package io.github.intellij.dlanguage.psi.references;
 
+import consulo.d.language.resolve.DResolveCaching;
+import consulo.language.psi.resolve.ResolveCache;
 import consulo.document.util.TextRange;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiQualifiedReference;
@@ -34,8 +36,18 @@ public class TypeReference extends PsiReferenceBase<DLanguageQualifiedIdentifier
         myInTypeSuffix = inTypeSuffix;
     }
 
+    private static final ResolveCache.AbstractResolver<TypeReference, PsiElement> RESOLVER =
+        (reference, incompleteCode) -> reference.resolveInner();
+
+    /**
+     * Consulo: cached, see {@link DResolveCaching}.
+     */
     @Override
     public @Nullable PsiElement resolve() {
+        return DResolveCaching.resolve(this, RESOLVER);
+    }
+
+    private @Nullable PsiElement resolveInner() {
         return TypeResolveUtil.INSTANCE.resolveType(
             this,
             myElement.getTemplateInstance() != null,

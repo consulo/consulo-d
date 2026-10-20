@@ -19,6 +19,7 @@ public interface DStubElementTypes {
     IElementType SHARED_STATIC_CONSTRUCTOR = new SharedStaticConstructorStubElementType("SHARED_STATIC_CONSTRUCTOR");
     IElementType SHARED_STATIC_DESTRUCTOR = new SharedStaticDestructorStubElementType("SHARED_STATIC_DESTRUCTOR");
     IElementType STATIC_CONSTRUCTOR = new StaticConstructorStubElementType("STATIC_CONSTRUCTOR");
+    IElementType TEMPLATE_MIXIN_DECLARATION = new TemplateMixinDeclarationStubElementType("TEMPLATE_MIXIN_DECLARATION");
     IElementType STATIC_DESTRUCTOR = new StaticDestructorStubElementType("STATIC_DESTRUCTOR");
     IElementType AUTO_ASSIGNMENT = new AutoAssignmentStubElementType("AUTO_ASSIGNMENT");
     IElementType ENUM_DECLARATION = new EnumDeclarationStubElementType("ENUM_DECLARATION");

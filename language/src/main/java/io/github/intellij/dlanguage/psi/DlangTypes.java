@@ -24,6 +24,7 @@ public interface DlangTypes {
     IElementType SHARED_STATIC_CONSTRUCTOR = DStubElementTypes.SHARED_STATIC_CONSTRUCTOR;
     IElementType SHARED_STATIC_DESTRUCTOR = DStubElementTypes.SHARED_STATIC_DESTRUCTOR;
     IElementType STATIC_CONSTRUCTOR = DStubElementTypes.STATIC_CONSTRUCTOR;
+    IElementType TEMPLATE_MIXIN_DECLARATION = DStubElementTypes.TEMPLATE_MIXIN_DECLARATION;
     IElementType STATIC_DESTRUCTOR = DStubElementTypes.STATIC_DESTRUCTOR;
     IElementType AUTO_ASSIGNMENT = DStubElementTypes.AUTO_ASSIGNMENT;
     IElementType ENUM_DECLARATION = DStubElementTypes.ENUM_DECLARATION;
@@ -76,6 +77,12 @@ public interface DlangTypes {
     DlangElementType ASM_TYPE_PREFIX = new DlangElementType("ASM_TYPE_PREFIX");
     DlangElementType ASM_UNA_EXP = new DlangElementType("ASM_UNA_EXP");
     DlangElementType ASM_XOR_EXP = new DlangElementType("ASM_XOR_EXP");
+    DlangElementType GCC_ASM_CLOBBER_LIST = new DlangElementType("GCC_ASM_CLOBBER_LIST");
+    DlangElementType GCC_ASM_GOTO_LABELS = new DlangElementType("GCC_ASM_GOTO_LABELS");
+    DlangElementType GCC_ASM_INSTRUCTION = new DlangElementType("GCC_ASM_INSTRUCTION");
+    DlangElementType GCC_ASM_OPERAND = new DlangElementType("GCC_ASM_OPERAND");
+    DlangElementType GCC_ASM_OPERAND_LIST = new DlangElementType("GCC_ASM_OPERAND_LIST");
+    DlangElementType GCC_ASM_TEMPLATE = new DlangElementType("GCC_ASM_TEMPLATE");
     DlangElementType ASSERT_ARGUMENTS = new DlangElementType("ASSERT_ARGUMENTS");
     DlangElementType ASSERT_EXPRESSION = new DlangElementType("ASSERT_EXPRESSION");
     DlangElementType ASSIGN_EXPRESSION = new DlangElementType("ASSIGN_EXPRESSION");
@@ -195,7 +202,6 @@ public interface DlangTypes {
     DlangElementType TEMPLATE_ARGUMENTS = new DlangElementType("TEMPLATE_ARGUMENTS");
     DlangElementType TEMPLATE_INSTANCE = new DlangElementType("TEMPLATE_INSTANCE");
     DlangElementType TEMPLATE_MIXIN = new DlangElementType("TEMPLATE_MIXIN");
-    DlangElementType TEMPLATE_MIXIN_DECLARATION = new DlangElementType("TEMPLATE_MIXIN_DECLARATION");
     DlangElementType TEMPLATE_PARAMETER_LIST = new DlangElementType("TEMPLATE_PARAMETER_LIST");
     DlangElementType TEMPLATE_PARAMETERS = new DlangElementType("TEMPLATE_PARAMETERS");
     DlangElementType TEMPLATE_SINGLE_ARGUMENT = new DlangElementType("TEMPLATE_SINGLE_ARGUMENT");
@@ -520,6 +526,18 @@ public interface DlangTypes {
                 return new DLanguageAsmUnaExpImpl(node);
             } else if (type == ASM_XOR_EXP) {
                 return new DLanguageAsmXorExpImpl(node);
+            } else if (type == GCC_ASM_CLOBBER_LIST) {
+                return new DLanguageGccAsmClobberListImpl(node);
+            } else if (type == GCC_ASM_GOTO_LABELS) {
+                return new DLanguageGccAsmGotoLabelsImpl(node);
+            } else if (type == GCC_ASM_INSTRUCTION) {
+                return new DLanguageGccAsmInstructionImpl(node);
+            } else if (type == GCC_ASM_OPERAND) {
+                return new DLanguageGccAsmOperandImpl(node);
+            } else if (type == GCC_ASM_OPERAND_LIST) {
+                return new DLanguageGccAsmOperandListImpl(node);
+            } else if (type == GCC_ASM_TEMPLATE) {
+                return new DLanguageGccAsmTemplateImpl(node);
             } else if (type == ASSERT_ARGUMENTS) {
                 return new DLanguageAssertArgumentsImpl(node);
             } else if (type == ASSERT_EXPRESSION) {

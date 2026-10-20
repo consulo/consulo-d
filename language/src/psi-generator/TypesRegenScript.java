@@ -68,7 +68,8 @@ public class TypesRegenScript {
         "SharedStaticConstructor",
         "SharedStaticDestructor",
         "StaticConstructor",
-        "StaticDestructor"
+        "StaticDestructor",
+        "TemplateMixinDeclaration"
     );
 
     static final List<String> IGNORE_IMPLEMENTATION_GENERATION = List.of(
@@ -122,9 +123,16 @@ public class TypesRegenScript {
         TYPES_CHILDREN.put("AsmPrimaryExp", List.of("FLOAT_LITERAL", "INTEGER_LITERAL", "Register",  "AsmExp", "IdentifierChain","OP_DOLLAR","KW_THIS"));
         TYPES_CHILDREN.put("AsmRelExp", List.of("AsmRelExp", "AsmShiftExp","OP_GT_EQ","OP_GT","OP_LESS","OP_LESS_EQ"));
         TYPES_CHILDREN.put("AsmShiftExp", List.of("AsmShiftExp", "AsmAddExp","OP_SH_LEFT","OP_SH_RIGHT","OP_USH_RIGHT"));
-        TYPES_CHILDREN.put("AsmStatement", List.of("KW_ASM", "OP_BRACES_LEFT", "OP_BRACES_RIGHT", "AsmInstruction*"));
+        TYPES_CHILDREN.put("AsmStatement", List.of("KW_ASM", "OP_BRACES_LEFT", "OP_BRACES_RIGHT", "AsmInstruction*", "GccAsmInstruction*"));
         TYPES_EXTRA_INTERFACES.put("AsmStatement", List.of("Statement"));
         TYPES_CHILDREN.put("AsmTypePrefix", List.of("Identifier*"));
+        TYPES_CHILDREN.put("GccAsmClobberList", List.of("DOUBLE_QUOTED_STRING*", "OP_COMMA*"));
+        TYPES_CHILDREN.put("GccAsmGotoLabels", List.of("Identifier*", "OP_COMMA*"));
+        TYPES_CHILDREN.put("GccAsmInstruction", List.of("Expression", "GccAsmTemplate", "GccAsmOperandList*", "GccAsmClobberList", "GccAsmGotoLabels", "OP_COLON*", "OP_SCOLON"));
+        TYPES_CHILDREN.put("GccAsmOperand", List.of("OP_BRACKET_LEFT", "Identifier", "OP_BRACKET_RIGHT", "DOUBLE_QUOTED_STRING", "OP_PAR_LEFT", "Expression", "OP_PAR_RIGHT"));
+        TYPES_CHILDREN.put("GccAsmOperandList", List.of("GccAsmOperand*", "OP_COMMA*"));
+        TYPES_CHILDREN.put("GccAsmTemplate", List.of("DOUBLE_QUOTED_STRING", "WYSIWYG_STRING", "ALTERNATE_WYSIWYG_STRING"));
+        TYPES_MIXINS.put("GccAsmTemplate", "DLanguageGccAsmTemplateImplMixin");
         TYPES_CHILDREN.put("AsmUnaExp", List.of("AsmUnaExp","Identifier","AsmExp","OP_PLUS","OP_MINUS","OP_NOT","OP_TILDA","AsmPrimaryExp"));
         TYPES_CHILDREN.put("AsmXorExp", List.of(/*"AsmPrimaryExp", "AsmTypePrefix", "AsmExp",*/ "AsmXorExp", "AsmAndExp", "OP_XOR"));
         TYPES_CHILDREN.put("AssertArguments", List.of("AssignExpression*", "OP_COMMA"));
@@ -368,7 +376,7 @@ public class TypesRegenScript {
         TYPES_CHILDREN.put("TemplateInstance", List.of("Identifier", "TemplateArguments"));
         TYPES_CHILDREN.put("TemplateMixin", List.of("KW_MIXIN","MixinTemplateName","TemplateArguments","Identifier"));
         TYPES_EXTRA_INTERFACES.put("TemplateMixin", List.of("Declaration"));
-        TYPES_CHILDREN.put("TemplateMixinDeclaration", List.of("KW_MIXIN","KW_TEMPLATE", "Identifier", "TemplateParameters", "KW_IF", "OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"));
+        STUB_CHILDREN.put("TemplateMixinDeclaration", List.of("KW_MIXIN","KW_TEMPLATE", "Identifier", "TemplateParameters", "KW_IF", "OP_BRACES_LEFT", "Declaration*", "OP_BRACES_RIGHT"));
         TYPES_EXTRA_INTERFACES.put("TemplateMixinDeclaration", List.of("Declaration"));
         TYPES_CHILDREN.put("TemplateParameterList", List.of("TemplateParameter*","OP_COMMA*"));
         TYPES_CHILDREN.put("TemplateParameters", List.of("TemplateParameterList","OP_PAR_RIGHT","OP_PAR_LEFT"));

@@ -1,5 +1,7 @@
 package io.github.intellij.dlanguage.psi.resolve.processor;
 
+import consulo.d.language.resolve.DNameHint;
+import consulo.util.dataholder.Key;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.ResolveResult;
 import consulo.language.psi.resolve.PsiScopeProcessor;
@@ -11,7 +13,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-public class GenericProcessor implements PsiScopeProcessor {
+public class GenericProcessor implements PsiScopeProcessor, DNameHint {
     private final String myElementName;
     private final @Nullable PsiElement myStartPlace;
     private @Nullable List<DResolveResult> myCandidates = null;
@@ -51,5 +53,22 @@ public class GenericProcessor implements PsiScopeProcessor {
         }
         myResolveResult = resolveResult;
         return resolveResult;
+    }
+
+    /**
+     * Consulo: lets scopes skip the declarations of other names, see {@link DNameHint}.
+     */
+    @Override
+    public String getName() {
+        return myElementName;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> @Nullable T getHint(Key<T> hintKey) {
+        if (DNameHint.KEY.equals(hintKey)) {
+            return (T) this;
+        }
+        return PsiScopeProcessor.super.getHint(hintKey);
     }
 }

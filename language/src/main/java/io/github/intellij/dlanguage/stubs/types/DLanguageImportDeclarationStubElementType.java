@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.stubs.DLanguageImportDeclarationStub;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class DLanguageImportDeclarationStubElementType
     extends DStubElementType<DLanguageImportDeclarationStub, DLanguageImportDeclaration> {
@@ -30,7 +31,8 @@ public class DLanguageImportDeclarationStubElementType
             parentStub,
             this,
             DVisibilityKt.getStubKind(psi.visibility()),
-            psi.visibility() instanceof DVisibility.Package packageVisibility ? packageVisibility.getName() : null
+            psi.visibility() instanceof DVisibility.Package packageVisibility ? packageVisibility.getName() : null,
+            psi.getKW_STATIC() != null
         );
     }
 
@@ -38,8 +40,10 @@ public class DLanguageImportDeclarationStubElementType
     public void serialize(DLanguageImportDeclarationStub stub, StubOutputStream dataStream) throws IOException {
         dataStream.writeByte(stub.getVisibility().ordinal());
         if (stub.getVisibility() == DVisibilityStubKind.PACKAGE_SPECIFIC) {
-            dataStream.writeUTF(stub.getVisibility().name());
+            // Consulo: upstream wrote the visibility kind's name, which deserialize read back as the package name
+            dataStream.writeUTF(Objects.requireNonNullElse(stub.getPackageVisibilityName(), ""));
         }
+        dataStream.writeBoolean(stub.isStatic());
     }
 
     @Override
@@ -49,11 +53,13 @@ public class DLanguageImportDeclarationStubElementType
         @Nullable String packageNameRestriction = visibilityKind == DVisibilityStubKind.PACKAGE_SPECIFIC
             ? dataStream.readUTF()
             : null;
+        boolean isStatic = dataStream.readBoolean();
         return new DLanguageImportDeclarationStub(
             parentStub,
             this,
             visibilityKind,
-            packageNameRestriction
+            packageNameRestriction,
+            isStatic
         );
     }
 }

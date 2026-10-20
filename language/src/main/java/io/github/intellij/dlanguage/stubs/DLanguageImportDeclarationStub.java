@@ -12,16 +12,19 @@ public class DLanguageImportDeclarationStub extends StubBase<DLanguageImportDecl
     private final IStubElementType<?, ?> myElementType;
     private final DVisibilityStubKind myVisibility;
     private final @Nullable String myPackageVisibilityName;
+    private final boolean myStatic;
 
     public DLanguageImportDeclarationStub(@Nullable StubElement<?> parent,
                                           IStubElementType<?, ?> elementType,
                                           DVisibilityStubKind visibility,
-                                          @Nullable String packageVisibilityName) {
+                                          @Nullable String packageVisibilityName,
+                                          boolean isStatic) {
         super(parent, elementType);
         myParentElement = parent;
         myElementType = elementType;
         myVisibility = visibility;
         myPackageVisibilityName = packageVisibilityName;
+        myStatic = isStatic;
     }
 
     public @Nullable StubElement<?> getParent() {
@@ -38,5 +41,12 @@ public class DLanguageImportDeclarationStub extends StubBase<DLanguageImportDecl
 
     public @Nullable String getPackageVisibilityName() {
         return myPackageVisibilityName;
+    }
+
+    /**
+     * Consulo: {@code static import}, so a walk from another module does not need the AST to know it.
+     */
+    public boolean isStatic() {
+        return myStatic;
     }
 }

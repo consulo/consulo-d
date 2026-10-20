@@ -4,6 +4,7 @@ import consulo.application.progress.ProgressIndicatorProvider;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiQualifiedReference;
 import consulo.language.psi.PsiReference;
+import consulo.language.psi.resolve.DelegatingScopeProcessor;
 import consulo.language.psi.resolve.PsiScopeProcessor;
 import consulo.language.psi.resolve.ResolveState;
 import io.github.intellij.dlanguage.psi.DLanguageAttributeSpecifier;
@@ -166,7 +167,14 @@ public final class PsiScopesUtil {
         }
         if (type instanceof UserDefinedDType userDefinedDType) {
             UserDefinedType target = userDefinedDType.resolve();
-            return target.processDeclarations(processor, ResolveState.initial(), null, place);
+            // Consulo: a member access names a member of the type, not the type itself
+            PsiScopeProcessor membersProcessor = new DelegatingScopeProcessor(processor) {
+                @Override
+                public boolean execute(PsiElement element, ResolveState state) {
+                    return element == target || super.execute(element, state);
+                }
+            };
+            return target.processDeclarations(membersProcessor, ResolveState.initial(), null, place);
         }
         return true;
     }

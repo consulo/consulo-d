@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.resolve;
 
+import consulo.d.language.resolve.DStubDeclarationWalker;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiReference;
 import consulo.language.psi.resolve.PsiScopeProcessor;
@@ -330,7 +331,19 @@ public final class ScopeProcessorImpl {
             return true;
         }
 
-        DLanguageStructBody structBody = element.getStructBody();
+        // Consulo: the own members of a class of another module come from its stub, the inherited ones still from the
+        // classes the base class list (not stubbed) names
+        boolean membersFromStubs = false;
+        if (lastParent == null) {
+            Boolean fromStubs = DStubDeclarationWalker.processMembers(element, processor, state, place);
+            if (fromStubs != null) {
+                if (!fromStubs) {
+                    return false;
+                }
+                membersFromStubs = true;
+            }
+        }
+        DLanguageStructBody structBody = membersFromStubs ? null : element.getStructBody();
         if (lastParent == null && structBody != null) {
             if (!structBody.processDeclarations(processor, state, lastParent, place)) {
                 return false;
@@ -339,7 +352,7 @@ public final class ScopeProcessorImpl {
 
         // We are inside elements so check our parameters, no need to check body, it was already processed
         boolean toContinue = true;
-        DLanguageTemplateParameters templateParameters = element.getTemplateParameters();
+        DLanguageTemplateParameters templateParameters = membersFromStubs ? null : element.getTemplateParameters();
         if (templateParameters != null) {
             if (!templateParameters.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false;
@@ -408,7 +421,19 @@ public final class ScopeProcessorImpl {
             return true;
         }
 
-        DLanguageStructBody structBody = element.getStructBody();
+        // Consulo: the own members of a class of another module come from its stub, the inherited ones still from the
+        // classes the base class list (not stubbed) names
+        boolean membersFromStubs = false;
+        if (lastParent == null) {
+            Boolean fromStubs = DStubDeclarationWalker.processMembers(element, processor, state, place);
+            if (fromStubs != null) {
+                if (!fromStubs) {
+                    return false;
+                }
+                membersFromStubs = true;
+            }
+        }
+        DLanguageStructBody structBody = membersFromStubs ? null : element.getStructBody();
         if (lastParent == null && structBody != null) {
             if (!structBody.processDeclarations(processor, state, lastParent, place)) {
                 return false;
@@ -417,7 +442,7 @@ public final class ScopeProcessorImpl {
 
         // We are inside elements so check our parameters, no need to check body, it was already processed
         boolean toContinue = true;
-        DLanguageTemplateParameters templateParameters = element.getTemplateParameters();
+        DLanguageTemplateParameters templateParameters = membersFromStubs ? null : element.getTemplateParameters();
         if (templateParameters != null) {
             if (!templateParameters.processDeclarations(processor, state, lastParent, place)) {
                 toContinue = false;
@@ -460,6 +485,13 @@ public final class ScopeProcessorImpl {
             return true;
         }
 
+        if (lastParent == null) {
+            // Consulo: the members of a type of another module come from its stub
+            Boolean fromStubs = DStubDeclarationWalker.processMembers(element, processor, state, place);
+            if (fromStubs != null) {
+                return fromStubs;
+            }
+        }
         DLanguageStructBody structBody = element.getStructBody();
         if (lastParent == null && structBody != null) {
             if (!structBody.processDeclarations(processor, state, lastParent, place)) {
@@ -561,6 +593,13 @@ public final class ScopeProcessorImpl {
             return true;
         }
 
+        if (lastParent == null) {
+            // Consulo: the members of a type of another module come from its stub
+            Boolean fromStubs = DStubDeclarationWalker.processMembers(element, processor, state, place);
+            if (fromStubs != null) {
+                return fromStubs;
+            }
+        }
         DLanguageStructBody structBody = element.getStructBody();
         if (lastParent == null && structBody != null) {
             if (!structBody.processDeclarations(processor, state, lastParent, place)) {
@@ -903,6 +942,13 @@ public final class ScopeProcessorImpl {
             return true;
         }
 
+        if (lastParent == null) {
+            // Consulo: the members of an enum of another module come from its stub
+            Boolean fromStubs = DStubDeclarationWalker.processMembers(element, processor, state, place);
+            if (fromStubs != null) {
+                return fromStubs;
+            }
+        }
         boolean toContinue = true;
         DLanguageEnumBody enumBody = element.getEnumBody();
         if (enumBody != null) {

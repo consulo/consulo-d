@@ -20,7 +20,7 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 
 public class DFileStubElementType extends IStubFileElementType<DlangFileStub> {
-    public static final int VERSION = 1;
+    public static final int VERSION = 4;
     public static final DFileStubElementType INSTANCE = new DFileStubElementType();
 
     public DFileStubElementType() {

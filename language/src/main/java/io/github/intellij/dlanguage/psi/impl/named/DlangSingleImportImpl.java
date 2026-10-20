@@ -137,6 +137,11 @@ public class DlangSingleImportImpl extends DNamedStubbedPsiElementBase<DLanguage
     }
 
     public boolean hasAName() {
+        // Consulo: from the stub when there is one
+        DLanguageSingleImportStub greenStub = getGreenStub();
+        if (greenStub != null) {
+            return greenStub.hasName();
+        }
         try {
             return getIdentifier() != null;
         } catch (final NullPointerException e) {

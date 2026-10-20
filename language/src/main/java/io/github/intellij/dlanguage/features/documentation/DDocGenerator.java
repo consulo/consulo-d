@@ -104,6 +104,10 @@ public class DDocGenerator {
     public String generateDocRendered(DlangDocComment comment) {
         myRenderedDoc = true;
         StringBuilder builder = new StringBuilder();
+        // Consulo: upstream rendered a comment without sections (`/// ditto`) too, which failed in appendContentSections
+        if (comment.sections().length == 0) {
+            return "";
+        }
         Collection<DDocLinkDeclarationImpl> linksDeclarations = PsiTreeUtil.findChildrenOfType(comment, DDocLinkDeclarationImpl.class);
         appendContentSections(builder, comment.sections(), linksDeclarations);
         return builder.toString();

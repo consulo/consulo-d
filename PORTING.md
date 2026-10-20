@@ -13,6 +13,7 @@ This repository is a port of [intellij-dlanguage](https://github.com/intellij-dl
 | `sdlang`   | `consulo.d.sdlang`     | upstream `sdlang`                                                                 |
 | `dub`      | `consulo.d.dub`        | upstream `dub`, `dub/idea`; DUB import through the external system                |
 | `execution`| `consulo.d.execution`  | D run configurations (DMD, run app), d-unit tests, `consulo.nativeDev` debugger support |
+| `asm`      | `consulo.d.asm`        | `consulo.asm` integration: GNU as in GCC style asm templates and D `.s` files, extern function ↔ label markers |
 | `plugin`   | `consulo.d`            | packaging only: `plugin.xml`                                                      |
 | `it`       | `consulo.d.it`         | tests only, on the headless platform (`consulo-it`); no `module-info`, never ships |
 
@@ -163,6 +164,21 @@ leaves unregistered are ported without `@ExtensionImpl`. A `LocalQuickFix` has n
 * Grammar-Kit parsers are generated from `*.bnf` in `src/main/java` by `generate-parsers` (upstream's `.bnf` is used
   as is). Consulo's Grammar-Kit puts the PSI factory in `<psiImplPackage>.<ElementTypeHolder>Factory`, not in a
   nested `Factory` class.
+
+## Resolve
+
+The rules follow `consulo-key-principles` (stubs and resolve):
+
+- References are cached: an element hands out one reference object until its file changes
+  (`DResolveCaching.reference`), and `resolve()`/`multiResolve()` go through `ResolveCache` with a static resolver
+  (`DResolveCaching.resolve`), never in dumb mode. A new reference kind does the same.
+- A module the walk does not start in (an imported module) is processed from its stub tree
+  (`DStubDeclarationWalker.processModule`), as are the members of a type of another module (`processMembers`). Code
+  reached from those walks must read stubs (`getGreenStub()`, `getStubOrPsiChildren`), not the AST. A declaration
+  whose members must not be visible at module level needs a stub (that is why `mixin template` has one).
+- Processors that look for one name expose `DNameHint`, so stub walks skip other names.
+- `it/.../DStubCrossModuleResolveTest` fails when resolving parses a file other than the one resolved in; add a case
+  there for new cross-module resolve paths.
 
 ## Tests
 

@@ -722,6 +722,9 @@ public class DAttributesFinder {
                 }*/
             }
             else if (attribute.getKW_EXTERN() != null) {
+                if (myBulkAttributeApplied.getExtern() == null) {
+                    myBulkAttributeApplied.setExtern(true);
+                }
             }
             else if (attribute.getKW_FINAL() != null) {
             }
@@ -758,6 +761,10 @@ public class DAttributesFinder {
                 }
             }
             else if (attribute.getLinkageAttribute() != null) {
+                // Consulo: extern (C), extern (C++) ... was not recorded
+                if (myBulkAttributeApplied.getExtern() == null) {
+                    myBulkAttributeApplied.setExtern(true);
+                }
             }
             else if (attribute.getKW_CONST() != null) {
                 myBulkAttributeApplied.setConst(true);
@@ -801,6 +808,10 @@ public class DAttributesFinder {
 
     public DirectApplication handleFunctionDeclaration(DLanguageFunctionDeclaration function) {
         DirectApplication attribs = updateFromParentDecl(function);
+        // Consulo: the storage classes of the function itself (extern (C), static, ...) were not read
+        for (DLanguageStorageClass storageClass : function.getStorageClasses()) {
+            updateFromStorageClass(storageClass, attribs);
+        }
         handle(function.getMemberFunctionAttributes(), attribs);
         return attribs;
     }
@@ -1008,7 +1019,7 @@ public class DAttributesFinder {
         if (storageClasss.getKW_CONST() != null) {
             attribs.setConst(true);
         }
-        if (storageClasss.getKW_EXTERN() != null) {
+        if (storageClasss.getKW_EXTERN() != null || storageClasss.getLinkageAttribute() != null) {
             attribs.setExtern(true);
         }
         if (storageClasss.getKW_NOTHROW() != null) {

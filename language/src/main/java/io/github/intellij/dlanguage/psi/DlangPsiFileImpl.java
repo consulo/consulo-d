@@ -8,16 +8,21 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.resolve.PsiScopeProcessor;
 import consulo.language.psi.resolve.ResolveState;
 import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.stub.StubElement;
 import consulo.language.util.IncorrectOperationException;
 import consulo.project.DumbService;
 import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.fileType.FileType;
+import consulo.d.language.resolve.DStubDeclarationWalker;
 import io.github.intellij.dlanguage.DLanguage;
 import io.github.intellij.dlanguage.DlangFileType;
 import io.github.intellij.dlanguage.index.DModuleIndex;
 import io.github.intellij.dlanguage.psi.interfaces.Declaration;
 import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.resolve.DResolveUtilKt;
+import io.github.intellij.dlanguage.stubs.DLanguageModuleDeclarationStub;
+import io.github.intellij.dlanguage.stubs.types.ModuleDeclarationStubElementType;
+import io.github.intellij.dlanguage.psi.impl.DStubElementTypes;
 import io.github.intellij.dlanguage.utils.DPsiUtilKt;
 import org.jspecify.annotations.Nullable;
 
@@ -45,8 +50,16 @@ public class DlangPsiFileImpl extends PsiFileBase implements DlangPsiFile {
         return "D Language File";
     }
 
+    /**
+     * Consulo: read from the stub when there is one, so asking another file for its module name does not parse it.
+     */
     @RequiredReadAction
     private Optional<String> findModuleDeclaration() {
+        StubElement<?> stub = getGreenStub();
+        if (stub != null) {
+            DLanguageModuleDeclarationStub declaration = stub.findChildStubByType((ModuleDeclarationStubElementType) DStubElementTypes.MODULE_DECLARATION);
+            return Optional.ofNullable(declaration).map(DLanguageModuleDeclarationStub::getName);
+        }
         return Optional.ofNullable(findChildByClass(DLanguageModuleDeclaration.class))
             .map(DLanguageModuleDeclaration::getIdentifierChain)
             .map(DPsiUtilKt::getImportText);
@@ -116,6 +129,14 @@ public class DlangPsiFileImpl extends PsiFileBase implements DlangPsiFile {
             newState = state.put(DResolveUtilKt.getPROCESSED_FILES_KEY(), processFiles);
         }
         processFiles.add(getFullyQualifiedModuleName());
+        // Consulo: a module the walk does not start in is processed from its stub tree, see DStubDeclarationWalker
+        if (!this.equals(place.getContainingFile())) {
+            StubElement<?> stub = getGreenStub();
+            if (stub == null) {
+                stub = calcStubTree().getRoot();
+            }
+            return DStubDeclarationWalker.processModule(this, stub, processor, state, newState, lastParent, place);
+        }
         processor.handleEvent(PsiScopeProcessor.Event.SET_DECLARATION_HOLDER, this);
         for (PsiElement element : getChildren()) {
             if (element instanceof DLanguageModuleDeclaration) {

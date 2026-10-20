@@ -1,22 +1,26 @@
 package io.github.intellij.dlanguage.psi.scope.processor;
 
 import consulo.language.psi.PsiElement;
-import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
+import io.github.intellij.dlanguage.index.DModuleIndex;
+import io.github.intellij.dlanguage.psi.DlangPsiFile;
+import io.github.intellij.dlanguage.psi.impl.DLanguageModuleImpl;
+import io.github.intellij.dlanguage.psi.impl.DLanguagePackageImpl;
 import consulo.language.psi.resolve.PsiScopeProcessor;
 import consulo.language.psi.resolve.ResolveState;
 import consulo.util.dataholder.Key;
-import io.github.intellij.dlanguage.psi.DLanguageIdentifierChain;
 import io.github.intellij.dlanguage.psi.DLanguageImportDeclaration;
 import io.github.intellij.dlanguage.psi.named.DLanguagePackage;
 import io.github.intellij.dlanguage.psi.named.DLanguageSingleImport;
 import io.github.intellij.dlanguage.psi.scope.ElementDeclarationHint;
 import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Objects;
-
-import static io.github.intellij.dlanguage.utils.DPsiUtilKt.getImportText;
+import java.util.Set;
 
 public class PackageOrModuleProcessor implements PsiScopeProcessor, ElementDeclarationHint {
     private final PsiScopeProcessor myDelegate;
@@ -30,26 +34,17 @@ public class PackageOrModuleProcessor implements PsiScopeProcessor, ElementDecla
     @Override
     public boolean execute(PsiElement element, ResolveState state) {
         if (element instanceof DLanguageImportDeclaration importDeclaration) {
-            List<DLanguageIdentifierChain> packages = new ArrayList<>();
+            // Consulo: computed from the imported module names, which the stubs keep, instead of resolving the identifier
+            // chains of the import, so the imports of a module found by a walk from another module are not parsed
             for (DLanguageSingleImport singleImport : importDeclaration.getSingleImports()) {
-                if (singleImport.getIdentifier() != null) {
+                if (singleImport.hasAName()) {
                     continue;
                 }
-                DLanguageIdentifierChain id = singleImport.getIdentifierChain();
-                if (id == null) {
+                String moduleName = singleImport.getImportedModuleName();
+                if (moduleName.isEmpty()) {
                     continue;
                 }
-                DLanguageIdentifierChain parentChain = id.getIdentifierChain();
-                while (parentChain != null
-                    && (myParentPackage == null || !Objects.equals(getImportText(parentChain), myParentPackage.getQualifiedName()))) {
-                    id = parentChain;
-                    parentChain = id.getIdentifierChain();
-                }
-                packages.add(id);
-            }
-            for (DLanguageIdentifierChain aPackage : packages) {
-                PsiReference reference = aPackage.getReference();
-                PsiElement resolvedPackage = reference != null ? reference.resolve() : null;
+                PsiElement resolvedPackage = resolvePackageOrModule(singleImport, moduleName);
                 if (resolvedPackage == null) {
                     continue;
                 }
@@ -59,6 +54,30 @@ public class PackageOrModuleProcessor implements PsiScopeProcessor, ElementDecla
             }
         }
         return true;
+    }
+
+    /**
+     * The package or module named by the imported module name cut after the component that follows the parent package
+     * (the first component without a parent package): what upstream resolved with the reference of the identifier chain
+     * of that length.
+     */
+    private @Nullable PsiElement resolvePackageOrModule(PsiElement context, String moduleName) {
+        List<String> parts = StringUtil.split(moduleName, ".");
+        int length = parts.size();
+        String parentPackage = myParentPackage != null ? myParentPackage.getQualifiedName() : null;
+        while (length > 1 && !(parentPackage != null && String.join(".", parts.subList(0, length - 1)).equals(parentPackage))) {
+            length--;
+        }
+        Project project = context.getProject();
+        if (length < parts.size()) {
+            return new DLanguagePackageImpl(PsiManager.getInstance(project), String.join(".", parts.subList(0, length)));
+        }
+        Set<DlangPsiFile> files = new LinkedHashSet<>(DModuleIndex.getFilesByModuleName(project, moduleName, GlobalSearchScope.allScope(project)));
+        if (files.size() != 1) {
+            return null;
+        }
+        DlangPsiFile file = files.iterator().next();
+        return new DLanguageModuleImpl(file.getManager(), file);
     }
 
     @Override

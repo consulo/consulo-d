@@ -906,3 +906,7 @@ settings.dub.executable.version:
     text: Dub version {0}
 settings.dub.executable.detected:
     text: 'Detected: {0}'
+asm.implementation.tooltip:
+    text: Implemented in assembly
+asm.d.declaration.tooltip:
+    text: Declared in D

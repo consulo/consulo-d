@@ -12,6 +12,7 @@ import io.github.intellij.dlanguage.psi.named.DLanguageModuleDeclaration;
 import io.github.intellij.dlanguage.psi.impl.DElementFactory;
 import io.github.intellij.dlanguage.psi.impl.DNamedStubbedPsiElementBase;
 import io.github.intellij.dlanguage.stubs.DLanguageModuleDeclarationStub;
+import io.github.intellij.dlanguage.utils.DPsiUtilKt;
 import org.jspecify.annotations.Nullable;
 
 import java.util.List;
@@ -44,7 +45,8 @@ public class DlangModuleDeclarationImpl extends DNamedStubbedPsiElementBase<DLan
         if (getIdentifierChain() == null) {
             return getContainingFile().getName().replace(".d", "");
         }
-        return getIdentifierChain().getText();
+        // Consulo: the import text (no whitespace or comments between the parts), as DlangPsiFileImpl reads it
+        return DPsiUtilKt.getImportText(getIdentifierChain());
     }
 
     public @Nullable PsiElement getNameIdentifier() {

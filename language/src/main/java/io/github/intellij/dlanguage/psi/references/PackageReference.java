@@ -1,5 +1,6 @@
 package io.github.intellij.dlanguage.psi.references;
 
+import consulo.d.language.resolve.DResolveCaching;
 import consulo.document.util.TextRange;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiElementResolveResult;
@@ -8,6 +9,7 @@ import consulo.language.psi.PsiNamedElement;
 import consulo.language.psi.PsiPolyVariantReferenceBase;
 import consulo.language.psi.PsiQualifiedReference;
 import consulo.language.psi.ResolveResult;
+import consulo.language.psi.resolve.ResolveCache;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.language.util.IncorrectOperationException;
 import consulo.project.Project;
@@ -34,8 +36,18 @@ public class PackageReference extends PsiPolyVariantReferenceBase<DLanguageIdent
         super(element, textRange);
     }
 
+    private static final ResolveCache.PolyVariantResolver<PackageReference> RESOLVER =
+        (reference, incompleteCode) -> reference.multiResolveInner();
+
+    /**
+     * Consulo: cached, see {@link DResolveCaching}.
+     */
     @Override
     public ResolveResult[] multiResolve(boolean incomplete) {
+        return DResolveCaching.multiResolve(this, RESOLVER, incomplete);
+    }
+
+    private ResolveResult[] multiResolveInner() {
         if (getElement().getParent() instanceof DLanguageIdentifierChain) {
             return new ResolveResult[]{new PsiElementResolveResult(resolvePackage(getElement()))};
         }

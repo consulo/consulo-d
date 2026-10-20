@@ -28,6 +28,8 @@ import io.github.intellij.dlanguage.psi.DlangTypes;
 import io.github.intellij.dlanguage.psi.interfaces.DNamedElement;
 import io.github.intellij.dlanguage.psi.scope.PsiScopesUtil;
 
+import org.jspecify.annotations.Nullable;
+
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,24 +50,12 @@ public class DReferenceCompletionContributor extends CompletionContributor {
                     return;
                 }
 
-                VariantsProcessor processor = new VariantsProcessor();
-                PsiElement parent = position.getParent();
-                PsiReference reference = parent == null ? null : parent.getReference();
-                boolean qualified = false;
-                if (reference instanceof PsiQualifiedReference qualifiedReference) {
-                    qualified = qualifiedReference.getQualifier() != null;
-                    PsiScopesUtil.INSTANCE.resolveAndWalk(processor, qualifiedReference, null);
-                }
-                else {
-                    PsiScopesUtil.INSTANCE.treeWalkUp(processor, position, null);
-                }
-
                 PsiFile originalFile = parameters.getOriginalFile();
-                for (DNamedElement element : processor.getElements()) {
+                for (DNamedElement element : collectVariants(position)) {
                     result.addElement(createLookupElement(element, originalFile));
                 }
 
-                if (!qualified) {
+                if (!isQualified(position)) {
                     for (IElementType keyword : DHighlightingTokenSets.KEYWORD.getTypes()) {
                         if (keyword instanceof DlangTokenType tokenType) {
                             result.addElement(LookupElementBuilder.create(tokenType.getName()).bold());
@@ -74,6 +64,33 @@ public class DReferenceCompletionContributor extends CompletionContributor {
                 }
             }
         });
+    }
+
+    /**
+     * The declarations the identifier at {@code position} can name.
+     */
+    @RequiredReadAction
+    public static Collection<DNamedElement> collectVariants(PsiElement position) {
+        VariantsProcessor processor = new VariantsProcessor();
+        PsiReference reference = getReference(position);
+        if (reference instanceof PsiQualifiedReference qualifiedReference) {
+            PsiScopesUtil.INSTANCE.resolveAndWalk(processor, qualifiedReference, null);
+        }
+        else {
+            PsiScopesUtil.INSTANCE.treeWalkUp(processor, position, null);
+        }
+        return processor.getElements();
+    }
+
+    @RequiredReadAction
+    private static boolean isQualified(PsiElement position) {
+        return getReference(position) instanceof PsiQualifiedReference qualifiedReference && qualifiedReference.getQualifier() != null;
+    }
+
+    @RequiredReadAction
+    private static @Nullable PsiReference getReference(PsiElement position) {
+        PsiElement parent = position.getParent();
+        return parent == null ? null : parent.getReference();
     }
 
     @Override

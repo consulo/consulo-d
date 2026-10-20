@@ -1,5 +1,9 @@
 package io.github.intellij.dlanguage.psi.resolve.processor;
 
+import consulo.d.language.resolve.DNameHint;
+import consulo.language.impl.psi.stub.StubBasedPsiElementBase;
+import consulo.language.psi.stub.StubElement;
+import consulo.util.dataholder.Key;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.ResolveResult;
 import consulo.language.psi.resolve.PsiScopeProcessor;
@@ -24,7 +28,7 @@ import org.jspecify.annotations.Nullable;
 
 import java.util.List;
 
-public class TypeProcessor implements PsiScopeProcessor {
+public class TypeProcessor implements PsiScopeProcessor, DNameHint {
     private final String myElementName;
     private final PsiElement myStartPLace;
     private final boolean myForceTemplateSearch;
@@ -58,7 +62,7 @@ public class TypeProcessor implements PsiScopeProcessor {
         }
         if (myForceTemplateSearch
             && !(element instanceof DLanguageTemplateDeclaration)
-            && PsiTreeUtil.getChildOfType(element, DLanguageTemplateParameters.class) == null) {
+            && !hasTemplateParameters(element)) {
             return true;
         }
         List<DResolveResult> candidates = new SmartList<>();
@@ -66,6 +70,22 @@ public class TypeProcessor implements PsiScopeProcessor {
         myCandidates = candidates;
         myResolveResult = null;
         return false;
+    }
+
+    /**
+     * Consulo: the template parameters are stubbed, so a declaration found in another module is not parsed to know it.
+     */
+    private static boolean hasTemplateParameters(PsiElement element) {
+        StubElement<?> stub = element instanceof StubBasedPsiElementBase<?> stubBased ? stubBased.getGreenStub() : null;
+        if (stub != null) {
+            for (StubElement<?> child : stub.getChildrenStubs()) {
+                if (child.getPsi() instanceof TemplateParameter) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return PsiTreeUtil.getChildOfType(element, DLanguageTemplateParameters.class) != null;
     }
 
     public ResolveResult[] getResult() {
@@ -82,5 +102,22 @@ public class TypeProcessor implements PsiScopeProcessor {
         }
         myResolveResult = resolveResult;
         return resolveResult;
+    }
+
+    /**
+     * Consulo: lets scopes skip the declarations of other names, see {@link DNameHint}.
+     */
+    @Override
+    public String getName() {
+        return myElementName;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> @Nullable T getHint(Key<T> hintKey) {
+        if (DNameHint.KEY.equals(hintKey)) {
+            return (T) this;
+        }
+        return PsiScopeProcessor.super.getHint(hintKey);
     }
 }

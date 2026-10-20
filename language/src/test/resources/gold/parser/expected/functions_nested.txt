@@ -983,7 +983,7 @@ D Language File
                 PsiElement(DlangTokenType.})('}')
             PsiComment(DlangTokenType.LINE_COMMENT)('// ok')
         PsiElement(DlangTokenType.})('}')
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('T')

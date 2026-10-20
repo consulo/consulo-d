@@ -1100,10 +1100,11 @@ public class DLangParser {
             }
         }
         expect(DlangTypes.OP_BRACES_LEFT);
+        // Consulo: GDC and LDC (GCC style) asm blocks are a list of instructions with a string template
+        boolean gccAsm = currentIsOneOf(STRING_LITERALS_ARRAY);
         while (moreTokens() && !currentIs(DlangTypes.OP_BRACES_RIGHT)) {
-            if (!parseAsmInstruction()) {
-                // TODO: here libdparse handle gcc asm instructions
-                while (myBuilder.getTokenType() != DlangTypes.OP_BRACES_RIGHT) {
+            if (!(gccAsm ? parseGccAsmInstruction() : parseAsmInstruction())) {
+                while (moreTokens() && myBuilder.getTokenType() != DlangTypes.OP_BRACES_RIGHT) {
                     myBuilder.advanceLexer();
                 }
                 break;
@@ -1112,6 +1113,155 @@ public class DLangParser {
         expect(DlangTypes.OP_BRACES_RIGHT);
         exit_section_modified(myBuilder, m, DlangTypes.ASM_STATEMENT, true);
         return true;
+    }
+
+    /**
+     * Parses a GccAsmInstruction
+     *
+     *
+     * $(GRAMMAR $(RULEDEF gccAsmInstruction):
+     * $(RULE assignExpression) $(LITERAL ';')
+     * | $(RULE assignExpression) $(LITERAL ':') $(RULE gccAsmOperandList)? ($(LITERAL ':') $(RULE gccAsmOperandList)? ($(LITERAL ':') $(RULE gccAsmClobberList)? ($(LITERAL ':') $(RULE gccAsmGotoLabels)?)?)?)? $(LITERAL ';')
+     * ;)
+     */
+    public boolean parseGccAsmInstruction() {
+        PsiBuilder.Marker m = myBuilder.mark();
+        if (currentIsOneOf(DlangTypes.DOUBLE_QUOTED_STRING, DlangTypes.WYSIWYG_STRING, DlangTypes.ALTERNATE_WYSIWYG_STRING)
+            && peekIsOneOf(DlangTypes.OP_COLON, DlangTypes.OP_SCOLON)) {
+            PsiBuilder.Marker template = myBuilder.mark();
+            advance();
+            template.done(DlangTypes.GCC_ASM_TEMPLATE);
+        }
+        else if (parseAssignExpression() == null) {
+            cleanup(m, DlangTypes.GCC_ASM_INSTRUCTION);
+            return false;
+        }
+        if (currentIs(DlangTypes.OP_COLON)) {
+            advance();
+            // outputs
+            if (!currentIsOneOf(DlangTypes.OP_COLON, DlangTypes.OP_SCOLON) && !parseGccAsmOperandList()) {
+                cleanup(m, DlangTypes.GCC_ASM_INSTRUCTION);
+                return false;
+            }
+            if (currentIs(DlangTypes.OP_COLON)) {
+                advance();
+                // inputs
+                if (!currentIsOneOf(DlangTypes.OP_COLON, DlangTypes.OP_SCOLON) && !parseGccAsmOperandList()) {
+                    cleanup(m, DlangTypes.GCC_ASM_INSTRUCTION);
+                    return false;
+                }
+                if (currentIs(DlangTypes.OP_COLON)) {
+                    advance();
+                    if (!currentIsOneOf(DlangTypes.OP_COLON, DlangTypes.OP_SCOLON)) {
+                        parseGccAsmClobberList();
+                    }
+                    if (currentIs(DlangTypes.OP_COLON)) {
+                        advance();
+                        if (!currentIs(DlangTypes.OP_SCOLON)) {
+                            parseGccAsmGotoLabels();
+                        }
+                    }
+                }
+            }
+        }
+        if (expect(DlangTypes.OP_SCOLON) == null) {
+            cleanup(m, DlangTypes.GCC_ASM_INSTRUCTION);
+            return false;
+        }
+        m.done(DlangTypes.GCC_ASM_INSTRUCTION);
+        return true;
+    }
+
+    /**
+     * Parses a GccAsmOperandList
+     *
+     *
+     * $(GRAMMAR $(RULEDEF gccAsmOperandList):
+     * $(RULE gccAsmOperand) ($(LITERAL ',') $(RULE gccAsmOperand))*
+     * ;)
+     */
+    public boolean parseGccAsmOperandList() {
+        PsiBuilder.Marker m = myBuilder.mark();
+        do {
+            if (!parseGccAsmOperand()) {
+                cleanup(m, DlangTypes.GCC_ASM_OPERAND_LIST);
+                return false;
+            }
+        }
+        while (currentIs(DlangTypes.OP_COMMA) && advance() != null);
+        m.done(DlangTypes.GCC_ASM_OPERAND_LIST);
+        return true;
+    }
+
+    /**
+     * Parses a GccAsmOperand
+     *
+     *
+     * $(GRAMMAR $(RULEDEF gccAsmOperand):
+     * ($(LITERAL '[') $(LITERAL Identifier) $(LITERAL ']'))? $(LITERAL StringLiteral) $(LITERAL '$(LPAREN)') $(RULE assignExpression) $(LITERAL '$(RPAREN)')
+     * ;)
+     */
+    public boolean parseGccAsmOperand() {
+        PsiBuilder.Marker m = myBuilder.mark();
+        if (currentIs(DlangTypes.OP_BRACKET_LEFT)) {
+            advance();
+            if (expect(DlangTypes.ID) == null || expect(DlangTypes.OP_BRACKET_RIGHT) == null) {
+                cleanup(m, DlangTypes.GCC_ASM_OPERAND);
+                return false;
+            }
+        }
+        if (!currentIsOneOf(STRING_LITERALS_ARRAY)) {
+            error("Constraint string expected");
+            cleanup(m, DlangTypes.GCC_ASM_OPERAND);
+            return false;
+        }
+        advance();
+        if (expect(DlangTypes.OP_PAR_LEFT) == null || parseAssignExpression() == null || expect(DlangTypes.OP_PAR_RIGHT) == null) {
+            cleanup(m, DlangTypes.GCC_ASM_OPERAND);
+            return false;
+        }
+        m.done(DlangTypes.GCC_ASM_OPERAND);
+        return true;
+    }
+
+    /**
+     * Parses a GccAsmClobberList
+     *
+     *
+     * $(GRAMMAR $(RULEDEF gccAsmClobberList):
+     * $(LITERAL StringLiteral) ($(LITERAL ',') $(LITERAL StringLiteral))*
+     * ;)
+     */
+    public void parseGccAsmClobberList() {
+        PsiBuilder.Marker m = myBuilder.mark();
+        do {
+            if (!currentIsOneOf(STRING_LITERALS_ARRAY)) {
+                error("Clobber string expected");
+                break;
+            }
+            advance();
+        }
+        while (currentIs(DlangTypes.OP_COMMA) && advance() != null);
+        m.done(DlangTypes.GCC_ASM_CLOBBER_LIST);
+    }
+
+    /**
+     * Parses GccAsmGotoLabels
+     *
+     *
+     * $(GRAMMAR $(RULEDEF gccAsmGotoLabels):
+     * $(LITERAL Identifier) ($(LITERAL ',') $(LITERAL Identifier))*
+     * ;)
+     */
+    public void parseGccAsmGotoLabels() {
+        PsiBuilder.Marker m = myBuilder.mark();
+        do {
+            if (expect(DlangTypes.ID) == null) {
+                break;
+            }
+        }
+        while (currentIs(DlangTypes.OP_COMMA) && advance() != null);
+        m.done(DlangTypes.GCC_ASM_GOTO_LABELS);
     }
 
     /**

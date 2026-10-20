@@ -1,5 +1,5 @@
 D Language File
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('Foo')
@@ -205,7 +205,7 @@ D Language File
           PsiElement(DlangTokenType.;)(';')
         PsiComment(DlangTokenType.LINE_COMMENT)('// prints 5')
         PsiElement(DlangTokenType.})('}')
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('Foo')
@@ -245,7 +245,7 @@ D Language File
       PsiElement(DlangTokenType.))(')')
     PsiElement(DlangTokenType.;)(';')
     PsiComment(DlangTokenType.LINE_COMMENT)('// create x of type int')
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('Foo')
@@ -402,7 +402,7 @@ D Language File
         DLanguageLiteralExpressionImpl(LITERAL_EXPRESSION)
           PsiElement(DlangTokenType.INTEGER_LITERAL)('3')
     PsiElement(DlangTokenType.;)(';')
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('Foo')
@@ -476,7 +476,7 @@ D Language File
             PsiElement(DlangTokenType.))(')')
           PsiElement(DlangTokenType.;)(';')
         PsiElement(DlangTokenType.})('}')
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('Foo')
@@ -563,7 +563,7 @@ D Language File
             PsiElement(DlangTokenType.))(')')
           PsiElement(DlangTokenType.;)(';')
         PsiElement(DlangTokenType.})('}')
-  DLanguageTemplateMixinDeclarationImpl(TEMPLATE_MIXIN_DECLARATION)
+  TEMPLATE_MIXIN_DECLARATION
     PsiElement(DlangTokenType.mixin)('mixin')
     PsiElement(DlangTokenType.template)('template')
     PsiElement(DlangTokenType.ID)('duffs_device')

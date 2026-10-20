@@ -103,6 +103,12 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-language-editor-refactoring-api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
         <!-- the plugin under test and the plugins it builds on -->
         <dependency>
             <groupId>${project.groupId}</groupId>
@@ -136,6 +142,36 @@
         </dependency>
         <dependency>
             <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.asm.language.api</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.asm.language.impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.asm.gas.impl</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.asm</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>consulo.d.asm</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo.plugin</groupId>
             <artifactId>consulo.json.api</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
@@ -144,6 +180,11 @@
             <groupId>consulo.plugin</groupId>
             <artifactId>consulo.nativeDev.debugger.api</artifactId>
             <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
