@@ -910,3 +910,51 @@ asm.implementation.tooltip:
     text: Implemented in assembly
 asm.d.declaration.tooltip:
     text: Declared in D
+run.configuration.fragment.group.dub:
+    text: DUB
+run.configuration.fragment.dub.command:
+    text: DUB command
+run.configuration.fragment.dub.build:
+    text: Build type
+run.configuration.fragment.dub.config:
+    text: Configuration
+run.configuration.fragment.dub.arch:
+    text: Architecture
+run.configuration.fragment.dub.debug:
+    text: Debug identifier
+run.configuration.fragment.dub.compiler:
+    text: Compiler
+run.configuration.fragment.dub.build.mode:
+    text: Build mode
+run.configuration.fragment.dub.main.file:
+    text: Main file
+run.configuration.fragment.dub.arguments:
+    text: DUB arguments
+run.configuration.fragment.app.executable:
+    text: Executable
+run.configuration.fragment.dmd.default.library:
+    text: Default library name
+run.configuration.fragment.dmd.imports:
+    text: Imports
+run.configuration.fragment.dmd.string.imports:
+    text: String imports
+run.configuration.fragment.dmd.linker.arguments:
+    text: Linker arguments
+run.configuration.fragment.dmd.documentation.folder:
+    text: Documentation folder
+run.configuration.fragment.dmd.documentation.filename:
+    text: Documentation filename
+run.configuration.fragment.dmd.module.dependencies:
+    text: Module dependencies output
+run.configuration.fragment.dmd.header.directory:
+    text: Header file directory
+run.configuration.fragment.dmd.header.filename:
+    text: Header file name
+run.configuration.fragment.dmd.json.filename:
+    text: JSON filename
+run.configuration.fragment.dmd.symbolic.library:
+    text: Symbolic debug library name
+run.configuration.fragment.dmd.arguments:
+    text: Show DMD arguments
+run.configuration.fragment.dunit.file:
+    text: D file

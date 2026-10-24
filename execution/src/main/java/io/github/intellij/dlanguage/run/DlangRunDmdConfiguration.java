@@ -3,34 +3,32 @@ package io.github.intellij.dlanguage.run;
 
 import consulo.d.localize.DLocalize;
 import consulo.execution.configuration.ConfigurationFactory;
+import consulo.execution.configuration.LegacyRunConfigurationConverter;
 import consulo.execution.configuration.ModuleBasedConfiguration;
-import consulo.execution.configuration.RunConfiguration;
 import consulo.execution.configuration.RunConfigurationModule;
 import consulo.execution.configuration.RunProfileState;
 import consulo.execution.configuration.RunProfileWithCompileBeforeLaunchOption;
-import consulo.execution.configuration.ui.SettingsEditor;
+import consulo.execution.configuration.fragment.RunConfigurationFragment;
 import consulo.execution.executor.Executor;
 import consulo.execution.runner.ExecutionEnvironment;
 import consulo.module.Module;
 import consulo.module.ModuleManager;
 import consulo.nativeDev.debugger.driver.NativeDebugTarget;
 import consulo.nativeDev.debugger.run.NativeProgramRunConfiguration;
-import consulo.nativeDev.debugger.run.NativeProgramSettings;
 import consulo.process.ExecutionException;
 import consulo.project.Project;
-import consulo.util.xml.serializer.InvalidDataException;
-import consulo.util.xml.serializer.WriteExternalException;
 import org.jdom.Element;
 import org.jspecify.annotations.Nullable;
 
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Consulo: Run compiles, as upstream; Debug launches the program this configuration builds (the {@code -of} output)
- * under the nativeDev debugger, with the program arguments, working directory and environment of
- * {@link NativeProgramSettings}. The options are written as upstream's {@code XmlSerializer} wrote them
+ * under the nativeDev debugger, with the program arguments, working directory and environment of the shared
+ * program fragments. Old configurations stored the options as upstream's {@code XmlSerializer} wrote them
  * ({@code <option name=".." value=".."/>}). IntelliJ's {@code isBuildBeforeLaunchAddedByDefault} and
  * {@code isExcludeCompileBeforeLaunchOption} have no Consulo counterpart.
  */
@@ -40,54 +38,6 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
     private static final String OPTION = "option";
     private static final String NAME = "name";
     private static final String VALUE = "value";
-
-    //Compiler settings properties
-    private boolean betterC;
-    private boolean release;
-    private boolean debug;
-    private boolean unitTest;
-    private boolean link;
-    private boolean coverageAnalysis;
-    private boolean allowDeprecated;
-    private boolean ignorePragmas;
-    private boolean functionInlining;
-    private boolean library;
-    private boolean noArrayBoundsCheck;
-    private boolean noFloatingPointReferences;
-    private boolean optimize;
-    private boolean enforcePropertySyntax;
-    private boolean quiet;
-    private boolean verbose;
-    private boolean listThreadLocalStorage;
-    private boolean warnings;
-    private boolean infoWarnings;
-    private @Nullable String defaultLibrary;
-    private @Nullable String importsPath;
-    private @Nullable String stringImportsPath;
-    private @Nullable String linkerArgs;
-
-    //Output settings properties
-    private boolean generateDocs;
-    private @Nullable String docsFilename;
-    private @Nullable String docsPath;
-    private @Nullable String moduleDepsFilename;
-    private boolean generateHeader;
-    private @Nullable String headerDir;
-    private @Nullable String headerFilename;
-    private boolean generateMap;
-    private boolean noObjectFiles;
-    private boolean noStripPaths;
-    private boolean generateJson;
-    private @Nullable String jsonFilename;
-
-    //Debug settings properties
-    private boolean addSymbolicDebugInfo;
-    private boolean generateStandardStackFrame;
-    private @Nullable String symbolicLibrary;
-    private boolean profile;
-
-    private final NativeProgramSettings programSettings = new NativeProgramSettings();
-
 
     public DlangRunDmdConfiguration(final String name, final Project project, final ConfigurationFactory factory) {
         super(name, new RunConfigurationModule(project), factory);
@@ -114,18 +64,73 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
     }
 
     @Override
-    public SettingsEditor<? extends RunConfiguration> getConfigurationEditor() {
-        return new DlangRunDmdConfigurationEditor(getProject());
+    protected Class<DlangRunDmdConfigurationOptions> getOptionsClass() {
+        return DlangRunDmdConfigurationOptions.class;
+    }
+
+    @Override
+    public DlangRunDmdConfigurationOptions getOptions() {
+        return (DlangRunDmdConfigurationOptions) super.getOptions();
+    }
+
+    @Override
+    protected void convertLegacyState(final LegacyRunConfigurationConverter converter) {
+        super.convertLegacyState(converter);
+
+        final Element element = converter.getElement();
+        final DlangRunDmdConfigurationOptions options = new DlangRunDmdConfigurationOptions();
+        options.setBetterC(readBoolean(element, "betterC"));
+        options.setRelease(readBoolean(element, "release"));
+        options.setDebug(readBoolean(element, "debug"));
+        options.setUnitTest(readBoolean(element, "unitTest"));
+        options.setLink(readBoolean(element, "link"));
+        options.setCoverageAnalysis(readBoolean(element, "coverageAnalysis"));
+        options.setAllowDeprecated(readBoolean(element, "allowDeprecated"));
+        options.setIgnorePragmas(readBoolean(element, "ignorePragmas"));
+        options.setFunctionInlining(readBoolean(element, "functionInlining"));
+        options.setLibrary(readBoolean(element, "library"));
+        options.setNoArrayBoundsCheck(readBoolean(element, "noArrayBoundsCheck"));
+        options.setNoFloatingPointReferences(readBoolean(element, "noFloatingPointReferences"));
+        options.setOptimize(readBoolean(element, "optimize"));
+        options.setEnforcePropertySyntax(readBoolean(element, "enforcePropertySyntax"));
+        options.setQuiet(readBoolean(element, "quiet"));
+        options.setVerbose(readBoolean(element, "verbose"));
+        options.setListThreadLocalStorage(readBoolean(element, "listThreadLocalStorage"));
+        options.setWarnings(readBoolean(element, "warnings"));
+        options.setInfoWarnings(readBoolean(element, "infoWarnings"));
+        options.setDefaultLibrary(readOption(element, "defaultLibrary"));
+        options.setImportsPath(readOption(element, "importsPath"));
+        options.setStringImportsPath(readOption(element, "stringImportsPath"));
+        options.setLinkerArgs(readOption(element, "linkerArgs"));
+        options.setGenerateDocs(readBoolean(element, "generateDocs"));
+        options.setDocsFilename(readOption(element, "docsFilename"));
+        options.setDocsPath(readOption(element, "docsPath"));
+        options.setModuleDepsFilename(readOption(element, "moduleDepsFilename"));
+        options.setGenerateHeader(readBoolean(element, "generateHeader"));
+        options.setHeaderDir(readOption(element, "headerDir"));
+        options.setHeaderFilename(readOption(element, "headerFilename"));
+        options.setGenerateMap(readBoolean(element, "generateMap"));
+        options.setNoObjectFiles(readBoolean(element, "noObjectFiles"));
+        options.setNoStripPaths(readBoolean(element, "noStripPaths"));
+        options.setGenerateJson(readBoolean(element, "generateJson"));
+        options.setJsonFilename(readOption(element, "jsonFilename"));
+        options.setAddSymbolicDebugInfo(readBoolean(element, "addSymbolicDebugInfo"));
+        options.setGenerateStandardStackFrame(readBoolean(element, "generateStandardStackFrame"));
+        options.setSymbolicLibrary(readOption(element, "symbolicLibrary"));
+        options.setProfile(readBoolean(element, "profile"));
+        converter.setOptions(options);
+
+        NativeProgramRunConfiguration.convertLegacyProgramState(converter);
+    }
+
+    @Override
+    public List<RunConfigurationFragment<?>> createFragments() {
+        return DlangRunDmdFragmentFactory.create();
     }
 
     @Override
     public RunProfileState getState(final Executor executor, final ExecutionEnvironment env) throws ExecutionException {
         return new DlangRunDmdState(env, this);
-    }
-
-    @Override
-    public NativeProgramSettings getProgramSettings() {
-        return programSettings;
     }
 
     @Override
@@ -136,103 +141,7 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
         }
         Path executable = Path.of(DlangDmdConfigToArgsConverter.getOutputFilePath(module, this));
         String basePath = getProject().getBasePath();
-        return programSettings.createDebugTarget(executable, basePath == null ? null : Path.of(basePath));
-    }
-
-    @Override
-    public void writeExternal(final Element element) throws WriteExternalException {
-        super.writeExternal(element);
-        writeOption(element, "betterC", String.valueOf(betterC));
-        writeOption(element, "release", String.valueOf(release));
-        writeOption(element, "debug", String.valueOf(debug));
-        writeOption(element, "unitTest", String.valueOf(unitTest));
-        writeOption(element, "link", String.valueOf(link));
-        writeOption(element, "coverageAnalysis", String.valueOf(coverageAnalysis));
-        writeOption(element, "allowDeprecated", String.valueOf(allowDeprecated));
-        writeOption(element, "ignorePragmas", String.valueOf(ignorePragmas));
-        writeOption(element, "functionInlining", String.valueOf(functionInlining));
-        writeOption(element, "library", String.valueOf(library));
-        writeOption(element, "noArrayBoundsCheck", String.valueOf(noArrayBoundsCheck));
-        writeOption(element, "noFloatingPointReferences", String.valueOf(noFloatingPointReferences));
-        writeOption(element, "optimize", String.valueOf(optimize));
-        writeOption(element, "enforcePropertySyntax", String.valueOf(enforcePropertySyntax));
-        writeOption(element, "quiet", String.valueOf(quiet));
-        writeOption(element, "verbose", String.valueOf(verbose));
-        writeOption(element, "listThreadLocalStorage", String.valueOf(listThreadLocalStorage));
-        writeOption(element, "warnings", String.valueOf(warnings));
-        writeOption(element, "infoWarnings", String.valueOf(infoWarnings));
-        writeOption(element, "defaultLibrary", defaultLibrary);
-        writeOption(element, "importsPath", importsPath);
-        writeOption(element, "stringImportsPath", stringImportsPath);
-        writeOption(element, "linkerArgs", linkerArgs);
-        writeOption(element, "generateDocs", String.valueOf(generateDocs));
-        writeOption(element, "docsFilename", docsFilename);
-        writeOption(element, "docsPath", docsPath);
-        writeOption(element, "moduleDepsFilename", moduleDepsFilename);
-        writeOption(element, "generateHeader", String.valueOf(generateHeader));
-        writeOption(element, "headerDir", headerDir);
-        writeOption(element, "headerFilename", headerFilename);
-        writeOption(element, "generateMap", String.valueOf(generateMap));
-        writeOption(element, "noObjectFiles", String.valueOf(noObjectFiles));
-        writeOption(element, "noStripPaths", String.valueOf(noStripPaths));
-        writeOption(element, "generateJson", String.valueOf(generateJson));
-        writeOption(element, "jsonFilename", jsonFilename);
-        writeOption(element, "addSymbolicDebugInfo", String.valueOf(addSymbolicDebugInfo));
-        writeOption(element, "generateStandardStackFrame", String.valueOf(generateStandardStackFrame));
-        writeOption(element, "symbolicLibrary", symbolicLibrary);
-        writeOption(element, "profile", String.valueOf(profile));
-        programSettings.writeExternal(element);
-    }
-
-    @Override
-    public void readExternal(final Element element) throws InvalidDataException {
-        super.readExternal(element);
-        betterC = readBoolean(element, "betterC");
-        release = readBoolean(element, "release");
-        debug = readBoolean(element, "debug");
-        unitTest = readBoolean(element, "unitTest");
-        link = readBoolean(element, "link");
-        coverageAnalysis = readBoolean(element, "coverageAnalysis");
-        allowDeprecated = readBoolean(element, "allowDeprecated");
-        ignorePragmas = readBoolean(element, "ignorePragmas");
-        functionInlining = readBoolean(element, "functionInlining");
-        library = readBoolean(element, "library");
-        noArrayBoundsCheck = readBoolean(element, "noArrayBoundsCheck");
-        noFloatingPointReferences = readBoolean(element, "noFloatingPointReferences");
-        optimize = readBoolean(element, "optimize");
-        enforcePropertySyntax = readBoolean(element, "enforcePropertySyntax");
-        quiet = readBoolean(element, "quiet");
-        verbose = readBoolean(element, "verbose");
-        listThreadLocalStorage = readBoolean(element, "listThreadLocalStorage");
-        warnings = readBoolean(element, "warnings");
-        infoWarnings = readBoolean(element, "infoWarnings");
-        defaultLibrary = readOption(element, "defaultLibrary");
-        importsPath = readOption(element, "importsPath");
-        stringImportsPath = readOption(element, "stringImportsPath");
-        linkerArgs = readOption(element, "linkerArgs");
-        generateDocs = readBoolean(element, "generateDocs");
-        docsFilename = readOption(element, "docsFilename");
-        docsPath = readOption(element, "docsPath");
-        moduleDepsFilename = readOption(element, "moduleDepsFilename");
-        generateHeader = readBoolean(element, "generateHeader");
-        headerDir = readOption(element, "headerDir");
-        headerFilename = readOption(element, "headerFilename");
-        generateMap = readBoolean(element, "generateMap");
-        noObjectFiles = readBoolean(element, "noObjectFiles");
-        noStripPaths = readBoolean(element, "noStripPaths");
-        generateJson = readBoolean(element, "generateJson");
-        jsonFilename = readOption(element, "jsonFilename");
-        addSymbolicDebugInfo = readBoolean(element, "addSymbolicDebugInfo");
-        generateStandardStackFrame = readBoolean(element, "generateStandardStackFrame");
-        symbolicLibrary = readOption(element, "symbolicLibrary");
-        profile = readBoolean(element, "profile");
-        programSettings.readExternal(element);
-    }
-
-    private static void writeOption(Element element, String name, @Nullable String value) {
-        if (value != null) {
-            element.addContent(new Element(OPTION).setAttribute(NAME, name).setAttribute(VALUE, value));
-        }
+        return createDebugTarget(executable, basePath == null ? null : Path.of(basePath));
     }
 
     private static @Nullable String readOption(Element element, String name) {
@@ -249,315 +158,315 @@ public class DlangRunDmdConfiguration extends ModuleBasedConfiguration<RunConfig
     }
 
     public boolean isBetterC() {
-        return this.betterC;
+        return getOptions().isBetterC();
     }
 
     public void setBetterC(boolean betterC) {
-        this.betterC = betterC;
+        getOptions().setBetterC(betterC);
     }
 
     public boolean isRelease() {
-        return release;
+        return getOptions().isRelease();
     }
 
     public void setRelease(final boolean release) {
-        this.release = release;
+        getOptions().setRelease(release);
     }
 
     public boolean isDebug() {
-        return debug;
+        return getOptions().isDebug();
     }
 
     public void setDebug(final boolean debug) {
-        this.debug = debug;
+        getOptions().setDebug(debug);
     }
 
     public boolean isUnitTest() {
-        return unitTest;
+        return getOptions().isUnitTest();
     }
 
     public void setUnitTest(final boolean unitTest) {
-        this.unitTest = unitTest;
+        getOptions().setUnitTest(unitTest);
     }
 
     public boolean isLink() {
-        return link;
+        return getOptions().isLink();
     }
 
     public void setLink(final boolean link) {
-        this.link = link;
+        getOptions().setLink(link);
     }
 
     public boolean isCoverageAnalysis() {
-        return coverageAnalysis;
+        return getOptions().isCoverageAnalysis();
     }
 
     public void setCoverageAnalysis(final boolean coverageAnalysis) {
-        this.coverageAnalysis = coverageAnalysis;
+        getOptions().setCoverageAnalysis(coverageAnalysis);
     }
 
     public boolean isAllowDeprecated() {
-        return allowDeprecated;
+        return getOptions().isAllowDeprecated();
     }
 
     public void setAllowDeprecated(final boolean allowDeprecated) {
-        this.allowDeprecated = allowDeprecated;
+        getOptions().setAllowDeprecated(allowDeprecated);
     }
 
     public boolean isIgnorePragmas() {
-        return ignorePragmas;
+        return getOptions().isIgnorePragmas();
     }
 
     public void setIgnorePragmas(final boolean ignorePragmas) {
-        this.ignorePragmas = ignorePragmas;
+        getOptions().setIgnorePragmas(ignorePragmas);
     }
 
     public boolean isFunctionInlining() {
-        return functionInlining;
+        return getOptions().isFunctionInlining();
     }
 
     public void setFunctionInlining(final boolean functionInlining) {
-        this.functionInlining = functionInlining;
+        getOptions().setFunctionInlining(functionInlining);
     }
 
     public boolean isLibrary() {
-        return library;
+        return getOptions().isLibrary();
     }
 
     public void setLibrary(final boolean library) {
-        this.library = library;
+        getOptions().setLibrary(library);
     }
 
     public boolean isNoArrayBoundsCheck() {
-        return noArrayBoundsCheck;
+        return getOptions().isNoArrayBoundsCheck();
     }
 
     public void setNoArrayBoundsCheck(final boolean noArrayBoundsCheck) {
-        this.noArrayBoundsCheck = noArrayBoundsCheck;
+        getOptions().setNoArrayBoundsCheck(noArrayBoundsCheck);
     }
 
     public boolean isNoFloatingPointReferences() {
-        return noFloatingPointReferences;
+        return getOptions().isNoFloatingPointReferences();
     }
 
     public void setNoFloatingPointReferences(final boolean noFloatingPointReferences) {
-        this.noFloatingPointReferences = noFloatingPointReferences;
+        getOptions().setNoFloatingPointReferences(noFloatingPointReferences);
     }
 
     public boolean isOptimize() {
-        return optimize;
+        return getOptions().isOptimize();
     }
 
     public void setOptimize(final boolean optimize) {
-        this.optimize = optimize;
+        getOptions().setOptimize(optimize);
     }
 
     public boolean isEnforcePropertySyntax() {
-        return enforcePropertySyntax;
+        return getOptions().isEnforcePropertySyntax();
     }
 
     public void setEnforcePropertySyntax(final boolean enforcePropertySyntax) {
-        this.enforcePropertySyntax = enforcePropertySyntax;
+        getOptions().setEnforcePropertySyntax(enforcePropertySyntax);
     }
 
     public boolean isQuiet() {
-        return quiet;
+        return getOptions().isQuiet();
     }
 
     public void setQuiet(final boolean quiet) {
-        this.quiet = quiet;
+        getOptions().setQuiet(quiet);
     }
 
     public boolean isVerbose() {
-        return verbose;
+        return getOptions().isVerbose();
     }
 
     public void setVerbose(final boolean verbose) {
-        this.verbose = verbose;
+        getOptions().setVerbose(verbose);
     }
 
     public boolean isListThreadLocalStorage() {
-        return listThreadLocalStorage;
+        return getOptions().isListThreadLocalStorage();
     }
 
     public void setListThreadLocalStorage(final boolean listThreadLocalStorage) {
-        this.listThreadLocalStorage = listThreadLocalStorage;
+        getOptions().setListThreadLocalStorage(listThreadLocalStorage);
     }
 
     public boolean isWarnings() {
-        return warnings;
+        return getOptions().isWarnings();
     }
 
     public void setWarnings(final boolean warnings) {
-        this.warnings = warnings;
+        getOptions().setWarnings(warnings);
     }
 
     public boolean isInfoWarnings() {
-        return infoWarnings;
+        return getOptions().isInfoWarnings();
     }
 
     public void setInfoWarnings(final boolean infoWarnings) {
-        this.infoWarnings = infoWarnings;
+        getOptions().setInfoWarnings(infoWarnings);
     }
 
     public @Nullable String getDefaultLibrary() {
-        return defaultLibrary;
+        return getOptions().getDefaultLibrary();
     }
 
     public void setDefaultLibrary(final @Nullable String defaultLibrary) {
-        this.defaultLibrary = defaultLibrary;
+        getOptions().setDefaultLibrary(defaultLibrary);
     }
 
     public @Nullable String getImportsPath() {
-        return importsPath;
+        return getOptions().getImportsPath();
     }
 
     public void setImportsPath(final @Nullable String importsPath) {
-        this.importsPath = importsPath;
+        getOptions().setImportsPath(importsPath);
     }
 
     public @Nullable String getStringImportsPath() {
-        return stringImportsPath;
+        return getOptions().getStringImportsPath();
     }
 
     public void setStringImportsPath(final @Nullable String stringImportsPath) {
-        this.stringImportsPath = stringImportsPath;
+        getOptions().setStringImportsPath(stringImportsPath);
     }
 
     public @Nullable String getLinkerArgs() {
-        return linkerArgs;
+        return getOptions().getLinkerArgs();
     }
 
     public void setLinkerArgs(final @Nullable String linkerArgs) {
-        this.linkerArgs = linkerArgs;
+        getOptions().setLinkerArgs(linkerArgs);
     }
 
     public @Nullable String getJsonFilename() {
-        return jsonFilename;
+        return getOptions().getJsonFilename();
     }
 
     public void setJsonFilename(final @Nullable String jsonFilename) {
-        this.jsonFilename = jsonFilename;
+        getOptions().setJsonFilename(jsonFilename);
     }
 
     public boolean isGenerateJson() {
-        return generateJson;
+        return getOptions().isGenerateJson();
     }
 
     public void setGenerateJson(final boolean generateJson) {
-        this.generateJson = generateJson;
+        getOptions().setGenerateJson(generateJson);
     }
 
     public boolean isNoStripPaths() {
-        return noStripPaths;
+        return getOptions().isNoStripPaths();
     }
 
     public void setNoStripPaths(final boolean noStripPaths) {
-        this.noStripPaths = noStripPaths;
+        getOptions().setNoStripPaths(noStripPaths);
     }
 
     public boolean isNoObjectFiles() {
-        return noObjectFiles;
+        return getOptions().isNoObjectFiles();
     }
 
     public void setNoObjectFiles(final boolean noObjectFiles) {
-        this.noObjectFiles = noObjectFiles;
+        getOptions().setNoObjectFiles(noObjectFiles);
     }
 
     public boolean isGenerateMap() {
-        return generateMap;
+        return getOptions().isGenerateMap();
     }
 
     public void setGenerateMap(final boolean generateMap) {
-        this.generateMap = generateMap;
+        getOptions().setGenerateMap(generateMap);
     }
 
     public @Nullable String getHeaderFilename() {
-        return headerFilename;
+        return getOptions().getHeaderFilename();
     }
 
     public void setHeaderFilename(final @Nullable String headerFilename) {
-        this.headerFilename = headerFilename;
+        getOptions().setHeaderFilename(headerFilename);
     }
 
     public @Nullable String getHeaderDir() {
-        return headerDir;
+        return getOptions().getHeaderDir();
     }
 
     public void setHeaderDir(final @Nullable String headerDir) {
-        this.headerDir = headerDir;
+        getOptions().setHeaderDir(headerDir);
     }
 
     public boolean isGenerateHeader() {
-        return generateHeader;
+        return getOptions().isGenerateHeader();
     }
 
     public void setGenerateHeader(final boolean generateHeader) {
-        this.generateHeader = generateHeader;
+        getOptions().setGenerateHeader(generateHeader);
     }
 
     public @Nullable String getModuleDepsFilename() {
-        return moduleDepsFilename;
+        return getOptions().getModuleDepsFilename();
     }
 
     public void setModuleDepsFilename(final @Nullable String moduleDepsFilename) {
-        this.moduleDepsFilename = moduleDepsFilename;
+        getOptions().setModuleDepsFilename(moduleDepsFilename);
     }
 
     public @Nullable String getDocsPath() {
-        return docsPath;
+        return getOptions().getDocsPath();
     }
 
     public void setDocsPath(final @Nullable String docsPath) {
-        this.docsPath = docsPath;
+        getOptions().setDocsPath(docsPath);
     }
 
     public @Nullable String getDocsFilename() {
-        return docsFilename;
+        return getOptions().getDocsFilename();
     }
 
     public void setDocsFilename(final @Nullable String docsFilename) {
-        this.docsFilename = docsFilename;
+        getOptions().setDocsFilename(docsFilename);
     }
 
     public boolean isGenerateDocs() {
-        return generateDocs;
+        return getOptions().isGenerateDocs();
     }
 
     public void setGenerateDocs(final boolean generateDocs) {
-        this.generateDocs = generateDocs;
+        getOptions().setGenerateDocs(generateDocs);
     }
 
     public boolean isAddSymbolicDebugInfo() {
-        return addSymbolicDebugInfo;
+        return getOptions().isAddSymbolicDebugInfo();
     }
 
     public void setAddSymbolicDebugInfo(final boolean addSymbolicDebugInfo) {
-        this.addSymbolicDebugInfo = addSymbolicDebugInfo;
+        getOptions().setAddSymbolicDebugInfo(addSymbolicDebugInfo);
     }
 
     public boolean isGenerateStandardStackFrame() {
-        return generateStandardStackFrame;
+        return getOptions().isGenerateStandardStackFrame();
     }
 
     public void setGenerateStandardStackFrame(final boolean generateStandardStackFrame) {
-        this.generateStandardStackFrame = generateStandardStackFrame;
+        getOptions().setGenerateStandardStackFrame(generateStandardStackFrame);
     }
 
     public @Nullable String getSymbolicLibrary() {
-        return symbolicLibrary;
+        return getOptions().getSymbolicLibrary();
     }
 
     public void setSymbolicLibrary(final @Nullable String symbolicLibrary) {
-        this.symbolicLibrary = symbolicLibrary;
+        getOptions().setSymbolicLibrary(symbolicLibrary);
     }
 
     public boolean isProfile() {
-        return profile;
+        return getOptions().isProfile();
     }
 
     public void setProfile(final boolean profile) {
-        this.profile = profile;
+        getOptions().setProfile(profile);
     }
 
     @Override

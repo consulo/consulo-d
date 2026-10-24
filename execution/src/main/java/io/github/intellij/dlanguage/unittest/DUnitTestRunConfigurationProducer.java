@@ -32,7 +32,7 @@ public class DUnitTestRunConfigurationProducer extends RunConfigurationProducer<
         final VirtualFile dFile = getRunnableDFileFromContext(context);
         if (dFile != null) {
             configuration.setdFilePath(dFile.getPath());
-            configuration.setWorkingDir(Objects.requireNonNull(dFile.getParent()).getPath());
+            configuration.setWorkingDirectory(Objects.requireNonNull(dFile.getParent()).getPath());
             configuration.setGeneratedName();
 
             final PsiElement element = sourceElement.get();

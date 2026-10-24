@@ -95,18 +95,18 @@ public class DlangRunAppState extends CommandLineState {
         final GeneralCommandLine cmd = new GeneralCommandLine();
         cmd.setExePath(getOutputFilePath(module));
 
-        final @Nullable String workDir = config.getWorkDir();
+        final @Nullable String workDir = config.getWorkingDirectory();
         if (StringUtil.isNotEmpty(workDir)) {
             cmd.withWorkDirectory(workDir);
         } else {
             cmd.withWorkDirectory(Objects.requireNonNull(sourcesRoot).getPath());
         }
 
-        if (StringUtil.isNotEmpty(config.getAdditionalParams())) {
-            cmd.addParameters(splitArguments(config.getAdditionalParams()));
+        if (StringUtil.isNotEmpty(config.getProgramParameters())) {
+            cmd.addParameters(splitArguments(config.getProgramParameters()));
         }
 
-        cmd.withEnvironment(config.getEnvVars());
+        cmd.withEnvironment(config.getEnvs());
         cmd.withParentEnvironmentType(config.isPassParentEnvs()
             ? GeneralCommandLine.ParentEnvironmentType.CONSOLE
             : GeneralCommandLine.ParentEnvironmentType.NONE);

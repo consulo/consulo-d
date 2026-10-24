@@ -7,6 +7,7 @@ import org.jspecify.annotations.NullMarked;
 module consulo.d.dub {
     requires consulo.d.language;
     requires consulo.d.sdlang;
+    requires consulo.d.execution;
     requires transitive consulo.external.system.api;
     requires consulo.process.api;
     requires consulo.module.content.api;
@@ -48,4 +49,5 @@ module consulo.d.dub {
     exports io.github.intellij.dub.tools;
 
     opens consulo.d.dub.setting to consulo.util.xml.serializer;
+    opens io.github.intellij.dub.run to consulo.util.xml.serializer, consulo.execution.api;
 }

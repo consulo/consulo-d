@@ -16,7 +16,11 @@ module consulo.d.execution {
 
     exports consulo.d.execution;
     exports consulo.d.execution.debugger;
+    exports consulo.d.execution.fragment;
     exports io.github.intellij.dlanguage.run;
     exports io.github.intellij.dlanguage.run.exception;
     exports io.github.intellij.dlanguage.unittest;
+
+    opens io.github.intellij.dlanguage.run to consulo.util.xml.serializer, consulo.execution.api;
+    opens io.github.intellij.dlanguage.unittest to consulo.util.xml.serializer;
 }

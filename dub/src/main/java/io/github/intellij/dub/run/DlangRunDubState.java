@@ -80,7 +80,7 @@ public class DlangRunDubState extends CommandLineState {
         }
         GeneralCommandLine cmd = new GeneralCommandLine();
         cmd.setExePath(dubPath);
-        String workingDirectory = config.getProgramSettings().getWorkingDirectory();
+        String workingDirectory = config.getWorkingDirectory();
         if (StringUtil.isNotEmpty(workingDirectory)) {
             cmd.withWorkDirectory(workingDirectory);
         }
@@ -167,13 +167,13 @@ public class DlangRunDubState extends CommandLineState {
         if (additionalParams != null && DUtil.isNotNullOrEmpty(additionalParams)) {
             cmd.addParameters(Arrays.stream(additionalParams.split("\\s")).filter(s -> !s.isEmpty()).toList());
         }
-        List<String> programArguments = config.getProgramSettings().getProgramArguments();
+        List<String> programArguments = config.getProgramArguments();
         if (toRun && !programArguments.isEmpty()) {
             cmd.addParameter("--");
             cmd.addParameters(programArguments);
         }
-        cmd.withEnvironment(config.getProgramSettings().getEnvs());
-        cmd.withParentEnvironmentType(config.getProgramSettings().isPassParentEnvs()
+        cmd.withEnvironment(config.getEnvs());
+        cmd.withParentEnvironmentType(config.isPassParentEnvs()
             ? GeneralCommandLine.ParentEnvironmentType.CONSOLE
             : GeneralCommandLine.ParentEnvironmentType.NONE);
         return cmd;

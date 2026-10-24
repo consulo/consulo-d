@@ -8,7 +8,6 @@ import consulo.execution.configuration.ConfigurationTypeBase;
 import consulo.execution.configuration.ConfigurationTypeUtil;
 import consulo.execution.configuration.RunConfiguration;
 import consulo.project.Project;
-import consulo.util.dataholder.Key;
 import io.github.intellij.dlanguage.DLanguage;
 
 @ExtensionImpl
@@ -39,11 +38,10 @@ public class DlangRunAppConfigurationType extends ConfigurationTypeBase {
         /**
          * Controls the default 'before launch' tasks that are configured in a run configuration
          *
-         * @param providerID the key of the Task to check
          * @param task the actual Task
          */
         @Override
-        public void configureBeforeRunTaskDefaults(Key<? extends BeforeRunTask> providerID, BeforeRunTask task) {
+        public void configureBeforeRunTaskDefaults(BeforeRunTask task) {
             // potentially we could enable DlangRunDmdConfigurationType.ID
             // to do that we'll need to change the overridden boolean values in DlangRunAppConfiguration and
             // also add a <stepsBeforeRunProvider implementation="DlangCompileBeforeRunProvider" id="dlangCompileBeforeRun"/>

@@ -4,7 +4,6 @@ import consulo.execution.BeforeRunTask;
 import consulo.execution.configuration.ConfigurationFactory;
 import consulo.execution.configuration.ConfigurationType;
 import consulo.project.Project;
-import consulo.util.dataholder.Key;
 
 /**
  * Base ConfigurationType class for D language configuration types that are used for running dub, dmd, or run a compiled binary
@@ -40,11 +39,10 @@ public abstract class DlangRunConfigurationFactory extends ConfigurationFactory 
      * <a href="https://github.com/intellij-dlanguage/intellij-dlanguage/issues/1215">issue 1215</a>
      * </p>
      *
-     * @param providerID the key of the Task to check
      * @param task the actual Task
      */
     @Override
-    public void configureBeforeRunTaskDefaults(Key<? extends BeforeRunTask> providerID, BeforeRunTask task) {
+    public void configureBeforeRunTaskDefaults(BeforeRunTask task) {
         // by default, don't have any of our run configurations setup tasks.
         // potentially the Run App config could override this to do a compile before running the binary
         task.setEnabled(false);
