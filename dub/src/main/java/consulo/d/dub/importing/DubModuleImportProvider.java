@@ -13,6 +13,8 @@ import consulo.d.icon.DIconGroup;
 import jakarta.inject.Inject;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Opens/imports a directory holding {@code dub.json} or {@code dub.sdl} (or the manifest itself). The package directory
@@ -31,16 +33,17 @@ public class DubModuleImportProvider extends AbstractExternalModuleImportProvide
     }
 
     @Override
-    public boolean canImport(File fileOrDirectory) {
-        if (fileOrDirectory.isDirectory()) {
+    public boolean canImport(Path fileOrDirectory) {
+        if (Files.isDirectory(fileOrDirectory)) {
             for (String manifest : DubConstants.MANIFESTS) {
-                if (new File(fileOrDirectory, manifest).isFile()) {
+                if (Files.isRegularFile(fileOrDirectory.resolve(manifest))) {
                     return true;
                 }
             }
             return false;
         }
-        return DubConstants.MANIFESTS.contains(fileOrDirectory.getName());
+        Path fileName = fileOrDirectory.getFileName();
+        return fileName != null && DubConstants.MANIFESTS.contains(fileName.toString());
     }
 
     @Override
