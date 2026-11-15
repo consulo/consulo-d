@@ -59,6 +59,9 @@ public class DFormatAction extends DumbAwareAction implements AnActionWithAsyncU
     @Override
     public Coroutine<?, ?> updateAsync(AnActionEvent e) {
         return ActionSafeReadLock.<Object, Object>run(e, presentation -> {
+            // nothing to decide without the lock: the PSI file is computed lazily, and the action stays enabled without one
+            presentation.setEnabled(true);
+        }, presentation -> {
             PsiFile psiFile = e.getData(PsiFile.KEY);
             if (psiFile != null) {
                 presentation.setEnabled(DlangPsiFile.class.isAssignableFrom(psiFile.getClass()));
